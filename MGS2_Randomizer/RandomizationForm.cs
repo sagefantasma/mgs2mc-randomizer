@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -55,13 +56,16 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetHelpString(this.randomizeAutomaticRewardsCheckbox, "Automatic rewards will be randomized into the pool. This includes: USP on Tanker; SOCOM, Coolant, Sensor A, BDU, Phone, and MO Disc on Plant.");
 
             this.helpProvider1.SetShowHelp(this.randomizeBombLocations, true);
-            this.helpProvider1.SetHelpString(this.randomizeBombLocations, "Randomize where all bombs during the bomb defusal segment spawn.");
+            this.helpProvider1.SetHelpString(this.randomizeBombLocations, "Randomize where all sensor A bombs during the bomb defusal segment spawn.");
 
             this.helpProvider1.SetShowHelp(this.randomizeEFConnectingBridgeClaymores, true);
             this.helpProvider1.SetHelpString(this.randomizeEFConnectingBridgeClaymores, "Randomize where the claymores spawn on the EF Connecting Bridge.");
 
             this.helpProvider1.SetShowHelp(this.restoreBaseGameButton, true);
             this.helpProvider1.SetHelpString(this.restoreBaseGameButton, "Restores the game's files to their 'vanilla' state. If this does not work properly, use Steam to 'Verify integrity of game files' to accomplish the same result.");
+
+            this.helpProvider1.SetShowHelp(this.customSeedCheckbox, true);
+            this.helpProvider1.SetHelpString(this.customSeedCheckbox, "Use a known seed to replicate a randomized run! Be sure to set your options up to match the one the seed originally had on creation to get accurate results.");
         }
 
         private void LoadConfig()
@@ -215,54 +219,94 @@ namespace MGS2_Randomizer
 
         private async void randomizeButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Randomizing MGS2's game files to your specifications, this may take some time...", "Heads up!");
-            ToggleControls(false);
-            Application.DoEvents();
-            waitingMusic.PlayLooping();
-            await Task.Run(() =>
+            try
             {
-                MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation, (int)seedUpDown.Value);
-                MGS2Randomizer.RandomizationOptions randomizationOptions = new MGS2Randomizer.RandomizationOptions
+                MessageBox.Show("Randomizing MGS2's game files to your specifications, this may take some time...", "Heads up!");
+                ToggleControls(false);
+                Application.DoEvents();
+                waitingMusic.PlayLooping();
+                await Task.Run(() =>
                 {
-                    NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
-                    NikitaShell2 = restrictNikitaCheckbox.Checked,
-                    AllWeaponsSpawnable = allWeaponsWillSpawnCheckbox.Checked,
-                    IncludeRations = randomizeRationsCheckbox.Checked,
-                    RandomizeStartingItems = randomizeStartingItemsCheckbox.Checked,
-                    RandomizeAutomaticRewards = randomizeAutomaticRewardsCheckbox.Checked,
-                    RandomizeC4 = randomizeBombLocations.Checked,
-                    RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked
-                };
-                int seed = 0;
-                if (randomizer.Seed == 0)
-                    randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
-                while (seed == 0)
+                    MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation, (int)seedUpDown.Value);
+                    MGS2Randomizer.RandomizationOptions randomizationOptions = new MGS2Randomizer.RandomizationOptions
+                    {
+                        NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
+                        NikitaShell2 = restrictNikitaCheckbox.Checked,
+                        AllWeaponsSpawnable = allWeaponsWillSpawnCheckbox.Checked,
+                        IncludeRations = randomizeRationsCheckbox.Checked,
+                        RandomizeStartingItems = randomizeStartingItemsCheckbox.Checked,
+                        RandomizeAutomaticRewards = randomizeAutomaticRewardsCheckbox.Checked,
+                        RandomizeC4 = randomizeBombLocations.Checked,
+                        RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked
+                    };
+                    int seed = 0;
+                    if (randomizer.Seed == 0)
+                        randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
+                    while (seed == 0)
+                    {
+                        try
+                        {
+                            seed = randomizer.RandomizeItemSpawns(randomizationOptions);
+                            randomizer.SaveRandomizationToDisk(true, false);
+                        }
+                        catch (OutOfMemoryException oome)
+                        {
+                            throw oome; //rethrow to help debug
+                        }
+                        catch (MGS2Randomizer.RandomizerException ee)
+                        {
+                            //randomizer.Seed = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
+                            //randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
+                            randomizer.Randomizer = new Random(randomizer.Randomizer.Next());
+                        }
+                        catch (Exception ee)
+                        {
+                            throw ee; //rethrow to help debug
+                        }
+                    }
+                });
+                waitingMusic.Stop();
+                keptYouWaitingHuh.Play();
+                MessageBox.Show("Finished! Spoiler file available in your Documents folder.", "Randomization Complete!");
+                ToggleControls(true);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Randomization failed! If this error persists, please report a bug on Github!");
+            }
+            finally
+            {
+
+            }
+        }
+
+        private void ReportABug_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("https://github.com/sagefantasma/mgs2mc-randomizer/issues");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"Failed to launch Github page. If this error persists, please restart the application.");
+            }
+        }
+
+        private void KofiButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DialogResult result = MessageBox.Show("If you're enjoying the randomizer, please consider donating to my Ko-Fi to support me and the project!",
+                    "Support the project on Ko-Fi!", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
                 {
-                    try
-                    {
-                        seed = randomizer.RandomizeItemSpawns(randomizationOptions);
-                        randomizer.SaveRandomizationToDisk(true, false);
-                    }
-                    catch (OutOfMemoryException oome)
-                    {
-                        throw oome; //rethrow to help debug
-                    }
-                    catch (MGS2Randomizer.RandomizerException ee)
-                    {
-                        //randomizer.Seed = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
-                        //randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
-                        randomizer.Randomizer = new Random(randomizer.Randomizer.Next());
-                    }
-                    catch (Exception ee)
-                    {
-                        throw ee; //rethrow to help debug
-                    }
+                    Process.Start("https://ko-fi.com/sagefantasma");
                 }
-            });
-            waitingMusic.Stop();
-            keptYouWaitingHuh.Play();
-            MessageBox.Show("Finished! Spoiler file available in your Documents folder.", "Randomization Complete!");
-            ToggleControls(true);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
     }
 }

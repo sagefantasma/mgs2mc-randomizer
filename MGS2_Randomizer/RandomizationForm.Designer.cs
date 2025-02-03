@@ -49,10 +49,15 @@
             this.randomizeAutomaticRewardsCheckbox = new System.Windows.Forms.CheckBox();
             this.restrictNikitaCheckbox = new System.Windows.Forms.CheckBox();
             this.seedAlwaysBeatableCheckbox = new System.Windows.Forms.CheckBox();
+            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kofiButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.optionsGroupBox.SuspendLayout();
+            this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // randomizeButton
@@ -115,24 +120,26 @@
             // 
             // executionFlowLayoutPanel
             // 
+            this.executionFlowLayoutPanel.BackColor = System.Drawing.SystemColors.Window;
             this.executionFlowLayoutPanel.Controls.Add(this.customSeedLabel);
             this.executionFlowLayoutPanel.Controls.Add(this.seedUpDown);
             this.executionFlowLayoutPanel.Controls.Add(this.customSeedCheckbox);
             this.executionFlowLayoutPanel.Controls.Add(this.restoreBaseGameButton);
             this.executionFlowLayoutPanel.Controls.Add(this.randomizeButton);
             this.executionFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 246);
+            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 263);
             this.executionFlowLayoutPanel.Name = "executionFlowLayoutPanel";
             this.executionFlowLayoutPanel.Size = new System.Drawing.Size(333, 71);
             this.executionFlowLayoutPanel.TabIndex = 4;
             // 
             // flowLayoutPanel1
             // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.mgs2ExeTextBox);
             this.flowLayoutPanel1.Controls.Add(this.browseButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 24);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(333, 40);
             this.flowLayoutPanel1.TabIndex = 7;
@@ -170,6 +177,7 @@
             // 
             // optionsGroupBox
             // 
+            this.optionsGroupBox.BackColor = System.Drawing.SystemColors.Window;
             this.optionsGroupBox.Controls.Add(this.randomizeStartingItemsCheckbox);
             this.optionsGroupBox.Controls.Add(this.allWeaponsWillSpawnCheckbox);
             this.optionsGroupBox.Controls.Add(this.randomizeRationsCheckbox);
@@ -179,9 +187,9 @@
             this.optionsGroupBox.Controls.Add(this.restrictNikitaCheckbox);
             this.optionsGroupBox.Controls.Add(this.seedAlwaysBeatableCheckbox);
             this.optionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.optionsGroupBox.Location = new System.Drawing.Point(0, 40);
+            this.optionsGroupBox.Location = new System.Drawing.Point(0, 64);
             this.optionsGroupBox.Name = "optionsGroupBox";
-            this.optionsGroupBox.Size = new System.Drawing.Size(333, 206);
+            this.optionsGroupBox.Size = new System.Drawing.Size(333, 199);
             this.optionsGroupBox.TabIndex = 8;
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
@@ -280,16 +288,61 @@
             this.seedAlwaysBeatableCheckbox.UseVisualStyleBackColor = true;
             this.seedAlwaysBeatableCheckbox.CheckedChanged += new System.EventHandler(this.seedAlwaysBeatableCheckbox_CheckedChanged);
             // 
+            // menuStrip2
+            // 
+            this.menuStrip2.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helpToolStripMenuItem});
+            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip2.Name = "menuStrip2";
+            this.menuStrip2.Size = new System.Drawing.Size(333, 24);
+            this.menuStrip2.TabIndex = 10;
+            this.menuStrip2.Text = "menuStrip2";
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reportBugMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // reportBugMenuItem
+            // 
+            this.reportBugMenuItem.Name = "reportBugMenuItem";
+            this.reportBugMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportBugMenuItem.Text = "Report a Bug";
+            this.reportBugMenuItem.Click += new System.EventHandler(this.ReportABug_Click);
+            // 
+            // kofiButton
+            // 
+            this.kofiButton.BackgroundImage = global::MGS2_Randomizer.Properties.Resources.kofi_logo;
+            this.kofiButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.kofiButton.Location = new System.Drawing.Point(306, 0);
+            this.kofiButton.Name = "kofiButton";
+            this.kofiButton.Size = new System.Drawing.Size(27, 23);
+            this.kofiButton.TabIndex = 11;
+            this.kofiButton.UseVisualStyleBackColor = true;
+            this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
+            // 
             // RandomizationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(333, 317);
+            this.ClientSize = new System.Drawing.Size(333, 334);
+            this.Controls.Add(this.kofiButton);
             this.Controls.Add(this.optionsGroupBox);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.executionFlowLayoutPanel);
+            this.Controls.Add(this.menuStrip2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "RandomizationForm";
+            this.helpProvider1.SetShowHelp(this, false);
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MGS2 Randomizer";
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).EndInit();
             this.executionFlowLayoutPanel.ResumeLayout(false);
@@ -298,7 +351,10 @@
             this.flowLayoutPanel1.PerformLayout();
             this.optionsGroupBox.ResumeLayout(false);
             this.optionsGroupBox.PerformLayout();
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -323,6 +379,10 @@
         private System.Windows.Forms.CheckBox seedAlwaysBeatableCheckbox;
         private System.Windows.Forms.TextBox mgs2ExeTextBox;
         private System.Windows.Forms.Button browseButton;
+        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reportBugMenuItem;
+        private System.Windows.Forms.Button kofiButton;
     }
 }
 
