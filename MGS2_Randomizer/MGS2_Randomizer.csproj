@@ -169,7 +169,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\app.manifest" />
-    <None Include="README.md" />
     <None Include="Resources\kofi logo.png" />
     <EmbeddedResource Include="ProcEditor.resx">
       <DependentUpon>ProcEditor.cs</DependentUpon>
