@@ -348,7 +348,7 @@ namespace MGS2_Randomizer
             w21a.CallDecompiler(gcxFile);
             List<DecodedProc> contentTree = w21a.BuildContentTree();
             DecodedProc claymoreSpawningFunction = contentTree.Find(x => x.Name == "proc_0x223D85 ");
-            byte[] customClaymoreFunctionContents = File.ReadAllBytes("gcx\\w21a_custom_claymores.proc");
+            byte[] customClaymoreFunctionContents = File.ReadAllBytes("w21a_custom_claymores.proc");
             claymoreSpawningFunction.RawContents = customClaymoreFunctionContents;
             byte[] modifiedGcxContents = w21a.BuildGcxFile();
             File.WriteAllBytes(gcxFile, modifiedGcxContents);
@@ -1988,7 +1988,7 @@ namespace MGS2_Randomizer
                     List<Item> PlantSpawns = new List<Item>();
 
                     int itemsAssigned = 0;
-                    int retries = 1000;
+                    int retries = 100;
 
                     if (!options.RandomizeCards)
                     {
@@ -2369,67 +2369,6 @@ namespace MGS2_Randomizer
 
         private bool VerifyItemSetLogicValidity(MGS2ItemSet setToCheck)
         {
-            foreach (Item item in _vanillaItems.TankerPart1.ItemsNeededToProgress)
-            {
-                if (!setToCheck.TankerPart1.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.TankerPart2.ItemsNeededToProgress)
-            {
-                if (!setToCheck.TankerPart2.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.TankerPart3.ItemsNeededToProgress)
-            {
-                if (!setToCheck.TankerPart3.Entities.ContainsValue(item))
-                    return false;
-            }
-
-            foreach (Item item in _vanillaItems.PlantSet2.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet2.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet3.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet3.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet4.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet4.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet5.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet5.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet6.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet6.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet7.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet7.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet8.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet8.Entities.ContainsValue(item))
-                    return false;
-            }
-            foreach (Item item in _vanillaItems.PlantSet9.ItemsNeededToProgress)
-            {
-                if (!setToCheck.PlantSet9.Entities.ContainsValue(item))
-                    return false;
-            }
-            return true;
-        }
-
-        private bool VerifyCardSetLogicValidity(MGS2ItemSet setToCheck, bool keepCardAccessLevels = false)
-        {
             #region Tanker Checks
             foreach (Item item in _vanillaItems.TankerPart1.ItemsNeededToProgress)
             {
@@ -2449,31 +2388,218 @@ namespace MGS2_Randomizer
             #endregion
 
             #region Plant Checks
+            if (_vanillaItems.PlantSet3.ItemsNeededToProgress.Count > 0)
+            {
+                List<KeyValuePair<Location, Item>> secondProgressionSpawns = setToCheck.PlantSet10.Entities.Where(spawns => setToCheck.PlantSet3.Entities.Contains(spawns)).ToList();
+                foreach (Item item in _vanillaItems.PlantSet3.ItemsNeededToProgress)
+                {
+                    if (!secondProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                    {
+                        if (item.Name == "Coolant")
+                        {
+                            KeyValuePair<Location, Item> coolantSpawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "Coolant");
+                            List<KeyValuePair<Location, Item>> part1M9AmmoSpawns = secondProgressionSpawns.Where(spawn => (spawn.Value.Name == "M9 Ammo")
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Weapons.Coolant])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part1M9AmmoSpawns[Randomizer.Next(0, part1M9AmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = coolantSpawn.Value;
+                            setToCheck.PlantSet10.Entities[coolantSpawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                        if (item.Name == "SOCOM")
+                        {
+                            KeyValuePair<Location, Item> socomSpawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "SOCOM");
+                            List<KeyValuePair<Location, Item>> part1SocomAmmoSpawns = secondProgressionSpawns.Where(spawn => (spawn.Value.Name == "SOCOM Ammo")
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Weapons.Socom])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part1SocomAmmoSpawns[Randomizer.Next(0, part1SocomAmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = socomSpawn.Value;
+                            setToCheck.PlantSet10.Entities[socomSpawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                        if (item.Name == "Sensor B")
+                        {
+                            KeyValuePair<Location, Item> sensorBSpawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "Sensor B");
+                            List<KeyValuePair<Location, Item>> part1M4AmmoSpawns = secondProgressionSpawns.Where(spawn => (spawn.Value.Name == "M4 Ammo")
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Items.SensorB])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part1M4AmmoSpawns[Randomizer.Next(0, part1M4AmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = sensorBSpawn.Value;
+                            setToCheck.PlantSet10.Entities[sensorBSpawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                    }
+                }
+            }
+            if (_vanillaItems.PlantSet4.ItemsNeededToProgress.Count > 0)
+            {
+                List<KeyValuePair<Location, Item>> thirdProgressionSpawns = setToCheck.PlantSet10.Entities.Where(spawns => setToCheck.PlantSet4.Entities.Contains(spawns)).ToList();
+                foreach (Item item in _vanillaItems.PlantSet4.ItemsNeededToProgress)
+                {
+                    if (!thirdProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                    {
+                        if (item.Name == "B.D.U.")
+                        {
+                            KeyValuePair<Location, Item> bduSpawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "B.D.U.");
+                            List<KeyValuePair<Location, Item>> part2Rgb6AmmoSpawns = thirdProgressionSpawns.Where(spawn => (spawn.Value.Name == "RGB6 Ammo")
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Items.BDU])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part2Rgb6AmmoSpawns[Randomizer.Next(0, part2Rgb6AmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = bduSpawn.Value;
+                            setToCheck.PlantSet10.Entities[bduSpawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                        if (item.Name == "AKS-74u")
+                        {
+                            KeyValuePair<Location, Item> akSpawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "AKS-74u");
+                            List<KeyValuePair<Location, Item>> part2AkAmmoSpawns = thirdProgressionSpawns.Where(spawn => (spawn.Value.Name == "AKS-74u Ammo")
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Weapons.Aks74u])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part2AkAmmoSpawns[Randomizer.Next(0, part2AkAmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = akSpawn.Value;
+                            setToCheck.PlantSet10.Entities[akSpawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                    }
+                }
+            }
+            if (_vanillaItems.PlantSet5.ItemsNeededToProgress.Count > 0)
+            {
+                List<KeyValuePair<Location, Item>> fourthProgressionSpawns = setToCheck.PlantSet10.Entities.Where(spawns => setToCheck.PlantSet5.Entities.Contains(spawns)).ToList();
+                foreach (Item item in _vanillaItems.PlantSet5.ItemsNeededToProgress)
+                {
+                    if (!fourthProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                    {
+                        if (item.Name == "Directional Microphone")
+                        {
+                            KeyValuePair<Location, Item> dmicSpawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "Directional Microphone");
+                            List<KeyValuePair<Location, Item>> part3AnyAmmoSpawns = fourthProgressionSpawns.Where(spawn => (spawn.Value.Name.Contains("Ammo"))
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Weapons.Dmic1])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part3AnyAmmoSpawns[Randomizer.Next(0, part3AnyAmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = dmicSpawn.Value;
+                            setToCheck.PlantSet10.Entities[dmicSpawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                    }
+                }
+            }
+            if (_vanillaItems.PlantSet6.ItemsNeededToProgress.Count > 0)
+            {
+                List<KeyValuePair<Location, Item>> fifthProgressionSpawns = setToCheck.PlantSet10.Entities.Where(spawns => setToCheck.PlantSet6.Entities.Contains(spawns)).ToList();
+                foreach (Item item in _vanillaItems.PlantSet6.ItemsNeededToProgress)
+                {
+                    if (!fifthProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                    {
+                        if (item.Name == "PSG1")
+                        {
+                            KeyValuePair<Location, Item> psg1Spawn = setToCheck.PlantSet10.Entities.FirstOrDefault(spawn => spawn.Value.Name == "PSG1");
+                            List<KeyValuePair<Location, Item>> part4Psg1AmmoSpawns = fifthProgressionSpawns.Where(spawn => (spawn.Value.Name == "PSG1 Ammo")
+                            && spawn.Key.MandatorySpawn
+                            && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[MGS2Weapons.Psg1])).ToList();
+                            KeyValuePair<Location, Item> ammoSpawnToSwap = part4Psg1AmmoSpawns[Randomizer.Next(0, part4Psg1AmmoSpawns.Count - 1)];
+
+                            setToCheck.PlantSet10.Entities[ammoSpawnToSwap.Key] = psg1Spawn.Value;
+                            setToCheck.PlantSet10.Entities[psg1Spawn.Key] = ammoSpawnToSwap.Value;
+                        }
+                    }
+                }
+            }
+            #endregion
+            return true;
+        }
+
+        private bool VerifyCardSetLogicValidity(MGS2ItemSet setToCheck, bool keepCardAccessLevels = false)
+        {
+            #region Tanker Checks
+            /* This is the general idea of what we can do in the future if randomization takes too long to generate and we need to speed things up. But for, now it solves an extremely minor issue and just causes headaches for me, so skipping this for now
+             * if (_vanillaItems.TankerPart2.ItemsNeededToProgress.Count > 0)
+            {
+                if (!setToCheck.TankerPart2.Entities.Any(spawn => spawn.Value == MGS2Weapons.M9 || spawn.Value == MGS2Weapons.Usp))
+                {
+                    KeyValuePair<Location, Item> m9OrUspSpawn = setToCheck.TankerPart3.Entities.Where(spawn => spawn.Value == MGS2Weapons.M9 || spawn.Value == MGS2Weapons.Usp).FirstOrDefault();
+                    List<KeyValuePair<Location, Item>> part1MandatorySpawns = setToCheck.TankerPart1.Entities.Where(spawn => spawn.Key.MandatorySpawn).ToList();
+                }
+            }*/
+            foreach (Item item in _vanillaItems.TankerPart1.ItemsNeededToProgress)
+            {
+                if (!setToCheck.TankerPart1.Entities.ContainsValue(item))
+                    return false;
+            }
+            foreach (Item item in _vanillaItems.TankerPart2.ItemsNeededToProgress)
+            {
+                if (!setToCheck.TankerPart2.Entities.ContainsValue(item))
+                    return false;
+            }
+            foreach (Item item in _vanillaItems.TankerPart3.ItemsNeededToProgress)
+            {
+                if (!setToCheck.TankerPart3.Entities.ContainsValue(item))
+                    return false;
+            }
+            #endregion
+
+            #region Plant Checks
+            List<KeyValuePair<Location, Item>> cardSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => spawns.Value.Name == "Card").ToList();
+
             if (!setToCheck.PlantCard0Set.Entities.ContainsValue(MGS2Items.Card))
             {
-                return false;
+                KeyValuePair<Location, Item> cardSpawn1 = cardSpawns[0];
+                List<KeyValuePair<Location, Item>> lvl0MandatorySpawns = setToCheck.PlantCard0Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
+                    && spawn.Key.CardNeededToAccess == 0).ToList();
+                KeyValuePair<Location, Item> lvl0SpawnToSwap = lvl0MandatorySpawns[Randomizer.Next(0, lvl0MandatorySpawns.Count - 1)];
+
+                setToCheck.PlantCard5Set.Entities[lvl0SpawnToSwap.Key] = cardSpawn1.Value;
+                setToCheck.PlantCard5Set.Entities[cardSpawn1.Key] = lvl0SpawnToSwap.Value;
             }
             if (setToCheck.PlantCard1Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 1)
             {
-                return false;
+                KeyValuePair<Location, Item> cardSpawn2 = cardSpawns[1];
+                List<KeyValuePair<Location, Item>> lvl1MandatorySpawns = setToCheck.PlantCard1Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
+                    && spawn.Key.CardNeededToAccess == 1).ToList();
+                KeyValuePair<Location, Item> lvl1SpawnToSwap = lvl1MandatorySpawns[Randomizer.Next(0, lvl1MandatorySpawns.Count - 1)];
+
+                setToCheck.PlantCard5Set.Entities[lvl1SpawnToSwap.Key] = cardSpawn2.Value;
+                setToCheck.PlantCard5Set.Entities[cardSpawn2.Key] = lvl1SpawnToSwap.Value;
+
             }
             if (setToCheck.PlantCard2Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 2)
             {
-                return false;
+                KeyValuePair<Location, Item> cardSpawn3 = cardSpawns[2];
+                List<KeyValuePair<Location, Item>> lvl2MandatorySpawns = setToCheck.PlantCard2Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
+                    && spawn.Key.CardNeededToAccess == 2).ToList();
+                KeyValuePair<Location, Item> lvl2SpawnToSwap = lvl2MandatorySpawns[Randomizer.Next(0, lvl2MandatorySpawns.Count - 1)];
+
+                setToCheck.PlantCard5Set.Entities[lvl2SpawnToSwap.Key] = cardSpawn3.Value;
+                setToCheck.PlantCard5Set.Entities[cardSpawn3.Key] = lvl2SpawnToSwap.Value;
             }
             if (setToCheck.PlantCard3Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 3)
             {
-                return false;
+                KeyValuePair<Location, Item> cardSpawn4 = cardSpawns[3];
+                List<KeyValuePair<Location, Item>> lvl3MandatorySpawns = setToCheck.PlantCard3Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
+                    && spawn.Key.CardNeededToAccess == 3).ToList();
+                KeyValuePair<Location, Item> lvl3SpawnToSwap = lvl3MandatorySpawns[Randomizer.Next(0, lvl3MandatorySpawns.Count - 1)];
+
+                setToCheck.PlantCard5Set.Entities[lvl3SpawnToSwap.Key] = cardSpawn4.Value;
+                setToCheck.PlantCard5Set.Entities[cardSpawn4.Key] = lvl3SpawnToSwap.Value;
             }
             if (setToCheck.PlantCard4Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 4)
             {
-                return false;
+                KeyValuePair<Location, Item> cardSpawn5 = cardSpawns[4];
+                List<KeyValuePair<Location, Item>> lvl4MandatorySpawns = setToCheck.PlantCard4Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
+                    && spawn.Key.CardNeededToAccess == 4).ToList();
+                KeyValuePair<Location, Item> lvl4SpawnToSwap = lvl4MandatorySpawns[Randomizer.Next(0, lvl4MandatorySpawns.Count - 1)];
+
+                setToCheck.PlantCard5Set.Entities[lvl4SpawnToSwap.Key] = cardSpawn5.Value;
+                setToCheck.PlantCard5Set.Entities[cardSpawn5.Key] = lvl4SpawnToSwap.Value;
             }
 
+            // I think this is simply impossible to trigger, I believe the first check always catches this condition
+            /*
             if (setToCheck.PlantCard5Set.Entities.Where(spawn => spawn.Key.CardNeededToAccess == 0).Count(spawns => spawns.Value == MGS2Items.Card) < 1)
             {
                 return false;
             }
+            */
 
             if (keepCardAccessLevels)
             {
@@ -2493,7 +2619,7 @@ namespace MGS2_Randomizer
                     }
                 }
             }
-
+            
             List<KeyValuePair<Location, Item>> firstProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FirstProgressionAreas.Contains(spawns.Key.GcxFile)).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationFirstProgressionItems)
             {
@@ -2533,6 +2659,7 @@ namespace MGS2_Randomizer
                     }
                 }
             }
+
             List<KeyValuePair<Location, Item>> secondProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.SecondProgressionAreas.Contains(spawns.Key.GcxFile)
             && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationSecondProgressionItems)
@@ -2594,6 +2721,11 @@ namespace MGS2_Randomizer
                     }
                 }
             }
+
+            List<KeyValuePair<Location, Item>> fourthProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FourthProgressionAreas.Contains(spawns.Key.GcxFile)).ToList();
+            
+            List<KeyValuePair<Location, Item>> fifthProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FifthProgressionAreas.Contains(spawns.Key.GcxFile)).ToList();
+            
             #endregion
 
             return true;

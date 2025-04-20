@@ -474,7 +474,7 @@ namespace MGS2_Randomizer
             TankerPart3.Entities.Add(new Location(gcxFile: "w03a", spawnId: new byte[] { 0x6E, 0x0E, 0xA8 }, posX: 0xD026, posZ: 0xEC78, posY: 0xFFFF5BF0, rot: 0, name: "DeadguySideRoom"), MGS2Items.Ration);
             TankerPart3.Entities.Add(new Location(gcxFile: "w03a", spawnId: new byte[] { 0xF3, 0xB9, 0x75 }, posX: 0xC950, posZ: 0xEC78, posY: 0xFFFEF46C, rot: 0, name: "CloseSideRoom", mandatorySpawn: true), MGS2Weapons.UspAmmo);
             TankerPart3.Entities.Add(new Location(gcxFile: "w03a", spawnId: new byte[] { 0xF4, 0xB9, 0x75 }, posX: 0xF060, posZ: 0xEC78, posY: 0xFFFE0C00, rot: 0, name: "MiddleShortHallway", mandatorySpawn: true), MGS2Weapons.UspAmmo);
-            //looks like we're missing 2 spawns?
+            //looks like we're missing 2 spawns? -- this is because there are hardcoded spawns that call their own copies of the regular functions. these will be impossible to randomize without serious retooling.
             #endregion
             #region w03b
             TankerPart3.Entities.Add(new Location(gcxFile: "w03b", spawnId: new byte[] { 0xF3, 0xB9, 0x75 }, posX: 0x3D86, posZ: 0xEC78, posY: 0xFFFE0A0C, rot: 0, name: "StartOfHallway", mandatorySpawn: true), MGS2Weapons.UspAmmo);
@@ -483,8 +483,8 @@ namespace MGS2_Randomizer
             TankerPart3.Entities.Add(new Location(gcxFile: "w03b", spawnId: new byte[] { 0x49, 0x35, 0xB8 }, posX: 0x300C, posZ: 0xEC78, posY: 0xFFFE0912, rot: 0, name: "EntrywayPipes", mandatorySpawn: true), MGS2Weapons.M9Ammo);
             #endregion
             #region w04a
-            TankerPart3.Entities.Add(new Location(gcxFile: "w04a", spawnId: new byte[] { 0x49, 0x35, 0xB8 }, posX: 0xD508, posZ: 0xDCD8, posY: 0xFE0C, rot: 0, name: "LeftLadder1", mandatorySpawn: true), MGS2Weapons.M9Ammo);
-            TankerPart3.Entities.Add(new Location(gcxFile: "w04a", spawnId: new byte[] { 0x4A, 0x35, 0xB8 }, posX: 0x1B58, posZ: 0xEC78, posY: 0x6D6, rot: 0, name: "BehindHatch1", mandatorySpawn: true), MGS2Weapons.M9Ammo);
+            TankerPart3.Entities.Add(new Location(gcxFile: "w04a", spawnId: new byte[] { 0x49, 0x35, 0xB8 }, posX: 0xD508, posZ: 0xDCD8, posY: 0xFE0C, rot: 0, name: "LeftLadder1"), MGS2Weapons.M9Ammo); //technically this is a mandatory spawn, but can lead to bad player experience if left in logic
+            TankerPart3.Entities.Add(new Location(gcxFile: "w04a", spawnId: new byte[] { 0x4A, 0x35, 0xB8 }, posX: 0x1B58, posZ: 0xEC78, posY: 0x6D6, rot: 0, name: "BehindHatch1"), MGS2Weapons.M9Ammo); //technically this is a mandatory spawn, but can lead to bad player experience if left in logic
             TankerPart3.Entities.Add(new Location(gcxFile: "w04a", spawnId: new byte[] { 0x6E, 0x0E, 0xA8 }, posX: 0x2710, posZ: 0xEC78, posY: 0xCB2, rot: 0, name: "BehindHatch2"), MGS2Items.Ration);
             TankerPart3.Entities.Add(new Location(gcxFile: "w04a", spawnId: new byte[] { 0x3D, 0xC7, 0x33 }, posX: 0xD6FC, posZ: 0xEC78, posY: 0xF254, rot: 0, name: "LeftLadder2"), MGS2Items.ColdMeds); //this is natively a thermal goggle
 

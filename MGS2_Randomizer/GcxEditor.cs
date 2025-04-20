@@ -112,7 +112,7 @@ namespace MGS2_Randomizer
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = "Gcx/gcx_decompiler.exe",
+                FileName = "gcx_decompiler.exe",
                 Arguments = $@".\{sanitizedGcx}.gcx {outputFile}",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
