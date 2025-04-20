@@ -37,6 +37,9 @@ namespace MGS2_Randomizer
 
         private void SetupHelperButton()
         {
+            this.helpProvider1.SetShowHelp(this.randomizeSpawnsCheckbox, true);
+            this.helpProvider1.SetHelpString(this.randomizeSpawnsCheckbox, "This option, when enabled, will cause spawned items/weapons/ammo to be randomized according to the options selected below in this group.");
+
             this.helpProvider1.SetShowHelp(this.seedAlwaysBeatableCheckbox, true);
             this.helpProvider1.SetHelpString(this.seedAlwaysBeatableCheckbox, "This option will make sure progressive weapons/items never spawn in an area you do not have access to.");
 
@@ -47,25 +50,31 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetHelpString(this.allWeaponsWillSpawnCheckbox, "This option will make sure weapons will not spawn in optional spawns, so you will have access to all of them throughout the game.");
 
             this.helpProvider1.SetShowHelp(this.randomizeRationsCheckbox, true);
-            this.helpProvider1.SetHelpString(this.randomizeRationsCheckbox, "This will add Rations to the randomization pool. (Rations will never spawn on Extreme, so this is not recommended for Extreme runs)");
+            this.helpProvider1.SetHelpString(this.randomizeRationsCheckbox, "This will add Rations to the randomization pool. (If you are playing on Extreme or above: any item that is randomized into a position where a ration normally spawns WILL NOT SPAWN and RATIONS STILL WILL NOT SPAWN. Essentially, you just won't have nearly as much ammo as a normal run as progressive items will be unaffected.)");
 
             this.helpProvider1.SetShowHelp(this.randomizeStartingItemsCheckbox, true);
             this.helpProvider1.SetHelpString(this.randomizeStartingItemsCheckbox, "You will no longer be guaranteed M9, Camera, AP Sensor and Cigs on Tanker; nor AP Sensor and Binoculars on Plant.");
 
             this.helpProvider1.SetShowHelp(this.randomizeAutomaticRewardsCheckbox, true);
-            this.helpProvider1.SetHelpString(this.randomizeAutomaticRewardsCheckbox, "Automatic rewards will be randomized into the pool. This includes: USP on Tanker; SOCOM, Coolant, Sensor A, BDU, Phone, and MO Disc on Plant.");
+            this.helpProvider1.SetHelpString(this.randomizeAutomaticRewardsCheckbox, "Automatic rewards will be randomized into the pool. This includes: USP on Tanker; SOCOM, Coolant, Sensor A, Card Keys, BDU, Phone, and MO Disc on Plant.");
+
+            this.helpProvider1.SetShowHelp(this.addCardsCheckbox, true);
+            this.helpProvider1.SetHelpString(this.addCardsCheckbox, "If automatic rewards are enabled, you can enable this option to add cards to the randomization pool.");
+
+            this.helpProvider1.SetShowHelp(this.keepVanillaCardLevelsCheckbox, true);
+            this.helpProvider1.SetHelpString(this.keepVanillaCardLevelsCheckbox, "If cards are in the randomization pool, you can enable this option to keep items at their 'native' spawn level. (AKS-74u will be behind a Lv2 door, PSG-1 will be behind a Lv3 door, etc...)");
 
             this.helpProvider1.SetShowHelp(this.randomizeBombLocations, true);
-            this.helpProvider1.SetHelpString(this.randomizeBombLocations, "Randomize where all sensor A bombs during the bomb defusal segment spawn.");
+            this.helpProvider1.SetHelpString(this.randomizeBombLocations, "Randomize where all bombs during the bomb defusal segment spawn.");
 
             this.helpProvider1.SetShowHelp(this.randomizeEFConnectingBridgeClaymores, true);
             this.helpProvider1.SetHelpString(this.randomizeEFConnectingBridgeClaymores, "Randomize where the claymores spawn on the EF Connecting Bridge.");
 
+            this.helpProvider1.SetShowHelp(this.randomizeTankerControlUnitLocations, true);
+            this.helpProvider1.SetHelpString(this.randomizeTankerControlUnitLocations, "Randomize where control units spawn in the engine room on the Tanker.");
+
             this.helpProvider1.SetShowHelp(this.restoreBaseGameButton, true);
             this.helpProvider1.SetHelpString(this.restoreBaseGameButton, "Restores the game's files to their 'vanilla' state. If this does not work properly, use Steam to 'Verify integrity of game files' to accomplish the same result.");
-
-            this.helpProvider1.SetShowHelp(this.customSeedCheckbox, true);
-            this.helpProvider1.SetHelpString(this.customSeedCheckbox, "Use a known seed to replicate a randomized run! Be sure to set your options up to match the one the seed originally had on creation to get accurate results.");
         }
 
         private void LoadConfig()
@@ -76,6 +85,7 @@ namespace MGS2_Randomizer
             mgs2ExeTextBox.Text = config.Mgs2ExePath;
             DirectoryInfo fileInfo = new DirectoryInfo(config.Mgs2ExePath);
             InstallLocation = fileInfo.FullName;
+            randomizeSpawnsCheckbox.Checked = config.LastOptionsSelected.RandomizeSpawns;
             seedAlwaysBeatableCheckbox.Checked = config.LastOptionsSelected.NoHardLogicLocks;
             restrictNikitaCheckbox.Checked = config.LastOptionsSelected.NikitaShell2;
             allWeaponsWillSpawnCheckbox.Checked = config.LastOptionsSelected.AllWeaponsSpawnable;
@@ -84,6 +94,9 @@ namespace MGS2_Randomizer
             randomizeAutomaticRewardsCheckbox.Checked = config.LastOptionsSelected.RandomizeAutomaticRewards;
             randomizeBombLocations.Checked = config.LastOptionsSelected.RandomizeC4;
             randomizeEFConnectingBridgeClaymores.Checked = config.LastOptionsSelected.RandomizeClaymores;
+            randomizeTankerControlUnitLocations.Checked = config.LastOptionsSelected.RandomizeTankerControlUnits;
+            addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
+            keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
         }
 
         private void UpdateConfig()
@@ -97,6 +110,7 @@ namespace MGS2_Randomizer
                 Mgs2ExePath = mgs2ExeTextBox.Text,
                 LastOptionsSelected = new MGS2Randomizer.RandomizationOptions
                 {
+                    RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
                     NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
                     NikitaShell2 = restrictNikitaCheckbox.Checked,
                     AllWeaponsSpawnable = allWeaponsWillSpawnCheckbox.Checked,
@@ -104,7 +118,10 @@ namespace MGS2_Randomizer
                     RandomizeStartingItems = randomizeStartingItemsCheckbox.Checked,
                     RandomizeAutomaticRewards = randomizeAutomaticRewardsCheckbox.Checked,
                     RandomizeC4 = randomizeBombLocations.Checked,
-                    RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked
+                    RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
+                    RandomizeCards = addCardsCheckbox.Checked,
+                    KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
+                    RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
                 }
             };
 
@@ -117,6 +134,7 @@ namespace MGS2_Randomizer
             browseButton.Enabled = enable;
             randomizeButton.Enabled = enable;
             restoreBaseGameButton.Enabled = enable;
+            randomizeSpawnsCheckbox.Enabled = enable;
             seedAlwaysBeatableCheckbox.Enabled = enable;
             restrictNikitaCheckbox.Enabled = enable;
             allWeaponsWillSpawnCheckbox.Enabled = enable;
@@ -125,6 +143,15 @@ namespace MGS2_Randomizer
             randomizeAutomaticRewardsCheckbox.Enabled = enable;
             randomizeBombLocations.Enabled = enable;
             randomizeEFConnectingBridgeClaymores.Enabled = enable;
+            randomizeTankerControlUnitLocations.Enabled = enable;
+            if (!enable && randomizeAutomaticRewardsCheckbox.Checked)
+            {
+                addCardsCheckbox.Enabled = enable;
+            }
+            if (!enable && addCardsCheckbox.Checked)
+            {
+                keepVanillaCardLevelsCheckbox.Enabled = enable;
+            }
             if (!enable && customSeedCheckbox.Checked)
             {
                 seedUpDown.Enabled = enable;
@@ -187,6 +214,11 @@ namespace MGS2_Randomizer
 
         private void randomizeAutomaticRewardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
+            addCardsCheckbox.Enabled = randomizeAutomaticRewardsCheckbox.Checked;
+            if (!randomizeAutomaticRewardsCheckbox.Checked)
+            {
+                addCardsCheckbox.Checked = false;
+            }
             UpdateConfig();
         }
 
@@ -196,6 +228,39 @@ namespace MGS2_Randomizer
         }
 
         private void randomizeEFConnectingBridgeClaymores_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
+        }
+
+        private void randomizeSpawnsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            seedAlwaysBeatableCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            restrictNikitaCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            allWeaponsWillSpawnCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            randomizeRationsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            randomizeStartingItemsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            randomizeAutomaticRewardsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            addCardsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            keepVanillaCardLevelsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
+            UpdateConfig();
+        }
+
+        private void addCardsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked;
+            if (!addCardsCheckbox.Checked)
+            {
+                keepVanillaCardLevelsCheckbox.Checked = false;
+            }
+            UpdateConfig();
+        }
+
+        private void keepVanillaCardLevelsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
+        }
+
+        private void randomizeTankerControlUnitLocations_CheckedChanged(object sender, EventArgs e)
         {
             UpdateConfig();
         }
@@ -230,6 +295,7 @@ namespace MGS2_Randomizer
                     MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation, (int)seedUpDown.Value);
                     MGS2Randomizer.RandomizationOptions randomizationOptions = new MGS2Randomizer.RandomizationOptions
                     {
+                        RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
                         NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
                         NikitaShell2 = restrictNikitaCheckbox.Checked,
                         AllWeaponsSpawnable = allWeaponsWillSpawnCheckbox.Checked,
@@ -237,7 +303,10 @@ namespace MGS2_Randomizer
                         RandomizeStartingItems = randomizeStartingItemsCheckbox.Checked,
                         RandomizeAutomaticRewards = randomizeAutomaticRewardsCheckbox.Checked,
                         RandomizeC4 = randomizeBombLocations.Checked,
-                        RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked
+                        RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
+                        RandomizeCards = addCardsCheckbox.Checked,
+                        KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
+                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
                     };
                     int seed = 0;
                     if (randomizer.Seed == 0)
@@ -257,7 +326,8 @@ namespace MGS2_Randomizer
                         {
                             //randomizer.Seed = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
                             //randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
-                            randomizer.Randomizer = new Random(randomizer.Randomizer.Next());
+                            randomizer.Seed = randomizer.Randomizer.Next();
+                            randomizer.Randomizer = new Random(randomizer.Seed);
                         }
                         catch (Exception ee)
                         {

@@ -137,7 +137,7 @@ namespace MGS2_Randomizer
                 TankerPart1 = new ItemSet(VanillaItems.TankerPart1),
                 TankerPart2 = new ItemSet(VanillaItems.TankerPart2),
                 TankerPart3 = new ItemSet(VanillaItems.TankerPart3),
-                 
+
                 //0xd3 spawns in plant
                 PlantSet1 = new ItemSet(VanillaItems.PlantSet1),
                 PlantSet2 = new ItemSet(VanillaItems.PlantSet2),
@@ -148,12 +148,24 @@ namespace MGS2_Randomizer
                 PlantSet7 = new ItemSet(VanillaItems.PlantSet7),
                 PlantSet8 = new ItemSet(VanillaItems.PlantSet8),
                 PlantSet9 = new ItemSet(VanillaItems.PlantSet9),
-                PlantSet10 = new ItemSet(VanillaItems.PlantSet10)
+                PlantSet10 = new ItemSet(VanillaItems.PlantSet10),
+
+                PlantCard0Set = new ItemSet(VanillaItems.PlantCard0Set),
+                PlantCard1Set = new ItemSet(VanillaItems.PlantCard1Set),
+                PlantCard2Set = new ItemSet(VanillaItems.PlantCard2Set),
+                PlantCard3Set = new ItemSet(VanillaItems.PlantCard3Set),
+                PlantCard4Set = new ItemSet(VanillaItems.PlantCard4Set),
+                PlantCard5Set = new ItemSet(VanillaItems.PlantCard5Set),
+
+                CardRandomizationFirstProgressionItems = new List<Item>(LogicRequirements.CardRandomizationFirstProgressionItems),
+                CardRandomizationSecondProgressionItems = new List<Item>(LogicRequirements.CardRandomizationSecondProgressionItems),
+                CardRandomizationThirdProgressionItems = new List<Item>(LogicRequirements.CardRandomizationThirdProgressionItems)
             };
         }
 
         public class RandomizationOptions
         {
+            public bool RandomizeSpawns { get; set; }
             public bool NoHardLogicLocks { get; set; }
             public bool NikitaShell2 { get; set; }
             public bool RandomizeStartingItems { get; set; }
@@ -162,6 +174,25 @@ namespace MGS2_Randomizer
             public bool RandomizeC4 { get; set; }
             public bool IncludeRations { get; set; }
             public bool AllWeaponsSpawnable { get; set; }
+            public bool RandomizeTankerControlUnits { get; set; }
+            public bool RandomizeCards { get; set; }
+            public bool KeepVanillaCardAccess { get; set; }
+
+            public override string ToString()
+            {
+                return $"RandomizeSpawns = {RandomizeSpawns};\n" +
+                    $"NoHardLogicLocks = {NoHardLogicLocks};\n" +
+                    $"NikitaShell2 = {NikitaShell2};\n" +
+                    $"AllWeaponsSpawnable = {AllWeaponsSpawnable};\n" +
+                    $"IncludeRations = {IncludeRations};\n" +
+                    $"RandomizeStartingItems = {RandomizeStartingItems};\n" +
+                    $"RandomizeAutomaticRewards = {RandomizeAutomaticRewards};\n" +
+                    $"RandomizeCards = {RandomizeCards};\n" +
+                    $"KeepVanillaCardAccess = {KeepVanillaCardAccess};\n" +
+                    $"RandomizeC4 = {RandomizeC4};\n" +
+                    $"RandomizeClaymores = {RandomizeClaymores};\n" +
+                    $"RandomizeTankerControlUnits = {RandomizeTankerControlUnits};\n\n\n\n\n\n";
+            }
         }
 
         private void FixOneOffItems()
@@ -224,13 +255,14 @@ namespace MGS2_Randomizer
         private void RandomizeClaymores()
         {
             int leftWall = 0xBF68;
+            int rightSideLowerCatwalk = 0xABB0;
             uint topWall = 0xFFFF0218;
             int rightWall = 0xD6D8;
             uint bottomWall = 0xFFFF2928;
 
             List<PointF> walkableArea = new List<PointF>
             {
-                
+
                 new PointF(0xED4F, 0xFFFEDC3D),
                 new PointF(0xCF29, 0xFFFEDCFD),
                 new PointF(0xCE0F, 0xFFFEDE6E),
@@ -310,6 +342,17 @@ namespace MGS2_Randomizer
             };
 
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w21a"));
+
+            //make claymore functions bigger
+            GcxEditor w21a = new GcxEditor();
+            w21a.CallDecompiler(gcxFile);
+            List<DecodedProc> contentTree = w21a.BuildContentTree();
+            DecodedProc claymoreSpawningFunction = contentTree.Find(x => x.Name == "proc_0x223D85 ");
+            byte[] customClaymoreFunctionContents = File.ReadAllBytes("gcx\\w21a_custom_claymores.proc");
+            claymoreSpawningFunction.RawContents = customClaymoreFunctionContents;
+            byte[] modifiedGcxContents = w21a.BuildGcxFile();
+            File.WriteAllBytes(gcxFile, modifiedGcxContents);
+
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
             List<int> claymores = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x85, 0xD6, 0x78 });
 
@@ -318,23 +361,23 @@ namespace MGS2_Randomizer
             foreach (int claymore in claymores)
             {
                 randomPoint = GetRandomPointInPolygon(walkableArea, Randomizer);
-                // Claymores on the lowered bridge don't work because they're too high. Rerandomize any rolls that are on the bridge for now.
-                while (randomPoint.X < leftWall)
+                // Rerandomize any rolls that are on the stairs leading to lower catwalk
+                while (randomPoint.X < leftWall && randomPoint.X > rightSideLowerCatwalk)
                 {
                     randomPoint = GetRandomPointInPolygon(walkableArea, Randomizer);
                 }
-                int xPos = (int) randomPoint.X;
+                int xPos = (int)randomPoint.X;
                 uint yPos = (uint)randomPoint.Y;
 
-                Array.Copy(BitConverter.GetBytes(xPos), 0, gcxContents, claymore + 0xA, 2);
-                
-                /* Claymores on the lowered bridge don't work because they're too high. Shelving this for later when I solve this problem.
-                 * if(xPos < leftWall)
+                Array.Copy(BitConverter.GetBytes(xPos), 0, gcxContents, claymore + 0xB, 2);
+
+                // Claymores on the lower catwalk need to be, well, lowered.
+                if (xPos < rightSideLowerCatwalk)
                 {
-                    Array.Copy(BitConverter.GetBytes(0xFF), 0, gcxContents, claymore + 0xE, 1);
+                    Array.Copy(BitConverter.GetBytes(0xFFFFFA20), 0, gcxContents, claymore + 0x10, 4);
                 }
-                */
-                Array.Copy(BitConverter.GetBytes(yPos), 0, gcxContents, claymore + 0x10, 4); //the FFFF should be untouched with this and still work
+
+                Array.Copy(BitConverter.GetBytes(yPos), 0, gcxContents, claymore + 0x15, 4); //the FFFF should be untouched with this and still work
             }
 
             File.WriteAllBytes(gcxFile, gcxContents);
@@ -472,13 +515,13 @@ namespace MGS2_Randomizer
             //use only result from `39218001ECF1D6C2` and set the ending C2 to C1
             if (!randomTankerStartingItems.Any(x=>x.Name == "Camera"))
             {
-                string w00a = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w00a"));
-                byte[] w00aContents = File.ReadAllBytes(w00a);
+                string w00aFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w00a"));
+                byte[] w00aByteContents = File.ReadAllBytes(w00aFile);
 
-                int cameraIndex = GcxEditor.FindSubArray(w00aContents, new byte[] { 0x39, 0x21, 0x80, 0x01, 0xEC, 0xF1, 0xD6, 0xC2 }) + 7;
+                int cameraIndex = GcxEditor.FindSubArray(w00aByteContents, new byte[] { 0x39, 0x21, 0x80, 0x01, 0xEC, 0xF1, 0xD6, 0xC2 }) + 7;
 
-                w00aContents[cameraIndex] = 0xC1;
-                File.WriteAllBytes(w00a, w00aContents);
+                w00aByteContents[cameraIndex] = 0xC1;
+                File.WriteAllBytes(w00aFile, w00aByteContents);
             }
 
             List<int> selectedRandomItemIndices = new List<int>();
@@ -515,6 +558,19 @@ namespace MGS2_Randomizer
                 Array.Copy(newInitializeTankerItemsArray, 0, gcxContents, location + 6, newInitializeTankerItemsArray.Length);
             }
             AddTankerStartingItemsToPool();
+
+            //Fixing the inventory bug that occurs if you watch the M9 pad demo on w00a
+            string w00a = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w00a"));
+            byte[] w00aContents = File.ReadAllBytes(w00a);
+
+            List<int> autoMenuInitId = GcxEditor.FindAllSubArray(w00aContents, new byte[] { 0x86, 0x3A, 0xA2 });
+
+            w00aContents[autoMenuInitId[0] + 8] = 0xC1;
+            w00aContents[autoMenuInitId[0] + 9] = 0xC1;
+
+            w00aContents[autoMenuInitId[1] + 14] = 0xC1;
+            w00aContents[autoMenuInitId[1] + 18] = 0xC1;
+            File.WriteAllBytes(w00a, w00aContents);
             #endregion
 
             #region Plant
@@ -615,7 +671,7 @@ namespace MGS2_Randomizer
                     randomizedItem = RaidenItemAwardOptions[randomChoice];
                     RaidenItemAwardOptions.Remove(randomizedItem);
                 }
-                
+
             }
             else
             {
@@ -640,49 +696,74 @@ namespace MGS2_Randomizer
         {
             Location uspLocation = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.GcxFile == "w01f" && spawn.Key.Name == "StinkyRationMan").Key;
             _vanillaItems.TankerPart3.Entities[uspLocation] = MGS2Weapons.Usp;
-            if(!_vanillaItems.TankerPart2.ItemsNeededToProgress.Contains(MGS2Weapons.Usp))
+            if (!_vanillaItems.TankerPart2.ItemsNeededToProgress.Contains(MGS2Weapons.Usp))
                 _vanillaItems.TankerPart2.ItemsNeededToProgress.Add(MGS2Weapons.Usp);
 
             Location socomLocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w12b" && spawn.Key.Name == "Locker1").Key;
             _vanillaItems.PlantSet10.Entities[socomLocation] = MGS2Weapons.Socom;
-            
+            _vanillaItems.PlantCard5Set.Entities[socomLocation] = MGS2Weapons.Socom;
+
             Location cigsLocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w12a" && spawn.Key.Name == "RightCage").Key;
             _vanillaItems.PlantSet10.Entities[cigsLocation] = MGS2Items.Cigs;
-            
+            _vanillaItems.PlantCard5Set.Entities[cigsLocation] = MGS2Items.Cigs;
+
             Location sensorALocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w16a" && spawn.Key.Name == "LadiesRoom2").Key;
             _vanillaItems.PlantSet10.Entities[sensorALocation] = MGS2Items.SensorA;
-            
+            _vanillaItems.PlantCard5Set.Entities[sensorALocation] = MGS2Items.SensorA;
+
             Location coolantSprayLocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w16a" && spawn.Key.Name == "MensRoom").Key;
             _vanillaItems.PlantSet10.Entities[coolantSprayLocation] = MGS2Weapons.Coolant;
-            
+            _vanillaItems.PlantCard5Set.Entities[coolantSprayLocation] = MGS2Weapons.Coolant;
+
             Location bduLocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w18a" && spawn.Key.Name == "UnderStairs").Key;
             _vanillaItems.PlantSet10.Entities[bduLocation] = MGS2Items.BDU;
-            
+            _vanillaItems.PlantCard5Set.Entities[bduLocation] = MGS2Items.BDU;
+
             Location phoneLocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w20a" && spawn.Key.Name == "UnderConveyerBelt").Key;
             _vanillaItems.PlantSet10.Entities[phoneLocation] = MGS2Items.Phone;
+            _vanillaItems.PlantCard5Set.Entities[phoneLocation] = MGS2Items.Phone;
 
             Location moDiskLocation = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w31d" && spawn.Key.Name == "ElectricalRoom2").Key;
             _vanillaItems.PlantSet10.Entities[moDiskLocation] = MGS2Items.MoDisc;
+            _vanillaItems.PlantCard5Set.Entities[moDiskLocation] = MGS2Items.MoDisc;
+        }
 
-            /*Location card1Location = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w14a" && spawn.Key.Name == "Locker1").Key;
-            _vanillaItems.PlantSet10.Entities[card1Location] = MGS2Items.Card;
-            
-            Location card2Location = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w22a" && spawn.Key.Name == "LockerNearNode1").Key;
-            _vanillaItems.PlantSet10.Entities[card2Location] = MGS2Items.Card;
-            
-            Location card3Location = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w22a" && spawn.Key.Name == "C4Room2").Key;
-            _vanillaItems.PlantSet10.Entities[card3Location] = MGS2Items.Card;
-            
-            Location card4Location = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w31b" && spawn.Key.Name == "MiddleHallwayAlcove").Key;
-            _vanillaItems.PlantSet10.Entities[card4Location] = MGS2Items.Card;
+        private void AddCardsToPools()
+        {
+            Location card1Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w14a" && spawn.Key.Name == "Locker1").Key;
+            _vanillaItems.PlantCard5Set.Entities[card1Location] = MGS2Items.Card;
 
-            Location card5Location = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.GcxFile == "w31d" && spawn.Key.Name == "LeftsideAlcove").Key;
-            _vanillaItems.PlantSet10.Entities[card5Location] = MGS2Items.Card;*/
+            Location card2Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w22a" && spawn.Key.Name == "LockerNearNode1").Key;
+            _vanillaItems.PlantCard5Set.Entities[card2Location] = MGS2Items.Card;
+
+            Location card3Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w22a" && spawn.Key.Name == "C4Room2").Key;
+            _vanillaItems.PlantCard5Set.Entities[card3Location] = MGS2Items.Card;
+
+            Location card4Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w31b" && spawn.Key.Name == "MiddleHallwayAlcove").Key;
+            _vanillaItems.PlantCard5Set.Entities[card4Location] = MGS2Items.Card;
+
+            Location card5Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w31d" && spawn.Key.Name == "LeftsideAlcove").Key;
+            _vanillaItems.PlantCard5Set.Entities[card5Location] = MGS2Items.Card;
         }
 
         private void CheckAndRemoveFromRequirements(RandomizedItem item, ItemSet itemSetAdjusted)
         {
             Item itemToRemove;
+            if (itemSetAdjusted.Name == "Card0Set" && LogicRequirements.CardRandomizationFirstProgressionItems.Any(progressiveItem => progressiveItem.Name == item.Name))
+            {
+                itemToRemove = _vanillaItems.CardRandomizationFirstProgressionItems.Find(x => x.Name == item.Name);
+                _vanillaItems.CardRandomizationFirstProgressionItems.Remove(itemToRemove);
+            }
+            if (itemSetAdjusted.Name == "Card1Set" && LogicRequirements.CardRandomizationSecondProgressionItems.Any(progressiveItem => progressiveItem.Name == item.Name))
+            {
+                itemToRemove = _vanillaItems.CardRandomizationSecondProgressionItems.Find(x => x.Name == item.Name);
+                _vanillaItems.CardRandomizationSecondProgressionItems.Remove(itemToRemove);
+            }
+            if (itemSetAdjusted.Name == "Card2Set" && LogicRequirements.CardRandomizationThirdProgressionItems.Any(progressiveItem => progressiveItem.Name == item.Name))
+            {
+                itemToRemove = _vanillaItems.CardRandomizationThirdProgressionItems.Find(x => x.Name == item.Name);
+                _vanillaItems.CardRandomizationThirdProgressionItems.Remove(itemToRemove);
+            }
             switch (itemSetAdjusted.Name)
             {
                 //Pliskin cutscene affects all item sets
@@ -694,7 +775,7 @@ namespace MGS2_Randomizer
                 case "Before Stillman":
                 case "Before Fatman":
                     itemToRemove = _vanillaItems.PlantSet3.ItemsNeededToProgress.Find(x => x.Name == item.Name);
-                    if(itemToRemove != null)
+                    if (itemToRemove != null)
                     {
                         _vanillaItems.PlantSet3.ItemsNeededToProgress.Remove(itemToRemove);
                         _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(itemToRemove);
@@ -779,7 +860,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        private string RandomizeAutomaticRewards()
+        private string RandomizeAutomaticRewards(bool randomizeCards)
         {
             /*
              * It would be very interesting to add Cards to the randomization pool, but unfortunately I just
@@ -798,8 +879,8 @@ namespace MGS2_Randomizer
 
             RandomizedItem randomizedReward = GetRandomItem(true, false);
             spoiler += $"Olga will give you {randomizedReward.Name} after defeating her.\n";
-            gcxContents[snakeWeaponAward[0]+ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[snakeWeaponAward[0]+ItemCountOffset] = randomizedReward.Count;
+            gcxContents[snakeWeaponAward[0] + ItemIndexOffset] = randomizedReward.Index;
+            gcxContents[snakeWeaponAward[0] + ItemCountOffset] = randomizedReward.Count;
 
             File.WriteAllBytes(gcxFile, gcxContents);
             #endregion
@@ -810,7 +891,7 @@ namespace MGS2_Randomizer
 
             List<int> raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
             randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet1);
+            CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet1);
             spoiler += $"Pliskin will give you {randomizedReward.Name} on Strut B.\n"; //working
             gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
@@ -819,7 +900,7 @@ namespace MGS2_Randomizer
 
             List<int> raidenWeaponAward = GcxEditor.FindAllSubArray(gcxContents, PlantWeaponArray);
             randomizedReward = GetRandomItem(true);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet1);
+            CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet1);
             spoiler += $"Pliskin will give you {randomizedReward.Name} on Strut B.\n"; //working
             gcxContents[raidenWeaponAward[2] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenWeaponAward[2] + ItemCountOffset] = randomizedReward.Count;
@@ -846,7 +927,7 @@ namespace MGS2_Randomizer
             gcxContents = File.ReadAllBytes(gcxFile);
             raidenWeaponAward = GcxEditor.FindAllSubArray(gcxContents, PlantWeaponArray);
             randomizedReward = GetRandomItem(true);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet2);
+            CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet2);
             spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n"; //working
             gcxContents[raidenWeaponAward[0] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenWeaponAward[0] + ItemCountOffset] = randomizedReward.Count;
@@ -854,25 +935,28 @@ namespace MGS2_Randomizer
             raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
 
             randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet2);
+            CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet2);
             spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n"; //working
             gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
 
-            /*randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet2);
-            spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n"; //working
-            gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward.Count;
+            if (randomizeCards)
+            {
+                randomizedReward = GetRandomItem(false);
+                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantCard0Set);
+                spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n"; //working
+                gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward.Count;
 
-            File.WriteAllBytes(gcxFile, gcxContents);
+                File.WriteAllBytes(gcxFile, gcxContents);
 
-            //looks like Card 1 gets actually set in w16b, so we will set it here as well
-            gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16b"));
-            gcxContents = File.ReadAllBytes(gcxFile);
-            raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
-            gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;*/
+                //looks like Card 1 gets actually set in w16b, so we will set it here as well
+                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16b"));
+                gcxContents = File.ReadAllBytes(gcxFile);
+                raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
+                gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
+            }
 
             File.WriteAllBytes(gcxFile, gcxContents);
             #endregion
@@ -886,20 +970,23 @@ namespace MGS2_Randomizer
             gcxContents = File.ReadAllBytes(gcxFile);
             raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
 
-            /*randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet4);
-            spoiler += $"Cyborg Ninja will give you {randomizedReward.Name} on Strut E.\n";
-            gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;*/
+            if (randomizeCards)
+            {
+                randomizedReward = GetRandomItem(false);
+                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantCard1Set);
+                spoiler += $"Cyborg Ninja will give you {randomizedReward.Name} on Strut E.\n";
+                gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
+            }
 
             RandomizedItem randomizedReward2 = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet4);
+            CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard1Set : _vanillaItems.PlantSet4);
             spoiler += $"Cyborg Ninja will give you {randomizedReward2.Name} on Strut E.\n";
             gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward2.Index;
             gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward2.Count;
 
             RandomizedItem randomizedReward3 = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet4);
+            CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard1Set : _vanillaItems.PlantSet4);
             spoiler += $"Cyborg Ninja will give you {randomizedReward3.Name} on Strut E.\n";
             gcxContents[raidenItemAward[3] + ItemIndexOffset] = randomizedReward3.Index;
             gcxContents[raidenItemAward[3] + ItemCountOffset] = randomizedReward3.Count;
@@ -910,9 +997,12 @@ namespace MGS2_Randomizer
             gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20b"));
             gcxContents = File.ReadAllBytes(gcxFile);
             raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
-            
-            /*gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;*/
+
+            if (randomizeCards)
+            {
+                gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
+            }
 
             gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward2.Index;
             gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward2.Count;
@@ -926,8 +1016,11 @@ namespace MGS2_Randomizer
             gcxContents = File.ReadAllBytes(gcxFile);
             raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
 
-            /*gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;*/
+            if (randomizeCards)
+            {
+                gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
+            }
 
             gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward2.Index;
             gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward2.Count;
@@ -950,17 +1043,20 @@ namespace MGS2_Randomizer
 
             #region Ames Card 3
             //d036p03, w24e
-            /*gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w24b"));
-            gcxContents = File.ReadAllBytes(gcxFile);
-            raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
+            if (randomizeCards)
+            {
+                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w24b"));
+                gcxContents = File.ReadAllBytes(gcxFile);
+                raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
 
-            randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet6);
-            spoiler += $"Ames will give you {randomizedReward.Name} in the Hostage Room.\n"; //worked
-            gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
+                randomizedReward = GetRandomItem(false);
+                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantCard2Set);
+                spoiler += $"Ames will give you {randomizedReward.Name} in the Hostage Room.\n"; //worked
+                gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
 
-            File.WriteAllBytes(gcxFile, gcxContents);*/
+                File.WriteAllBytes(gcxFile, gcxContents);
+            }
             #endregion
 
             #region President Card 4 & MO Disk
@@ -968,11 +1064,14 @@ namespace MGS2_Randomizer
             gcxContents = File.ReadAllBytes(gcxFile);
             raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
 
-            /*randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet8);
-            spoiler += $"President Johnson will give you {randomizedReward.Name} on Shell 2.\n"; //worked
-            gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;*/
+            if (randomizeCards)
+            {
+                randomizedReward = GetRandomItem(false);
+                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet8);
+                spoiler += $"President Johnson will give you {randomizedReward.Name} on Shell 2.\n"; //worked
+                gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
+            }
 
             randomizedReward = GetRandomItem(false);
             CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet8);
@@ -985,23 +1084,165 @@ namespace MGS2_Randomizer
 
             #region Emma Card 5 
             //d036p01
-            /*gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w25d"));
-            gcxContents = File.ReadAllBytes(gcxFile);
-            raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
+            if (randomizeCards)
+            {
+                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w25d"));
+                gcxContents = File.ReadAllBytes(gcxFile);
+                raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
 
-            randomizedReward = GetRandomItem(false);
-            CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet10);
-            spoiler += $"Emma will give you {randomizedReward.Name} on the KL Connecting Bridge.\n"; //worked
-            gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
-            gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
+                randomizedReward = GetRandomItem(false);
+                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet10);
+                spoiler += $"Emma will give you {randomizedReward.Name} on the KL Connecting Bridge.\n"; //worked
+                gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
+                gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
 
-            File.WriteAllBytes(gcxFile, gcxContents);*/
+                File.WriteAllBytes(gcxFile, gcxContents);
+            }
             #endregion
 
             //Snake HF Blade
             //TODO: implement
 
             return spoiler;
+        }
+
+        private void RandomizeTankerSemtexControlUnitLocations()
+        {
+            byte[] controlUnit1Bytes = { 0x6C, 0x55, 0xF5 };
+            byte[] brokenControlUnit1Bytes = { 0xAD, 0x55, 0xD5 };
+            byte[] controlUnit2Bytes = { 0x6B, 0x55, 0xF5 };
+            byte[] brokenControlUnit2Bytes = { 0xAC, 0x55, 0xD5 };
+            byte[] controlUnit3Bytes = { 0x6A, 0x55, 0xF5 };
+            byte[] brokenControlUnit3Bytes = { 0xAB, 0x55, 0xD5 };
+            string gcxFile;
+            byte[] gcxContents;
+
+            int c1Choice = Randomizer.Next(4);
+            int c2Choice = Randomizer.Next(5);
+            int c3Choice = c1Choice;
+            while (c3Choice == c1Choice)
+            {
+                c3Choice = Randomizer.Next(4);
+            }
+
+            ByteLocation c1Location = SouthFacingControlUnit(c1Choice);
+            ByteLocation c2Location = new ByteLocation();
+            ByteLocation c3Location = SouthFacingControlUnit(c3Choice);
+            switch (c2Choice)
+            {
+                case 0:
+                    c2Location = null;
+                    break;
+                case 1:
+                    c2Location.X = new byte[] { 0xE4, 0xC1 };
+                    c2Location.Y = new byte[] { 0x78, 0xEC };
+                    c2Location.Z = new byte[] { 0x30, 0x87 };
+                    break;
+                case 2:
+                    c2Location.X = new byte[] { 0xE4, 0xC1 };
+                    c2Location.Y = new byte[] { 0x78, 0xEC };
+                    c2Location.Z = new byte[] { 0x08, 0x96 };
+                    break;
+                case 3:
+                    c2Location.X = new byte[] { 0xB0, 0xDE };
+                    c2Location.Y = new byte[] { 0x00, 0xFA };
+                    c2Location.Z = new byte[] { 0x37, 0xD7 };
+                    break;
+                case 4:
+                    c2Location.X = new byte[] { 0xB0, 0xDE };
+                    c2Location.Y = new byte[] { 0x00, 0xFA };
+                    c2Location.Z = new byte[] { 0x32, 0xA0 };
+                    break;
+                case 5:
+                    c2Location.X = new byte[] { 0x0F, 0xCF };
+                    c2Location.Y = new byte[] { 0x40, 0xF6 };
+                    c2Location.Z = new byte[] { 0x90, 0xB2 };
+                    break;
+            }
+
+            gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w02a"));
+            gcxContents = File.ReadAllBytes(gcxFile);
+            if (c1Location != null)
+            {
+                int controlUnit1Offset = GcxEditor.FindAllSubArray(gcxContents, controlUnit1Bytes).FirstOrDefault();
+                int brokenControlUnit1Offset = GcxEditor.FindAllSubArray(gcxContents, brokenControlUnit1Bytes).LastOrDefault();
+
+                Array.Copy(c1Location.X, 0, gcxContents, controlUnit1Offset + 0x7, 2);
+                Array.Copy(c1Location.Y, 0, gcxContents, controlUnit1Offset + 0xA, 2);
+                Array.Copy(c1Location.Z, 0, gcxContents, controlUnit1Offset + 0xD, 2);
+
+                Array.Copy(c1Location.X, 0, gcxContents, brokenControlUnit1Offset + 0x11, 2);
+                Array.Copy(c1Location.Y, 0, gcxContents, brokenControlUnit1Offset + 0x14, 2);
+                Array.Copy(c1Location.Z, 0, gcxContents, brokenControlUnit1Offset + 0x17, 2);
+            }
+            if (c2Location != null)
+            {
+                int controlUnit2Offset = GcxEditor.FindAllSubArray(gcxContents, controlUnit2Bytes).FirstOrDefault();
+                int brokenControlUnit2Offset = GcxEditor.FindAllSubArray(gcxContents, brokenControlUnit2Bytes).LastOrDefault();
+
+                Array.Copy(c2Location.X, 0, gcxContents, controlUnit2Offset + 0x7, 2);
+                Array.Copy(c2Location.Y, 0, gcxContents, controlUnit2Offset + 0xA, 2);
+                Array.Copy(c2Location.Z, 0, gcxContents, controlUnit2Offset + 0xD, 2);
+
+                Array.Copy(c2Location.X, 0, gcxContents, brokenControlUnit2Offset + 0x11, 2);
+                Array.Copy(c2Location.Y, 0, gcxContents, brokenControlUnit2Offset + 0x14, 2);
+                Array.Copy(c2Location.Z, 0, gcxContents, brokenControlUnit2Offset + 0x17, 2);
+            }
+            if (c3Location != null)
+            {
+                int controlUnit3Offset = GcxEditor.FindAllSubArray(gcxContents, controlUnit3Bytes).FirstOrDefault();
+                int brokenControlUnit3Offset = GcxEditor.FindAllSubArray(gcxContents, brokenControlUnit3Bytes).LastOrDefault();
+
+                Array.Copy(c3Location.X, 0, gcxContents, controlUnit3Offset + 0x7, 2);
+                Array.Copy(c3Location.Y, 0, gcxContents, controlUnit3Offset + 0xA, 2);
+                Array.Copy(c3Location.Z, 0, gcxContents, controlUnit3Offset + 0xD, 2);
+
+                Array.Copy(c3Location.X, 0, gcxContents, brokenControlUnit3Offset + 0x11, 2);
+                Array.Copy(c3Location.Y, 0, gcxContents, brokenControlUnit3Offset + 0x14, 2);
+                Array.Copy(c3Location.Z, 0, gcxContents, brokenControlUnit3Offset + 0x17, 2);
+            }
+
+            File.WriteAllBytes(gcxFile, gcxContents);
+        }
+
+        private class ByteLocation
+        {
+            public byte[] X;
+            public byte[] Y;
+            public byte[] Z;
+        }
+
+        private ByteLocation SouthFacingControlUnit(int choice)
+        {
+            ByteLocation byteLocation = new ByteLocation();
+            switch (choice)
+            {
+                case 0:
+                    byteLocation = null;
+                    break;
+                case 1:
+                    byteLocation.X = new byte[] { 0xBB, 0xB7 };
+                    byteLocation.Y = new byte[] { 0x80, 0xF1 };
+                    byteLocation.Z = new byte[] { 0x00, 0xA3 };
+                    break;
+                case 2:
+                    byteLocation.X = new byte[] { 0xBB, 0xB7 };
+                    byteLocation.Y = new byte[] { 0x40, 0xF5 };
+                    byteLocation.Z = new byte[] { 0xB5, 0x9E };
+                    break;
+                case 3:
+                    byteLocation.X = new byte[] { 0xB5, 0xC8 };
+                    byteLocation.Y = new byte[] { 0x40, 0xF6 };
+                    byteLocation.Z = new byte[] { 0xB5, 0x9E };
+                    break;
+                case 4:
+                    byteLocation.X = new byte[] { 0xB7, 0xE4 };
+                    byteLocation.Y = new byte[] { 0x00, 0xF3 };
+                    byteLocation.Z = new byte[] { 0xBE, 0xA6 };
+                    break;
+            }
+
+            return byteLocation;
         }
 
         private void RandomizeC4Locations()
@@ -1024,12 +1265,12 @@ namespace MGS2_Randomizer
                 case 1:
                     roofXLocation = new byte[] { 0xCD, 0x0B };
                     roofYLocation = new byte[] { 0x6A, 0x14 };
-                    roofZLocation = new byte[] { 0x00, 0x00};
+                    roofZLocation = new byte[] { 0x00, 0x00 };
                     break;
                 case 2:
                     roofXLocation = new byte[] { 0x52, 0xE4 };
                     roofYLocation = new byte[] { 0x6A, 0x18 };
-                    roofZLocation = new byte[] { 0x57, 0x09};
+                    roofZLocation = new byte[] { 0x57, 0x09 };
                     break;
             }
 
@@ -1080,7 +1321,7 @@ namespace MGS2_Randomizer
                     break;
                 case 2:
                     pumpRoomXLocation = new byte[] { 0x70 };
-                    pumpRoomYLocation = new byte[] { 0xFF};
+                    pumpRoomYLocation = new byte[] { 0xFF };
                     pumpRoomZLocation = new byte[] { 0x80, 0x31 };
                     break;
                 case 3:
@@ -1222,7 +1463,7 @@ namespace MGS2_Randomizer
             {
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16a"));
                 gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] {0x20, 0x99, 0x61, 0x59} );
+                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x20, 0x99, 0x61, 0x59 });
 
                 foreach (int c4Location in c4Locations)
                 {
@@ -1279,14 +1520,14 @@ namespace MGS2_Randomizer
                     sedimentPool1YLocation = new byte[] { 0x75, 0xED };
                     sedimentPool1ZLocation = new byte[] { 0xA3, 0x06, 0xFE, 0xFF };
                     break;
-                    
-                case 4: 
+
+                case 4:
                     //under stairs 
                     sedimentPool1XLocation = new byte[] { 0x99, 0xEA };
                     sedimentPool1YLocation = new byte[] { 0x60, 0xF0 };
                     sedimentPool1ZLocation = new byte[] { 0x62, 0xF7, 0xFD, 0xFF };
                     break;
-                    
+
             }
 
             int sedimentPool2 = Randomizer.Next(4);
@@ -1309,7 +1550,7 @@ namespace MGS2_Randomizer
                     break;
                 case 2:
                     //behind fence
-                    sedimentPool2XLocation = new byte[] { 0x5C, 0x1C};
+                    sedimentPool2XLocation = new byte[] { 0x5C, 0x1C };
                     sedimentPool2YLocation = new byte[] { 0x60, 0xF0 };
                     sedimentPool2ZLocation = new byte[] { 0x56, 0x5F, 0xFE, 0xFF };
                     break;
@@ -1367,7 +1608,7 @@ namespace MGS2_Randomizer
                     List<int> bomb1References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4D, 0x25, 0xB2 });
                     byte originalByte = 0;
                     int i = 0;
-                    while(originalByte != 0xC1)
+                    while (originalByte != 0xC1)
                     {
                         originalByte = gcxContents[bomb1References[i] + 7];
                         if (originalByte != 0xC1)
@@ -1375,7 +1616,7 @@ namespace MGS2_Randomizer
                             i++;
                         }
                     }
-                    
+
                     gcxContents[bomb1References[i] + 7] = 0xC2;
                     foreach (int c4Location in c41Locations)
                     {
@@ -1528,42 +1769,42 @@ namespace MGS2_Randomizer
                 case 1:
                     armoryXLocation = new byte[] { 0x30, 0xC5, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0x60, 0xFB };
-                    armoryZLocation = new byte[] { 0xDC, 0xB6};
+                    armoryZLocation = new byte[] { 0xDC, 0xB6 };
                     break;
                 case 2:
                     armoryXLocation = new byte[] { 0xA9, 0xB3, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0x60, 0xF0 };
-                    armoryZLocation = new byte[] { 0x9F, 0x81};
+                    armoryZLocation = new byte[] { 0x9F, 0x81 };
                     break;
                 case 3:
                     armoryXLocation = new byte[] { 0x45, 0x9A, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0xE3, 0x01 };
-                    armoryZLocation = new byte[] { 0x53, 0x95};
+                    armoryZLocation = new byte[] { 0x53, 0x95 };
                     break;
                 case 4:
                     armoryXLocation = new byte[] { 0x81, 0xAF, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0x9B, 0x05 };
-                    armoryZLocation = new byte[] { 0xB5, 0xB8};
+                    armoryZLocation = new byte[] { 0xB5, 0xB8 };
                     break;
                 case 5:
                     armoryXLocation = new byte[] { 0xFE, 0xF3, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0xB2, 0x00 };
-                    armoryZLocation = new byte[] { 0x74, 0xAA};
+                    armoryZLocation = new byte[] { 0x74, 0xAA };
                     break;
                 case 6:
                     armoryXLocation = new byte[] { 0x3D, 0xC5, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0xE2, 0x01 };
-                    armoryZLocation = new byte[] { 0x64, 0xA6};
+                    armoryZLocation = new byte[] { 0x64, 0xA6 };
                     break;
                 case 7:
                     armoryXLocation = new byte[] { 0x53, 0xC4, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0x1B, 0x04 };
-                    armoryZLocation = new byte[] { 0x00, 0x8E};
+                    armoryZLocation = new byte[] { 0x00, 0x8E };
                     break;
                 case 8:
                     armoryXLocation = new byte[] { 0xB9, 0xDA, 0x00, 0x00 };
                     armoryYLocation = new byte[] { 0x4B, 0x04 };
-                    armoryZLocation = new byte[] { 0xAE, 0x90};
+                    armoryZLocation = new byte[] { 0xAE, 0x90 };
                     break;
             }
 
@@ -1639,286 +1880,473 @@ namespace MGS2_Randomizer
             SnakeWeaponAwardOptions = new List<RandomizedItem>();
             SnakeWeaponAwardOptions.AddRange(MasterSnakeWeaponAwardOptions);
             _randomizedItems = new MGS2ItemSet();
+            SpoilerContents = options.ToString();
 
-            if (options.RandomizeStartingItems)
+            if (options.RandomizeSpawns)
             {
-                RandomizeStartingItems();
-            }
-            if (options.RandomizeAutomaticRewards)
-            {
-                SpoilerContents = RandomizeAutomaticRewards();
-            }
-            else
-            {
-                //need to remove the automatic rewards from the logic checker if we aren't randomizing automatic rewards
-                _vanillaItems.PlantSet3.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet3.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(MGS2Items.BDU);
-                _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(MGS2Items.BDU);
-                _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(MGS2Items.BDU);
-                _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(MGS2Items.BDU);
-                _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(MGS2Items.BDU);
-                _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
-                _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
-                _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(MGS2Items.BDU);
-            }
-
-            try
-            {
-                //Create a list of all spawns on the tanker chapter
-                List<Item> TankerSpawnsLeft = new List<Item>();
-                foreach (var kvp in _vanillaItems.TankerPart3.Entities)
+                if (options.RandomizeStartingItems)
                 {
-                    if (!options.IncludeRations && kvp.Value == MGS2Items.Ration)
-                        continue;
-                    else
-                        TankerSpawnsLeft.Add(kvp.Value);
+                    RandomizeStartingItems();
+                }
+                if (options.RandomizeAutomaticRewards)
+                {
+                    SpoilerContents += RandomizeAutomaticRewards(options.RandomizeCards);
+                }
+                else
+                {
+                    //need to remove the automatic rewards from the logic checker if we aren't randomizing automatic rewards
+                    _vanillaItems.PlantSet3.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet3.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(MGS2Items.BDU);
+                    _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(MGS2Items.BDU);
+                    _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(MGS2Items.BDU);
+                    _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(MGS2Items.BDU);
+                    _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(MGS2Items.BDU);
+                    _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(MGS2Weapons.Socom);
+                    _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(MGS2Weapons.Coolant);
+                    _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(MGS2Items.BDU);
                 }
 
-                //assign each spawn on the tanker a random item from the list of available spawns
-                int itemsAssigned = 0;
-                int retries = 1000;
-                while (TankerSpawnsLeft.Count > 0)
+                #region Tanker Randomization
+                try
                 {
-                    int randomNum = Randomizer.Next();
-                    int modValue = randomNum % TankerSpawnsLeft.Count;
-                    Item randomChoice = TankerSpawnsLeft[modValue];
-
-                    if (options.NoHardLogicLocks &&
-                        LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                    //Create a list of all spawns on the tanker chapter
+                    List<Item> TankerSpawnsLeft = new List<Item>();
+                    foreach (var kvp in _vanillaItems.TankerPart3.Entities)
                     {
-                        retries--;
-                        if (retries == 0)
-                            break; //maybe throw and rethrow instead of break?
-                        continue;
+                        if (!options.IncludeRations && kvp.Value == MGS2Items.Ration)
+                            continue;
+                        else
+                            TankerSpawnsLeft.Add(kvp.Value);
                     }
 
-                    //iteratively go through spawns in "sequential" order, setting random items to each
-                    if (itemsAssigned < _vanillaItems.TankerPart1.Entities.Count)
+                    //assign each spawn on the tanker a random item from the list of available spawns
+                    int itemsAssigned = 0;
+                    int retries = 1000;
+                    while (TankerSpawnsLeft.Count > 0)
                     {
-                        _randomizedItems.TankerPart1.Entities.Add(_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.TankerPart2.Entities.Count)
-                    {
-                        _randomizedItems.TankerPart2.Entities.Add(_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else
-                    {
-                        _randomizedItems.TankerPart3.Entities.Add(_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
+                        int randomNum = Randomizer.Next();
+                        int modValue = randomNum % TankerSpawnsLeft.Count;
+                        Item randomChoice = TankerSpawnsLeft[modValue];
 
-                    TankerSpawnsLeft.Remove(randomChoice);
-                    itemsAssigned++;
-                }
-
-                foreach (var entity in _randomizedItems.TankerPart1.Entities)
-                {
-                    _randomizedItems.TankerPart2.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.TankerPart2.Entities)
-                {
-                    _randomizedItems.TankerPart3.Entities.Add(entity.Key, entity.Value);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-
-            try
-            {
-                List<Item> PlantSpawns = new List<Item>();
-                foreach (var kvp in _vanillaItems.PlantSet10.Entities)
-                {
-                    if (!options.IncludeRations && kvp.Value == MGS2Items.Ration)
-                        continue;
-                    else
-                        PlantSpawns.Add(kvp.Value);
-                }
-
-                int itemsAssigned = 0;
-                int retries = 1000;
-                while (PlantSpawns.Count > 0)
-                {
-                    int randomNum = Randomizer.Next();
-                    int modValue = randomNum % PlantSpawns.Count;
-                    Item randomChoice = PlantSpawns[modValue];
-
-                    if (options.NoHardLogicLocks &&
-                        LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if(options.RandomizeAutomaticRewards 
-                        && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (randomChoice.Name == "Nikita" && options.NikitaShell2)
-                    {
-                        //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
-                        if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile)))
+                        if (options.NoHardLogicLocks &&
+                            LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
+                            !_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
                         {
                             retries--;
                             if (retries == 0)
-                                break;
+                                break; //maybe throw and rethrow instead of break?
                             continue;
                         }
+
+                        //iteratively go through spawns in "sequential" order, setting random items to each
+                        if (itemsAssigned < _vanillaItems.TankerPart1.Entities.Count)
+                        {
+                            _randomizedItems.TankerPart1.Entities.Add(_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                        }
+                        else if (itemsAssigned < _vanillaItems.TankerPart2.Entities.Count)
+                        {
+                            _randomizedItems.TankerPart2.Entities.Add(_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                        }
+                        else
+                        {
+                            _randomizedItems.TankerPart3.Entities.Add(_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                        }
+
+                        TankerSpawnsLeft.Remove(randomChoice);
+                        itemsAssigned++;
                     }
 
-                    if (new[] { "M9", "RGB-6", "M4", "PSG1-T" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                    foreach (var entity in _randomizedItems.TankerPart1.Entities)
                     {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
+                        _randomizedItems.TankerPart2.Entities.Add(entity.Key, entity.Value);
                     }
+                    foreach (var entity in _randomizedItems.TankerPart2.Entities)
+                    {
+                        _randomizedItems.TankerPart3.Entities.Add(entity.Key, entity.Value);
+                    }
+                }
+                catch (Exception ex)
+                {
 
-                    //iteratively go through spawns in "sequential" order, setting random items to each
-                    if (itemsAssigned < _vanillaItems.PlantSet1.Entities.Count)
+                }
+                #endregion
+
+                #region Plant Randomization
+                try
+                {
+                    List<Item> PlantSpawns = new List<Item>();
+
+                    int itemsAssigned = 0;
+                    int retries = 1000;
+
+                    if (!options.RandomizeCards)
                     {
-                        /*if (randomChoice.Name == "Sensor B" && options.NoHardLogicLocks)
+                        foreach (var kvp in _vanillaItems.PlantSet10.Entities)
                         {
-                            //if people report this issue, I'll create a new option for "reduce crash risk" and include this and others reported
-                            //getting the Sensor B before meeting Stillman crashes the game(sometimes?)
-                            continue;
-                        }*/
-                        _randomizedItems.PlantSet1.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet2.Entities.Count)
-                    {
-                        /*if (randomChoice.Name == "Sensor B" && options.NoHardLogicLocks)
+                            if (!options.IncludeRations && kvp.Value == MGS2Items.Ration)
+                                continue;
+                            else
+                                PlantSpawns.Add(kvp.Value);
+                        }
+
+                        while (PlantSpawns.Count > 0)
                         {
-                            //if people report this issue, I'll create a new option for "reduce crash risk" and include this and others reported
-                            //getting the Sensor B before meeting Stillman crashes the game(sometimes?)
-                            continue;
-                        }*/
-                        _randomizedItems.PlantSet2.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet3.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet3.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet4.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet4.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet5.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet5.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet6.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet6.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet7.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet7.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet8.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet8.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                    }
-                    else if (itemsAssigned < _vanillaItems.PlantSet9.Entities.Count)
-                    {
-                        _randomizedItems.PlantSet9.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            int randomNum = Randomizer.Next();
+                            int modValue = randomNum % PlantSpawns.Count;
+                            Item randomChoice = PlantSpawns[modValue];
+
+                            //isolate rations to only non-mandatory spawns
+                            if (randomChoice.Name == "Ration" &&
+                                _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (options.NoHardLogicLocks &&
+                                LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
+                                !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (options.RandomizeAutomaticRewards
+                                && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
+                                !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (randomChoice.Name == "Nikita" && options.NikitaShell2)
+                            {
+                                //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
+                                if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile)))
+                                {
+                                    retries--;
+                                    if (retries == 0)
+                                        break;
+                                    continue;
+                                }
+                            }
+
+                            if (new[] { "M9", "RGB-6", "M4", "PSG1-T" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            //iteratively go through spawns in "sequential" order, setting random items to each
+                            if (itemsAssigned < _vanillaItems.PlantSet1.Entities.Count)
+                            {
+                                /*if (randomChoice.Name == "Sensor B" && options.NoHardLogicLocks)
+                                {
+                                    //if people report this issue, I'll create a new option for "reduce crash risk" and include this and others reported
+                                    //getting the Sensor B before meeting Stillman crashes the game(sometimes?)
+                                    continue;
+                                }*/
+                                _randomizedItems.PlantSet1.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet2.Entities.Count)
+                            {
+                                /*if (randomChoice.Name == "Sensor B" && options.NoHardLogicLocks)
+                                {
+                                    //if people report this issue, I'll create a new option for "reduce crash risk" and include this and others reported
+                                    //getting the Sensor B before meeting Stillman crashes the game(sometimes?)
+                                    continue;
+                                }*/
+                                _randomizedItems.PlantSet2.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet3.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet3.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet4.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet4.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet5.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet5.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet6.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet6.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet7.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet7.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet8.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet8.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantSet9.Entities.Count)
+                            {
+                                _randomizedItems.PlantSet9.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else
+                            {
+                                _randomizedItems.PlantSet10.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+
+                            PlantSpawns.Remove(randomChoice);
+                            itemsAssigned++;
+                        }
+
+                        foreach (var entity in _randomizedItems.PlantSet1.Entities)
+                        {
+                            _randomizedItems.PlantSet2.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet2.Entities)
+                        {
+                            _randomizedItems.PlantSet3.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet3.Entities)
+                        {
+                            _randomizedItems.PlantSet4.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet4.Entities)
+                        {
+                            _randomizedItems.PlantSet5.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet5.Entities)
+                        {
+                            _randomizedItems.PlantSet6.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet6.Entities)
+                        {
+                            _randomizedItems.PlantSet7.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet7.Entities)
+                        {
+                            _randomizedItems.PlantSet8.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet8.Entities)
+                        {
+                            _randomizedItems.PlantSet9.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantSet9.Entities)
+                        {
+                            _randomizedItems.PlantSet10.Entities.Add(entity.Key, entity.Value);
+                        }
+
+                        //if the itemset isn't logically sound, re-randomize.
+                        if (!VerifyItemSetLogicValidity(_randomizedItems))
+                        {
+                            throw new RandomizerException("bad randomization seed");
+                        }
                     }
                     else
                     {
-                        _randomizedItems.PlantSet10.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                        AddCardsToPools();
+
+                        foreach (var kvp in _vanillaItems.PlantCard5Set.Entities)
+                        {
+                            if (!options.IncludeRations && kvp.Value == MGS2Items.Ration)
+                                continue;
+                            else
+                                PlantSpawns.Add(kvp.Value);
+                        }
+
+                        while (PlantSpawns.Count > 0)
+                        {
+                            int randomNum = Randomizer.Next();
+                            int modValue = randomNum % PlantSpawns.Count;
+                            Item randomChoice = PlantSpawns[modValue];
+
+                            //isolate rations to only non-mandatory spawns
+                            if (randomChoice.Name == "Ration" &&
+                                _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (options.NoHardLogicLocks &&
+                                LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
+                                !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (options.RandomizeAutomaticRewards
+                                && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
+                                !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (options.NoHardLogicLocks &&
+                                _vanillaItems.CardRandomizationFirstProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
+                                Location.FirstProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
+                                !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
+                                )
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+                            if (options.NoHardLogicLocks &&
+                                _vanillaItems.CardRandomizationSecondProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
+                                Location.SecondProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
+                                !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
+                                )
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+                            if (options.NoHardLogicLocks &&
+                                _vanillaItems.CardRandomizationThirdProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
+                                Location.ThirdProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
+                                !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
+                                )
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            if (randomChoice.Name == "Nikita" && options.NikitaShell2)
+                            {
+                                //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
+                                if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile))
+                                {
+                                    retries--;
+                                    if (retries == 0)
+                                        break;
+                                    continue;
+                                }
+                            }
+                            else if (randomChoice.Name == "Nikita")
+                            {
+                                if (Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile))
+                                {
+                                    retries--;
+                                    if (retries == 0)
+                                        break;
+                                    continue;
+                                }
+                            }
+
+                            if (new[] { "M9", "RGB-6", "M4", "PSG1-T" }.Contains(randomChoice.Name)
+                                && options.AllWeaponsSpawnable
+                                && _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+
+                            //iteratively go through spawns in "sequential" order, setting random items to each
+                            if (itemsAssigned < _vanillaItems.PlantCard0Set.Entities.Count)
+                            {
+                                _randomizedItems.PlantCard0Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantCard1Set.Entities.Count)
+                            {
+                                _randomizedItems.PlantCard1Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantCard2Set.Entities.Count)
+                            {
+                                _randomizedItems.PlantCard2Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantCard3Set.Entities.Count)
+                            {
+                                _randomizedItems.PlantCard3Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else if (itemsAssigned < _vanillaItems.PlantCard4Set.Entities.Count)
+                            {
+                                _randomizedItems.PlantCard4Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+                            else
+                            {
+                                _randomizedItems.PlantCard5Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                            }
+
+                            PlantSpawns.Remove(randomChoice);
+                            itemsAssigned++;
+                        }
+                        if (retries == 0)
+                        {
+                            throw new RandomizerException("bad randomization seed");
+                        }
+
+                        foreach (var entity in _randomizedItems.PlantCard0Set.Entities)
+                        {
+                            _randomizedItems.PlantCard1Set.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantCard1Set.Entities)
+                        {
+                            _randomizedItems.PlantCard2Set.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantCard2Set.Entities)
+                        {
+                            _randomizedItems.PlantCard3Set.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantCard3Set.Entities)
+                        {
+                            _randomizedItems.PlantCard4Set.Entities.Add(entity.Key, entity.Value);
+                        }
+                        foreach (var entity in _randomizedItems.PlantCard4Set.Entities)
+                        {
+                            _randomizedItems.PlantCard5Set.Entities.Add(entity.Key, entity.Value);
+                        }
+
+                        if (!VerifyCardSetLogicValidity(_randomizedItems, options.KeepVanillaCardAccess))
+                        {
+                            throw new RandomizerException("bad randomization seed");
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    if (ex is RandomizerException)
+                        throw ex;
+                    else
+                    {
+                        throw new RandomizerException("bad randomization seed");
+                    }
+                }
 
-                    PlantSpawns.Remove(randomChoice);
-                    itemsAssigned++;
-                }
-
-                foreach (var entity in _randomizedItems.PlantSet1.Entities)
+                foreach (var entity in _randomizedItems.PlantCard5Set.Entities)
                 {
-                    _randomizedItems.PlantSet2.Entities.Add(entity.Key, entity.Value);
+                    _randomizedItems.PlantSet10.Entities[entity.Key] = entity.Value;
                 }
-                foreach (var entity in _randomizedItems.PlantSet2.Entities)
-                {
-                    _randomizedItems.PlantSet3.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet3.Entities)
-                {
-                    _randomizedItems.PlantSet4.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet4.Entities)
-                {
-                    _randomizedItems.PlantSet5.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet5.Entities)
-                {
-                    _randomizedItems.PlantSet6.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet6.Entities)
-                {
-                    _randomizedItems.PlantSet7.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet7.Entities)
-                {
-                    _randomizedItems.PlantSet8.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet8.Entities)
-                {
-                    _randomizedItems.PlantSet9.Entities.Add(entity.Key, entity.Value);
-                }
-                foreach (var entity in _randomizedItems.PlantSet9.Entities)
-                {
-                    _randomizedItems.PlantSet10.Entities.Add(entity.Key, entity.Value);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            /* Removed from code execution as we are not currently adding card spawns to the item pool.
-            if (options.RandomizeAutomaticRewards && !VerifyCardSpawns(_randomizedItems))
-            {
-                throw new RandomizerException("bad randomization seed");
-            }
-            
-
-            //TODO: verify this
-            if (options.RandomizeAutomaticRewards && options.NoHardLogicLocks)
-            {
-                List<KeyValuePair<Location, Item>> spawnsOnShell2BeforeEmma = _randomizedItems.PlantSet10.Entities.Where(stages => new[] { "w31a", "w31b" }.Contains(stages.Key.GcxFile)).ToList();
-                List<KeyValuePair<Location, Item>> spawnsOnShell2BeforeCard5Door = _randomizedItems.PlantSet10.Entities.Where(stages => new[] { "w31a", "w31b", "w31c", "w25d", "w31d" }.Contains(stages.Key.GcxFile)).ToList();
-
-                if(!spawnsOnShell2BeforeEmma.Any(spawn => spawn.Value == MGS2Items.Card) || spawnsOnShell2BeforeCard5Door.Count(spawn => spawn.Value == MGS2Items.Card) != 2)
-                {
-                    throw new RandomizerException("bad randomization seed");
-                }
-            }*/
-
-            //if the itemset isn't logically sound, re-randomize.
-            if (!VerifyItemSetLogicValidity(_randomizedItems))
-            {
-                throw new RandomizerException("bad randomization seed");
+                #endregion
             }
 
             if (options.RandomizeClaymores)
@@ -1931,47 +2359,17 @@ namespace MGS2_Randomizer
                 RandomizeC4Locations();
             }
 
+            if (options.RandomizeTankerControlUnits)
+            {
+                RandomizeTankerSemtexControlUnitLocations();
+            }
+
             return Seed;
-        }
-
-        private bool VerifyCardSpawns(MGS2ItemSet setToCheck)
-        {
-            if (setToCheck.PlantSet3.Entities.Count(spawn => spawn.Value == MGS2Items.Card) < PlantSet2CardsRequired)
-            {
-                //only need 1
-                return false;
-            }
-
-            if (setToCheck.PlantSet3.Entities.Count(spawn => spawn.Value == MGS2Items.Card) < PlantSet3CardsRequired)
-            {
-                //need 2
-                return false;
-            }
-
-            if (setToCheck.PlantSet6.Entities.Count(spawn => spawn.Value == MGS2Items.Card) < PlantSet6CardsRequired)
-            {
-                //need 3
-                return false;
-            }
-
-            if (setToCheck.PlantSet7.Entities.Count(spawn => spawn.Value == MGS2Items.Card) < PlantSet7CardsRequired)
-            {
-                //need 4
-                return false;
-            }
-
-            if (setToCheck.PlantSet9.Entities.Count(spawn => spawn.Value == MGS2Items.Card) < PlantSet9CardsRequired)
-            {
-                //need 5
-                return false;
-            }
-
-            return true;
         }
 
         private bool VerifyItemSetLogicValidity(MGS2ItemSet setToCheck)
         {
-            foreach (Item item in _vanillaItems.TankerPart1.ItemsNeededToProgress) 
+            foreach (Item item in _vanillaItems.TankerPart1.ItemsNeededToProgress)
             {
                 if (!setToCheck.TankerPart1.Entities.ContainsValue(item))
                     return false;
@@ -2030,6 +2428,177 @@ namespace MGS2_Randomizer
             return true;
         }
 
+        private bool VerifyCardSetLogicValidity(MGS2ItemSet setToCheck, bool keepCardAccessLevels = false)
+        {
+            #region Tanker Checks
+            foreach (Item item in _vanillaItems.TankerPart1.ItemsNeededToProgress)
+            {
+                if (!setToCheck.TankerPart1.Entities.ContainsValue(item))
+                    return false;
+            }
+            foreach (Item item in _vanillaItems.TankerPart2.ItemsNeededToProgress)
+            {
+                if (!setToCheck.TankerPart2.Entities.ContainsValue(item))
+                    return false;
+            }
+            foreach (Item item in _vanillaItems.TankerPart3.ItemsNeededToProgress)
+            {
+                if (!setToCheck.TankerPart3.Entities.ContainsValue(item))
+                    return false;
+            }
+            #endregion
+
+            #region Plant Checks
+            if (!setToCheck.PlantCard0Set.Entities.ContainsValue(MGS2Items.Card))
+            {
+                return false;
+            }
+            if (setToCheck.PlantCard1Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 1)
+            {
+                return false;
+            }
+            if (setToCheck.PlantCard2Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 2)
+            {
+                return false;
+            }
+            if (setToCheck.PlantCard3Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 3)
+            {
+                return false;
+            }
+            if (setToCheck.PlantCard4Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 4)
+            {
+                return false;
+            }
+
+            if (setToCheck.PlantCard5Set.Entities.Where(spawn => spawn.Key.CardNeededToAccess == 0).Count(spawns => spawns.Value == MGS2Items.Card) < 1)
+            {
+                return false;
+            }
+
+            if (keepCardAccessLevels)
+            {
+                foreach (KeyValuePair<Item, int> uniqueItemSpawn in VanillaItems.ItemAccessLevels)
+                {
+                    KeyValuePair<Location, Item> randomizedUniqueSpawnToSwap = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value == uniqueItemSpawn.Key);
+                    if (randomizedUniqueSpawnToSwap.Key != null && randomizedUniqueSpawnToSwap.Key.CardNeededToAccess != uniqueItemSpawn.Value)
+                    {
+                        List<KeyValuePair<Location, Item>> acceptableLevelSpawns = setToCheck.PlantCard5Set.Entities.Where(spawn => spawn.Key.CardNeededToAccess == uniqueItemSpawn.Value
+                        && spawn.Key.MandatorySpawn
+                        && !VanillaItems.ItemAccessLevels.ContainsKey(spawn.Value)
+                        && spawn.Value.Name != "Card").ToList();
+                        KeyValuePair<Location, Item> spawnToSwap = acceptableLevelSpawns[Randomizer.Next(0, acceptableLevelSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[randomizedUniqueSpawnToSwap.Key] = spawnToSwap.Value;
+                        setToCheck.PlantCard5Set.Entities[spawnToSwap.Key] = randomizedUniqueSpawnToSwap.Value;
+                    }
+                }
+            }
+
+            List<KeyValuePair<Location, Item>> firstProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FirstProgressionAreas.Contains(spawns.Key.GcxFile)).ToList();
+            foreach (Item item in _vanillaItems.CardRandomizationFirstProgressionItems)
+            {
+                if (!firstProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                {
+                    if (item.Name == "SOCOM")
+                    {
+                        KeyValuePair<Location, Item> socomSpawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "SOCOM");
+                        List<KeyValuePair<Location, Item>> part1SocomAmmoSpawns = firstProgressionSpawns.Where(spawn => spawn.Value.Name == "SOCOM Ammo"
+                        && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Weapons.Socom] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part1SocomAmmoSpawns[Randomizer.Next(0, part1SocomAmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = socomSpawn.Value;
+                        setToCheck.PlantCard5Set.Entities[socomSpawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                    if (item.Name == "Coolant")
+                    {
+                        KeyValuePair<Location, Item> coolantSpawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "Coolant");
+                        List<KeyValuePair<Location, Item>> part1M9AmmoSpawns = firstProgressionSpawns.Where(spawn => spawn.Value.Name == "M9 Ammo"
+                        && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Weapons.Coolant] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part1M9AmmoSpawns[Randomizer.Next(0, part1M9AmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = coolantSpawn.Value;
+                        setToCheck.PlantCard5Set.Entities[coolantSpawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                    if (item.Name == "Sensor B")
+                    {
+                        KeyValuePair<Location, Item> sensorBSpawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "Sensor B");
+                        List<KeyValuePair<Location, Item>> part1M4AmmoSpawns = firstProgressionSpawns.Where(spawn => spawn.Value.Name == "M4 Ammo" && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Items.SensorB] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part1M4AmmoSpawns[Randomizer.Next(0, part1M4AmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = sensorBSpawn.Value;
+                        setToCheck.PlantCard5Set.Entities[sensorBSpawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                }
+            }
+            List<KeyValuePair<Location, Item>> secondProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.SecondProgressionAreas.Contains(spawns.Key.GcxFile)
+            && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false).ToList();
+            foreach (Item item in _vanillaItems.CardRandomizationSecondProgressionItems)
+            {
+                if (!secondProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                {
+                    if (item.Name == "B.D.U.")
+                    {
+                        KeyValuePair<Location, Item> bduSpawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "B.D.U.");
+                        List<KeyValuePair<Location, Item>> part2Rgb6AmmoSpawns = secondProgressionSpawns.Where(spawn => spawn.Value.Name == "RGB6 Ammo"
+                        && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Items.BDU] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part2Rgb6AmmoSpawns[Randomizer.Next(0, part2Rgb6AmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = bduSpawn.Value;
+                        setToCheck.PlantCard5Set.Entities[bduSpawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                    if (item.Name == "AKS-74u")
+                    {
+                        KeyValuePair<Location, Item> aks74uSpawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "AKS-74u");
+                        List<KeyValuePair<Location, Item>> part2Aks74uAmmoSpawns = secondProgressionSpawns.Where(spawn => spawn.Value.Name == "AKS-74u Ammo"
+                        && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Weapons.Aks74u] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part2Aks74uAmmoSpawns[Randomizer.Next(0, part2Aks74uAmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = aks74uSpawn.Value;
+                        setToCheck.PlantCard5Set.Entities[aks74uSpawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                }
+            }
+
+            List<KeyValuePair<Location, Item>> thirdProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.ThirdProgressionAreas.Contains(spawns.Key.GcxFile)
+            && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false).ToList();
+            foreach (Item item in _vanillaItems.CardRandomizationThirdProgressionItems)
+            {
+                if (!thirdProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
+                {
+                    if (item.Name == "Directional Microphone")
+                    {
+                        KeyValuePair<Location, Item> dmicSpawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "Directional Microphone");
+                        List<KeyValuePair<Location, Item>> part3AnyAmmoSpawns = thirdProgressionSpawns.Where(spawn => spawn.Value.Name.Contains("Ammo")
+                        && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Weapons.Dmic1] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part3AnyAmmoSpawns[Randomizer.Next(0, part3AnyAmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = dmicSpawn.Value;
+                        setToCheck.PlantCard5Set.Entities[dmicSpawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                    if (item.Name == "PSG1")
+                    {
+                        KeyValuePair<Location, Item> psg1Spawn = setToCheck.PlantCard5Set.Entities.FirstOrDefault(spawn => spawn.Value.Name == "PSG1");
+                        List<KeyValuePair<Location, Item>> part3Psg1AmmoSpawns = thirdProgressionSpawns.Where(spawn => spawn.Value.Name == "PSG1 Ammo"
+                        && spawn.Key.MandatorySpawn
+                        && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Weapons.Psg1] : true)).ToList();
+                        KeyValuePair<Location, Item> ammoSpawnToSwap = part3Psg1AmmoSpawns[Randomizer.Next(0, part3Psg1AmmoSpawns.Count - 1)];
+
+                        setToCheck.PlantCard5Set.Entities[ammoSpawnToSwap.Key] = psg1Spawn.Value;
+                        setToCheck.PlantCard5Set.Entities[psg1Spawn.Key] = ammoSpawnToSwap.Value;
+                    }
+                }
+            }
+            #endregion
+
+            return true;
+        }
+
         class OpenedFileData
         {
             public GcxEditor GcxEditor { get; set; }
@@ -2050,12 +2619,12 @@ namespace MGS2_Randomizer
         public bool SaveRandomizationToDisk(bool makeSpoilerFile = true, bool customDirectory = true)
         {
             AddAllResources();
-             
+
             //since some levels are part of multiple different logic sets,
             //we should instead go spawn by spawn rather than file by file
             Dictionary<string, OpenedFileData> openedFiles = new Dictionary<string, OpenedFileData>();
             string cheatSheet = SpoilerContents;
-            foreach(KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.TankerPart3.Entities)
+            foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.TankerPart3.Entities)
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
                 GcxEditor gcx_Editor;
@@ -2083,11 +2652,11 @@ namespace MGS2_Randomizer
                     spawns = openedFileData.DecodedProcs;
                     procEditor = openedFileData.ProcEditor;
                 }
-                
-                cheatSheet += $"{spawnToEdit.Key.GcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x=>x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
+
+                cheatSheet += $"{spawnToEdit.Key.GcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
                 procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
                 procEditor.SaveAutomatedChanges();
-                if(spawnToEdit.Key.SisterSpawn != null)
+                if (spawnToEdit.Key.SisterSpawn != null)
                 {
                     //TODO: implement sister spawn duplication better
                     gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.SisterSpawn}"));
@@ -2196,7 +2765,7 @@ namespace MGS2_Randomizer
                 {
                     //this is here to allow any custom weapon spawns made for Raiden to work for Snake on Tanker levels.
                     List<int> plantWeaponReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x02, 0xAC });
-                    foreach(int index in plantWeaponReferences)
+                    foreach (int index in plantWeaponReferences)
                     {
                         Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x01, 0x5C }, 0, newGcxBytes, index, 5);
                     }
@@ -2213,7 +2782,7 @@ namespace MGS2_Randomizer
                 else
                     File.WriteAllBytes(GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{kvp.Key}")), newGcxBytes);
             }
-            if(makeSpoilerFile)
+            if (makeSpoilerFile)
                 File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/spoiler_seed-{Seed}.txt", cheatSheet);
             return true;
         }

@@ -86,18 +86,6 @@ namespace MGS2_Randomizer
                 proc.ScriptInitialPosition = position;
                 procBlock.AddRange(proc.RawContents);
                 position += proc.RawContents.Length;
-                /*
-                 * We are capturing all the padding now I believe, so I think this can go.
-                if (proc.RawContents.SequenceEqual(new byte[] { 0x81, 0x00 }) || proc.RawContents[0] == 0x89 || proc.RawContents[0] == 0x8D)
-                {
-                    //no padding
-                }
-                else
-                {
-                    procBlock.AddRange(new byte[] { 0x00, 0x00 }); //all procs must be ended with the double zero byte, unless its an empty proc
-                    position += 2;
-                }
-                */
             }
 
             int procBodySize = procBlock.Count;
@@ -124,7 +112,7 @@ namespace MGS2_Randomizer
 
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = "gcx_decompiler.exe",
+                FileName = "Gcx/gcx_decompiler.exe",
                 Arguments = $@".\{sanitizedGcx}.gcx {outputFile}",
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
@@ -137,7 +125,7 @@ namespace MGS2_Randomizer
             currentDecompiledFile = outputFile;
             string decompilingOutput = decompilingProcess.StandardOutput.ReadToEnd();
             string[] decompilingOutputs = decompilingOutput.Split('\n');
-            foreach(string output in decompilingOutputs)
+            foreach (string output in decompilingOutputs)
             {
                 if (string.IsNullOrWhiteSpace(output))
                     continue;
@@ -162,19 +150,19 @@ namespace MGS2_Randomizer
             {
                 _startOfOffsetBlock = int.Parse(value);
             }
-            else if(key.Contains("script offset"))
+            else if (key.Contains("script offset"))
             {
                 _scriptOffset = int.Parse(value);
             }
-            else if(key.Contains("resource table offset"))
+            else if (key.Contains("resource table offset"))
             {
                 _resourceTableOffset = int.Parse(value);
             }
-            else if(key.Contains("string table offset"))
+            else if (key.Contains("string table offset"))
             {
                 _stringTableOffset = int.Parse(value);
             }
-            else if(key.Contains("font data offset"))
+            else if (key.Contains("font data offset"))
             {
                 _fontDataOffset = int.Parse(value);
             }
@@ -208,7 +196,7 @@ namespace MGS2_Randomizer
 
             string currentFunction = "";
             string currentFunctionName = "";
-            for(int i = 0; i < linedContents.Length; i++)
+            for (int i = 0; i < linedContents.Length; i++)
             {
                 //either new function, or end of one
                 if (linedContents[i][0] != '\t')
@@ -248,7 +236,7 @@ namespace MGS2_Randomizer
 
             Procedures = functions;
             List<DecodedProc> carbonCopy = new List<DecodedProc>();
-            foreach(DecodedProc proc in functions)
+            foreach (DecodedProc proc in functions)
             {
                 carbonCopy.Add(proc);
             }
@@ -257,7 +245,7 @@ namespace MGS2_Randomizer
 
         internal void InsertNewProcedureToFile(DecodedProc procedure)
         {
-            if(!Procedures.Any(proc => proc.Name.Contains(procedure.Name)))
+            if (!Procedures.Any(proc => proc.Name.Contains(procedure.Name)))
                 Procedures.Add(procedure);
         }
 
@@ -268,7 +256,7 @@ namespace MGS2_Randomizer
                 //proc table type 1
                 functionName = functionName.Replace("proc_0x", "").Trim();
             }
-            
+
             int arraySize = (int)Math.Ceiling(functionName.Length / 2d);
             string[] functionNamePairings = new string[arraySize];
             int index = 0;
@@ -294,7 +282,7 @@ namespace MGS2_Randomizer
 
 
             functionNamePairings = functionNamePairings.Reverse().ToArray(); //reverse the order, as this is how they are expressed in the gcx file
-                                                                                //in proc table, function will be denoted as FF FF FF 00 YY YY 00 00 ; where FFFFFF is the function name, and YY YY is the offset
+                                                                             //in proc table, function will be denoted as FF FF FF 00 YY YY 00 00 ; where FFFFFF is the function name, and YY YY is the offset
 
             byte[] functionNameBytes = new byte[arraySize];
             for (int i = 0; i < functionNameBytes.Length; i++)
@@ -359,7 +347,7 @@ namespace MGS2_Randomizer
         }
 
         private byte[] GetFunctionByteData(string functionName, out int procTablePosition, out int scriptPos)
-        { 
+        {
             //this seems to be working correctly(for now). need to do more extensive testing and such to be 100% certain
             byte[] functionData = null;
 
@@ -434,7 +422,7 @@ namespace MGS2_Randomizer
                 Array.Copy(TrimmedContents, scriptPos, functionData, 0, functionData.Length);
             }
 
-            
+
 
             return functionData;
         }
@@ -491,7 +479,7 @@ namespace MGS2_Randomizer
                     matches.Add(i);
             }
 
-            if(matches.Count != 0)
+            if (matches.Count != 0)
             {
                 return matches;
             }

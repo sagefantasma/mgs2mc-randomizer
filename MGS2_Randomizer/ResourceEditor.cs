@@ -132,7 +132,7 @@ namespace MGS2_Randomizer
                 KmsFiles.Sort();
                 KmsFiles.Reverse();
 
-                foreach(string resource in this.TriFiles)
+                foreach (string resource in this.TriFiles)
                 {
                     bytes.AddRange(Encoding.UTF8.GetBytes(resource));
                     //bytes.AddRange(EOL);
@@ -236,7 +236,7 @@ namespace MGS2_Randomizer
                 {
                     existingResources.BpAssets.KmsFiles.Add(resourceString);
                 }
-                else if(resourceString != "")
+                else if (resourceString != "")
                 {
                     throw new NotImplementedException("Unexpected asset type!");
                 }
@@ -301,7 +301,7 @@ namespace MGS2_Randomizer
                 {
                     existingResources.Manifest.GcxFiles.Add(resourceString);
                 }
-                else if(resourceString != "")
+                else if (resourceString != "")
                 {
                     throw new NotImplementedException("Unexpected asset type!");
                 }
@@ -322,7 +322,7 @@ namespace MGS2_Randomizer
                 _manifestContents = File.ReadAllBytes(manifest.FullName).ToList();
 
                 List<MGS2ResourceData> missingData = new List<MGS2ResourceData>();
-                foreach(string resourceToAdd in resourcesToAdd)
+                foreach (string resourceToAdd in resourcesToAdd)
                 {
                     missingData.AddRange(PrepareListOfDataToAdd(resourceToAdd));
                 }
@@ -333,7 +333,7 @@ namespace MGS2_Randomizer
 
                 LevelResources levelResources = CollectExistingResources();
 
-                foreach(MGS2ResourceData dataToAdd in missingData)
+                foreach (MGS2ResourceData dataToAdd in missingData)
                 {
                     if (!levelResources.CheckForDuplicates(dataToAdd))
                     {
@@ -362,12 +362,12 @@ namespace MGS2_Randomizer
                 }
 
                 //Directory.CreateDirectory(gcxFile);
-                if(modifiedBpAssets)
+                if (modifiedBpAssets)
                     File.WriteAllBytes(bpAssets.FullName, levelResources.BpAssets.ToBytes());
-                if(modifiedManifest)
+                if (modifiedManifest)
                     File.WriteAllBytes(manifest.FullName, levelResources.Manifest.ToBytes());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -399,7 +399,7 @@ namespace MGS2_Randomizer
                 foreach (MGS2ResourceData dataToAdd in missingData)
                 {
                     int insertionPoint = FindInsertionIndex(dataToAdd);
-                    if(insertionPoint == -1) //-1 means the new resource would be a duplicate, so don't add it
+                    if (insertionPoint == -1) //-1 means the new resource would be a duplicate, so don't add it
                     {
                         continue;
                     }
@@ -435,14 +435,14 @@ namespace MGS2_Randomizer
         {
             int index;
 
-            if (resource.FileType == FileType.Kms) 
+            if (resource.FileType == FileType.Kms)
             {
                 byte[] startOfKms = Encoding.UTF8.GetBytes("assets/kms");
                 byte[] endOfKms = Encoding.UTF8.GetBytes(".kms");
                 byte[] encodedText = Encoding.UTF8.GetBytes(resource.Text);
                 index = MockAddResource(_manifestContents.ToArray(), startOfKms, endOfKms, encodedText, false);
             }
-            else if(resource.FileType == FileType.Cmdl)
+            else if (resource.FileType == FileType.Cmdl)
             {
                 byte[] startOfKms = Encoding.UTF8.GetBytes("assets/kms");
                 byte[] endOfKms = Encoding.UTF8.GetBytes(".cmdl");
@@ -504,20 +504,20 @@ namespace MGS2_Randomizer
         private static List<byte[]> AlphabetizeResources(List<byte[]> existingResources, byte[] newResource, bool storedAlphabetically = true)
         {
             existingResources.Add(newResource);
-            
+
             List<string> stringedResources = new List<string>();
 
             foreach (byte[] resource in existingResources)
             {
                 stringedResources.Add(Encoding.UTF8.GetString(resource));
             }
-            
+
             stringedResources.Sort();
             if (!storedAlphabetically)
                 stringedResources.Reverse();
 
             existingResources.Clear();
-            foreach(string resource in stringedResources)
+            foreach (string resource in stringedResources)
             {
                 existingResources.Add(Encoding.UTF8.GetBytes(resource));
             }
@@ -538,12 +538,12 @@ namespace MGS2_Randomizer
             for (int i = 0; i < splittingIndices.Count; i++)
             {
                 byte[] splitResource;
-                if(i == 0)
+                if (i == 0)
                 {
                     splitResource = new byte[splittingIndices[i]];
                 }
                 else if (i < splittingIndices.Count - 1)
-                    splitResource = new byte[splittingIndices[i] - splittingIndices[i-1]];
+                    splitResource = new byte[splittingIndices[i] - splittingIndices[i - 1]];
                 else
                     splitResource = new byte[resourceArray.Length - splittingIndices[i - 1]];
                 Array.Copy(resourceArray, positionInArray, splitResource, 0, splitResource.Length);
@@ -584,7 +584,7 @@ namespace MGS2_Randomizer
             cmdlFile.Resource = resource;
             resourceData.Add(cmdlFile);
 
-            if(resource.Tri != "")
+            if (resource.Tri != "")
             {
                 MGS2ResourceData triFile = new MGS2ResourceData();
 
@@ -599,7 +599,7 @@ namespace MGS2_Randomizer
 
         private static void ReplaceStageNames(List<MGS2ResourceData> resourceData, string stageName)
         {
-            foreach(MGS2ResourceData resource in resourceData)
+            foreach (MGS2ResourceData resource in resourceData)
             {
                 string replacementString = $"stage/{stageName}/cache";
                 resource.Text = resource.Text.Replace("stage/XXXX/cache", replacementString);
