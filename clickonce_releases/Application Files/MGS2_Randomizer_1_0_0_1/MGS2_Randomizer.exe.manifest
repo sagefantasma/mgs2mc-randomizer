@@ -1,0 +1,983 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="MGS2_Randomizer.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <description asmv2:iconFile="AIColonel.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="MGS2_Randomizer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
+    <commandLine file="MGS2_Randomizer.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet version="1" class="System.Security.NamedPermissionSet" Name="LocalIntranet" Description="Default rights given to applications on the local intranet" Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC Manifest Options
+             If you want to change the Windows User Account Control level replace the 
+             requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            Specifying requestedExecutionLevel element will disable file and registry virtualization. 
+            Remove this element if your application requires this virtualization for backwards
+            compatibility.
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MathNet.Numerics.dll" size="1674752">
+      <assemblyIdentity name="MathNet.Numerics" version="4.9.1.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>JaC6Vdd7foJmusLK8ZSp5hA2nkLE43Oz7zDWVZgp/Ao=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MathNet.Spatial.dll" size="124416">
+      <assemblyIdentity name="MathNet.Spatial" version="0.6.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>m9uWu41GycpTWZPt7/Gd6HG6JmO1MH3jOTK141vhec8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MGS2_Randomizer.exe" size="282624">
+      <assemblyIdentity name="MGS2_Randomizer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>qwxCYu3N1HI78eW/ekK3bp4CqR4XveViTf5HKrT/VG0=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.Bcl.AsyncInterfaces.dll" size="26408">
+      <assemblyIdentity name="Microsoft.Bcl.AsyncInterfaces" version="9.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>ZI5hjCoyhn6+y/mznGdn14Lf26OYhwIDi/Sn/cYsC+k=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Buffers.dll" size="20856">
+      <assemblyIdentity name="System.Buffers" version="4.0.3.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>rMzPvkXZ8I/+7ZkW43sz6YxlvgEs//bn+ntnIQzh/vs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.IO.Pipelines.dll" size="84776">
+      <assemblyIdentity name="System.IO.Pipelines" version="9.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>1BbUQBRklN+A6/MoWV/o8nGdJrOZOraSM9k+5UHb28E=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Memory.dll" size="142240">
+      <assemblyIdentity name="System.Memory" version="4.0.1.2" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>vz+4RmT0CX8aipvHGlHc+M8akF1AgKTSkNoXMIZuhW8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Numerics.Vectors.dll" size="115856">
+      <assemblyIdentity name="System.Numerics.Vectors" version="4.1.4.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>HT74aYKB589zcdFVSv71hys5+Wwm2nciEKM9oEG6EYM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Runtime.CompilerServices.Unsafe.dll" size="18024">
+      <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" version="6.0.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>N3aEiOjvRXKbx9miZ3YzxkUAQpdbuWUW4YbabLnNDc8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Text.Encodings.Web.dll" size="79656">
+      <assemblyIdentity name="System.Text.Encodings.Web" version="9.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>N5GGkhh3OSzS3NzmV2e/OaidmF4hBfbVVzi+mv7MpPw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Text.Json.dll" size="726320">
+      <assemblyIdentity name="System.Text.Json" version="9.0.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>1ETTxhkVX7z8f/z9/whVlATCZJ4sUi+Ja4E7nmnEINc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Threading.Tasks.Extensions.dll" size="25984">
+      <assemblyIdentity name="System.Threading.Tasks.Extensions" version="4.2.0.1" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>T4H/0NxyBNt1r8NepCkXabB8RAWS8oiUJg7qdmJqI8Y=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.ValueTuple.dll" size="25232">
+      <assemblyIdentity name="System.ValueTuple" version="4.0.3.0" publicKeyToken="CC7B13FFCD2DDD51" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>6QXRAlhbIsbfBPIZr1y9v6e8Fll56XiLYt9tzBZeEPQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="13 Electronica Emma.wav" size="42541334">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>p1LqZfEv7n3KfrtXHEgqQVTa5A8MPp9mQ2wPMTrEfAM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="AIColonel.ico" size="4286">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+Md+pyJDDUy3t78RS1EXy/gCXY3mBBUotm7fD5Jf2fc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="config.json" size="376">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>U2tOJqVEAJFIo6jLE4f1ZlS+rudAl8PJNQ2sLC0lfqM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs2_gcx_ascii_strings1.txt" size="2573">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KZm2S9L4t7Ck6hbcSWYe8weB4EBHgUUXRsmauIam/q4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs2_gcx_google_10000_english1.txt" size="874">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>C1DMlQR2g6NW8A1QmLl7XDj7/8hCVyjCVepYgDH/wLI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs2_gcx_google_10000_english2.txt" size="630">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YZtzqmPImm5ggyiFCHtTzd7Jk1pr7WW7ivjoK5eDLkU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs2_pc_idlists.txt" size="565977">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1sP1k0VE5w5szlazoVdd8ZjgnVNi4y/moQbRJqpvDJU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs2_reverse.txt" size="10429">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JKZujOLVk+IycgSQyBrMZSQkUhKkBREi4ewEUCmTeng=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs2_stage_names.txt" size="4564">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>R7dj3U+4yyaHOHTq9TDuWe7/e0s5LyIkAGp3QdLenws=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="dictionaries\mgs4_charas.txt" size="6675">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Zjv3UzKpZcmatfBzpRdYuucBh8XWU6bY4Y7jUG5y2VA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="gcx_decompiler.exe" size="6405593">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>blndUQgicZYl19icnqx/WlNWHd00C8/4upGWM0vmZQs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x134D11.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>pXMXLnyMKSNnL6VHPqRSfoz0kj5P7A6ST6oc6NigSxk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x135211.proc" size="136">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>QVfK5KNYohBa5TT6mO2st2vXbZJ8I7BNMMPwtOUKVhI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x19F8BB.proc" size="112">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0h9ka6GPoPd2tGNz5DPeh1g+l7PHgw5kcT39iwCou2s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x261E2F.proc" size="122">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mNM6WMTE/UTP2PuhjurDqmiWcAEWFgWOIVK3tGIkbGs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x293658.proc" size="118">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>puopWcb73oQwL3KuRq09dTZDH4VVkW2Zs2A8SH8GOKQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x2F31D6.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uwaRwphweafNDxegDpIK2wQ2wI+KRfwYqM6yONfuqoE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x35513F.proc" size="112">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>idLSNi/X6ysmEEV5qaznEMZUrVyK0xPmptD2hMS9030=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x3579CF.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>A83WIrybwdLM5StLa0z4iSWob4qgMm254UgwW7UP55k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x37D629.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>n86q6/o+tthDk2ALithbhiNa+tZdS4E9WraXM8ALNtc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x3E97CF.proc" size="78">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uTRYX/fyNbpAUgSVW/KUZjd+EPfr1T54woLEfKepD6s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x40ADFE.proc" size="20">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JMcnXPoTr3I+AwFlt9pkMC5wp1HZQew2WkTN2szuoUc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x42E8F1.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>adVIQ7bEm2E1OmWnXkMPZUI5KEFxESDUpQcZwzBy5LA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x4ADA9.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vuoE1hQ5ioUNYP/ik9w9rSHPnNwF7rqbVvNRgCD6QxU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x4B0A61.proc" size="140">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hVLNMnS4R8gVul2/HRyCPOCXEbMVkMbUQ4PNZdf6fPU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x53A62E.proc" size="86">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>73rhgTpAGnYeWGK1CPKGoOQqSuYQDoC4rh1yXW/Zd7o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x57208.proc" size="440">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WPZhMKL3X/UqKCDFsof8tnQeFM04sypgM1GEA6x9g9A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x5E97CF.proc" size="78">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MM4g6DLoUXQ9kQzsQV4PSVBpyDJEJpLCr8dodhv28n8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x60924.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MOEs7z0UTJgasr4LKgFHq5QZN4iCARYZEvdA/53cA6k=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x616ECF.proc" size="58">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>8HZGw1ahpffSoJyXIOog9R4TJ109hsNcDV6ByPCpHoc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x640C81.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>jw/eqTzsxhWQ2I3wucqCqDbFjKtRzH+OamM7qA4xwDM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x6428F0.proc" size="114">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>KAWAVpRdnM0IZFQIjeBxICwBp2AD/hHXHHRku7RLEHk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x66D67C.proc" size="106">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zwN32DX5nvT9Ucx5gp8VrDbF1yOs+/2gQjgcpglCXIE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x6F5DC3.proc" size="67">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wFAlev6s2Z+u1vx24H/Lj9QgtIJf/MgERr9z2mB5MBg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x74BFF8.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tvVdm5RUGdPnBUG77DlzisEvxbg56v2ND78QcU4oKNc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x7A253E.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>aCPOAKPjrQ0gafGsYWhvAytHe0Cpss52zlPDJqNou1s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x7E97CF.proc" size="78">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>LBvqyQuBR355xKdT254mZvTSJTqOitXWVM+BLg13oaM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x7F5DC3.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IwyfXGfAaXatSu3/GtesVSIiw2OiZDXhsVxkmL3eUvo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x7F6915.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>HucbXa47b/XrJw5B3+fKnZ9rguCt7w+NZvx7XHF1AQA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x8A7EAF.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3C9lHIciIUFVttpQcGgYKvFcMM/GXzxzXxu2tSjkyiw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x92DCE.proc" size="114">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1zfTjhgCVdZNnm/TqFxoVgGzrAUH6sAmgs8YLUx8Bdk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x96A6A.proc" size="88">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xaj5t4mZpknoXbUDagODJ8BBSD8RT0lML2/jK0aMw0o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x97D665.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/YUx8jJ8jpMPSC4lcT+YXQXc/1MHVP3yt8S3egMbYcY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0x9E97CF.proc" size="88">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yEWBpDNuWpkmogvFyV8+ZE/NCsWmqiZ4wN4QZXiyosA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xA10594.proc" size="88">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>bgGqXx08XDmVCkROpq+MEpxNaFtcoX7MxP5ubcLiGpM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xA1F64B.proc" size="106">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>to5nLqXPCVBP+M9quu6qNRCG10XCP4GoJjvBtIsDnpA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xA56B4B.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>P6/1u+pIgU0bbRmza+5VbXE18q5Rqoo+MS201mBPsUM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xAD455F.proc" size="364">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>OROdMF6eydhlFUbfnkieVdyKDG4ml60+grjjwuLP6YA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xAFCC9B.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>7sfJ7hujHqXCg/KqIKQHZWztLVi3wpEsfqJySsuEBZE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xB35211.proc" size="106">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zEK5g8m8k+a//u/avYU1S/4SFHtCrspCm6Q6YBqIS3Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xB35BC1.proc" size="47">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>150CI4Id3wuH77c9ev1hn91cV/RWZK+Ol9uQ2/ARAL4=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xC60769.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YsCTZBTUF9mxtz5mynXmOWdGZDCKrCY0tdXXWGeSePE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xC92A40.proc" size="89">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Bp4J0hmO0CALFgUqpdG9ZgECzuYfHBvbe43WCGxYVfE=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xCAF11B.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MdMzhKU4z7yvB+lo3J1qGMhQpQKpRc+mK1vsX6gvrMI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xD2A222.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hjNnN+5vV32fJD+Y4ITn61ZzKmykIOl93geQGgnHsyc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xD5B259.proc" size="223">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>gPY37H8AIjRqX3wc80vzQyf0/aopJkbn48m7ksZKkDk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xDC4E11.proc" size="106">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>SzXMV0b6m90R79iEzvclvaiiARgjp0A9wNkEAA6AzKk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xDC748A.proc" size="110">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>Z95qx4MrVPOW9RUwDFBPEtw/Ax+Km6C4iNmGH7EsOUU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xDD51D.proc" size="112">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>fqPwGMnampUVdgFKN8RkMzPou+s1i9WQ5yyu7LUh09w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xE6E562.proc" size="108">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>eECaiHxsKPKMXiFE6V6tOKfkcd6/Xs0+SnUc83EsIX8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xE7C89B.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>an5pkPTlrOLFHbItzpHaPMsNEXVOIuTEt5ffUDr5OCw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xEA7EAE.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TKEg/+K4fwteP0Hk6KEMX7xlH9tfbEXSDds/ni0qVvs=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xEB47E6.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MfzPEmz8Dx7LpToN64a9z9/BhTwwnlrQQSDkJVlBwUc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xF57D47.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>RBZr9yizUo82ksAPOP/ejEE6sgMNHskzL3W2d2xKeLo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xF71E5B.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>AseGGmW3H3OwD8QQdTeyRZjbs0jAhWB0bHdINK5d9+8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xF76B84.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>T+mdBWtifO37kjmA6aHelvURSUrB+vBqRe3NxNDHrBo=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAC6.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sQN9nVAHY8IZM8j60yC4up7oV2eTxP2FhFOLu5ux83U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAC7.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>kYZljLjHvZcbCHU1s+OsEB4jGGcSTrgClMwK3SNPzWY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAC8.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>+zxtrc8R7CsBECtwuX3M9B294tVnocIDYLPTsY9UzOk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAC9.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2TP3Lok3C4+QloRpT3ZURMD+jSiSHuYs7qMnTnASZeM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDACA.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YEBSibsp9EiJVjC/1+wcO1bkzF+412wSq/HXBtD2hgQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDACB.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TVhggZ+6fNQ5hq2p+SMxpW1HjtxObKdvshhhAdgHeYU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDACC.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ZsD24tJtaEk1LF1y1EbvRgjfbsgiC0cgL1eBVvquIhI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDACD.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>hBUJClM0KGyEUPWupYAdRCO3xdvr4J8UhOQbH7J5Pe8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDACE.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>TKpYfEHlGAbcKBZicwzTe7bUnNzvakndX3t6QC9Q59o=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDACF.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>z52E3tBz3K1IGIoajDmgl5kNufREn71R4P0Y6Tfdl2g=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAD0.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ce+ziqe56aY/2KLXAYXxJILRlm3cQoAQN5QPGgRbWzQ=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAD1.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>P13/z/0SggpAVZF5zImZc4mWbtAiUMScCuevXm2KnMA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAD2.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/gXiznp/weudHyiIc2PHGnh0nwrp21iGROccoDN11PY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAD3.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>0UdKU6LxFs41FNsr3q7Gkl4WLecpW71XcIsXgpU1dOk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDAD4.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>nkjWH3PyZ3rhMLYfF24dtzsklc3EC2cQx1aYa0d3YRM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2 Known Procs\proc_0xFFDCA5.proc" size="68">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>1EQEyCEsR4Fr6hmn772aSnPZGjvlW/H/lCEmz8U5w1U=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="MGS2_Randomizer.exe.config" size="563">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>3SoQWTzMsdmd9dduY81Qgbp+M4eu003tDvlYiqzU06E=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="mgs2-snake-kept-you-waiting-huh.wav" size="260408">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/5rSGMoUYeJ8/iJWETm5x2Y7R/t5Ir+e/PGgl/zScXw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="w21a_custom_claymores.proc" size="444">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>UFsyylr4hDQxKvKUQ2N8xgwmLT6nszQGoYvFCGf283I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- A list of the Windows versions that this application has been tested on
+           and is designed to work with. Uncomment the appropriate elements
+           and Windows will automatically select the most compatible environment. -->
+      <!-- Windows Vista -->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}" />-->
+      <!-- Windows 7 -->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}" />-->
+      <!-- Windows 8 -->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}" />-->
+      <!-- Windows 8.1 -->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}" />-->
+      <!-- Windows 10 -->
+      <!--<supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}" />-->
+    </application>
+  </compatibility>
+</asmv1:assembly>
