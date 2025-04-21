@@ -1,31 +1,42 @@
 ﻿# MGS2 Randomizer
 
-The first randomizer for the Master Collection version of METAL GEAR SOLID 2: Sons of Liberty.
+The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: Sons of Liberty**!
+
+![image](https://github.com/user-attachments/assets/284d6d58-693e-4a03-9942-2027bcb5c8ce)
 
 ## How do I use this?
-First, you start off with one of two methods of installation!
-1. Auto-updatable Installation: Download and run the setup.exe - after the installation completes, you will automatically download any updates to the randomizer whenever they may happen.
-1. Portable Installation: Download the latest Github release and run a standalone version of the MGS2 Randomizer. Feel free to ping me to see if the portable version is the latest version(I am not great at remembering to update the Github releases).
+### Installation
+- Auto-updatable Installation: Download and run the `setup.exe` - after the installation completes, you will automatically download any updates to the randomizer whenever they may happen.
 
-After that, you're off to the races! Just launch the randomizer app, make sure the `MGS2 Location` is accurate to your MGS2 installation folder, pick your settings, and hit `Randomize Game Files`! After some time(more options selected means randomization will take longer) your game files will be automatically modified. Once you get notice that it's done, just launch MGS2 and you're good to go!
+  **OR**
+  
+- Portable Installation: Download the latest Github release and run a standalone version of the MGS2 Randomizer. Feel free to ping me to see if the portable version is the latest version(I am not great at remembering to update the Github releases).
+
+### Usage
+1. Launch the MGS2 Randomizer app.
+2. Make sure the `MGS2 Location` is accurate to your MGS2 installation folder by using the `Browse` button and using the window that opens to select your installed `METAL GEAR SOLID2.exe`.
+3. Pick your desired settings for randomization.
+4. Click `Randomize Game Files`! After some time(more options selected means randomization will take longer) your game files will be automatically modified.
+   - *After randomization, in your user Documents folder, a spoilerfile will be created with the created seed #, the options you selected to create the randomization, and what items/weapons have been placed where.*
+5. Once you get notice that it's done, just launch MGS2 and you're good to go - no need to keep the MGS2 Randomizer app open.
 
 ## What can I do with the randomizer?
-1. Randomize "placed" items, _not just the contents of them_. 
+1. Randomize "placed" items, _not just the contents of them_! 
     - The PC Substance version randomizer is fantastic, but this randomizer takes it even further so you can visually see if you care about going over to the placed item.
-2. Randomize starting items. 
+2. Randomize starting items! 
     - Tired of always starting the Tanker with the M9? Roll the dice and you might start with empty Magazines instead!
 	- _Note: all of the normal starting items will be placed into the randomization pool with this option enabled_
-3. Randomize automatically awarded items. 
+3. Randomize automatically awarded items! 
     - Olga may have used a USP to fight you... but you might pull Chaff grenades out of her pockets instead. And who knows, maybe Stillman will give you C4 and some bandages!
     - _Note: all of the automatically awarded items will be placed into the randomization pool with this option enabled_
-4. Randomize the Control Units on the Tanker
+4. Randomize the Control Units on the Tanker!
     - The normal spawns are so 2001. Why not live a little and move them around a little bit?
     - _Note: the control unit placements have been manually picked so they don't spawn somewhere you can't shoot them. Each control unit has up to 6 different positions it can spawn._
-5. Randomize Fatman's pre-planted Sensor A bomb locations
+5. Randomize Fatman's pre-planted Sensor A bomb locations!
     - Maybe the bomb will be where it's supposed to be, maybe it will be hidden in plain sight, or maybe it will be tucked away somewhere you rarely go!
     - _Note: the bomb placements have been manually picked so they don't spawn somewhere you can't defuse them. Each bomb has between 3 and 8 new places it can spawn._
     - :warning: **WARNING**: _Sensor A does NOT accurately reflect the new bomb positions._ :warning:
-7. Randomize EF Connecting Bridge claymores
+6. Randomize EF Connecting Bridge claymores!
     - If you're tired of not being afraid of the bridge, we've got you covered. Just so you're aware, you might run into a claymore coming right out of the door :^)
 
 ## What do the randomizer options mean?
