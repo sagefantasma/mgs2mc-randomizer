@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Deployment.Application;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +18,10 @@ namespace MGS2_Randomizer
     public partial class RandomizationForm : Form
     {
         private string _installLocation { get; set; }
+        private string userDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private string _logLocation { get; set; }
+        public static ILogger _logger { get; private set; }
+        private static string AppVersion { get; set; }
         private string InstallLocation
         {
             get { return _installLocation; }
@@ -27,8 +34,25 @@ namespace MGS2_Randomizer
         private System.Media.SoundPlayer keptYouWaitingHuh = new System.Media.SoundPlayer("mgs2-snake-kept-you-waiting-huh.wav");
         private bool _loaded = false;
 
+        private static void SetAppVersion()
+        {
+            if (ApplicationDeployment.IsNetworkDeployed)
+            {
+                AppVersion = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            }
+            else
+            {
+                AppVersion = $"{Assembly.GetExecutingAssembly().GetName().Version}(portable)";
+            }
+        }
+
         public RandomizationForm()
         {
+            SetAppVersion();
+            _logLocation = Path.Combine(userDocuments, "MGS2Randomizer.log");
+            _logger = new LoggerConfiguration().WriteTo.File(_logLocation, rollOnFileSizeLimit: false, fileSizeLimitBytes: 50 * 1000 * 1000)
+                .MinimumLevel.Is(Serilog.Events.LogEventLevel.Debug).CreateLogger();
+            _logger.Information($"MGS2 Randomizer v.{AppVersion} initialized!");
             InitializeComponent();
             LoadConfig();
             SetupHelperButton();
@@ -79,107 +103,142 @@ namespace MGS2_Randomizer
 
         private void LoadConfig()
         {
-            string configContents = File.ReadAllText(_configLocation);
-            Config config = JsonSerializer.Deserialize<Config>(configContents);
+            try
+            {
+                _logger.Information($"Loading config from {_configLocation}...");
+                string configContents = File.ReadAllText(_configLocation);
+                Config config = JsonSerializer.Deserialize<Config>(configContents);
 
-            mgs2ExeTextBox.Text = config.Mgs2ExePath;
-            DirectoryInfo fileInfo = new DirectoryInfo(config.Mgs2ExePath);
-            InstallLocation = fileInfo.FullName;
-            randomizeSpawnsCheckbox.Checked = config.LastOptionsSelected.RandomizeSpawns;
-            seedAlwaysBeatableCheckbox.Checked = config.LastOptionsSelected.NoHardLogicLocks;
-            restrictNikitaCheckbox.Checked = config.LastOptionsSelected.NikitaShell2;
-            allWeaponsWillSpawnCheckbox.Checked = config.LastOptionsSelected.AllWeaponsSpawnable;
-            randomizeRationsCheckbox.Checked = config.LastOptionsSelected.IncludeRations;
-            randomizeStartingItemsCheckbox.Checked = config.LastOptionsSelected.RandomizeStartingItems;
-            randomizeAutomaticRewardsCheckbox.Checked = config.LastOptionsSelected.RandomizeAutomaticRewards;
-            randomizeBombLocations.Checked = config.LastOptionsSelected.RandomizeC4;
-            randomizeEFConnectingBridgeClaymores.Checked = config.LastOptionsSelected.RandomizeClaymores;
-            randomizeTankerControlUnitLocations.Checked = config.LastOptionsSelected.RandomizeTankerControlUnits;
-            addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
-            keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
+                mgs2ExeTextBox.Text = config.Mgs2ExePath;
+                DirectoryInfo fileInfo = new DirectoryInfo(config.Mgs2ExePath);
+                InstallLocation = fileInfo.FullName;
+                randomizeSpawnsCheckbox.Checked = config.LastOptionsSelected.RandomizeSpawns;
+                seedAlwaysBeatableCheckbox.Checked = config.LastOptionsSelected.NoHardLogicLocks;
+                restrictNikitaCheckbox.Checked = config.LastOptionsSelected.NikitaShell2;
+                allWeaponsWillSpawnCheckbox.Checked = config.LastOptionsSelected.AllWeaponsSpawnable;
+                randomizeRationsCheckbox.Checked = config.LastOptionsSelected.IncludeRations;
+                randomizeStartingItemsCheckbox.Checked = config.LastOptionsSelected.RandomizeStartingItems;
+                randomizeAutomaticRewardsCheckbox.Checked = config.LastOptionsSelected.RandomizeAutomaticRewards;
+                randomizeBombLocations.Checked = config.LastOptionsSelected.RandomizeC4;
+                randomizeEFConnectingBridgeClaymores.Checked = config.LastOptionsSelected.RandomizeClaymores;
+                randomizeTankerControlUnitLocations.Checked = config.LastOptionsSelected.RandomizeTankerControlUnits;
+                addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
+                keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
+                _logger.Information($"Config loaded successfully!");
+            }
+            catch(Exception e)
+            {
+                _logger.Error($"Failed to load config: {e}");
+            }
         }
 
         private void UpdateConfig()
         {
-            if (!_loaded)
+            try
             {
-                return;
-            }
-            Config config = new Config
-            {
-                Mgs2ExePath = mgs2ExeTextBox.Text,
-                LastOptionsSelected = new MGS2Randomizer.RandomizationOptions
+                _logger.Verbose("Updating config...");
+                if (!_loaded)
                 {
-                    RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
-                    NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
-                    NikitaShell2 = restrictNikitaCheckbox.Checked,
-                    AllWeaponsSpawnable = allWeaponsWillSpawnCheckbox.Checked,
-                    IncludeRations = randomizeRationsCheckbox.Checked,
-                    RandomizeStartingItems = randomizeStartingItemsCheckbox.Checked,
-                    RandomizeAutomaticRewards = randomizeAutomaticRewardsCheckbox.Checked,
-                    RandomizeC4 = randomizeBombLocations.Checked,
-                    RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
-                    RandomizeCards = addCardsCheckbox.Checked,
-                    KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
-                    RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
+                    return;
                 }
-            };
+                Config config = new Config
+                {
+                    Mgs2ExePath = mgs2ExeTextBox.Text,
+                    LastOptionsSelected = new MGS2Randomizer.RandomizationOptions
+                    {
+                        RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
+                        NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
+                        NikitaShell2 = restrictNikitaCheckbox.Checked,
+                        AllWeaponsSpawnable = allWeaponsWillSpawnCheckbox.Checked,
+                        IncludeRations = randomizeRationsCheckbox.Checked,
+                        RandomizeStartingItems = randomizeStartingItemsCheckbox.Checked,
+                        RandomizeAutomaticRewards = randomizeAutomaticRewardsCheckbox.Checked,
+                        RandomizeC4 = randomizeBombLocations.Checked,
+                        RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
+                        RandomizeCards = addCardsCheckbox.Checked,
+                        KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
+                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
+                    }
+                };
 
-            string configContents = JsonSerializer.Serialize(config);
-            File.WriteAllText(_configLocation, configContents);
+                string configContents = JsonSerializer.Serialize(config);
+                File.WriteAllText(_configLocation, configContents);
+            }
+            catch(Exception e)
+            {
+                _logger.Error($"Failed to update config: {e}");
+            }
         }
 
         private void ToggleControls(bool enable)
         {
-            browseButton.Enabled = enable;
-            randomizeButton.Enabled = enable;
-            restoreBaseGameButton.Enabled = enable;
-            randomizeSpawnsCheckbox.Enabled = enable;
-            seedAlwaysBeatableCheckbox.Enabled = enable;
-            restrictNikitaCheckbox.Enabled = enable;
-            allWeaponsWillSpawnCheckbox.Enabled = enable;
-            randomizeRationsCheckbox.Enabled = enable;
-            randomizeStartingItemsCheckbox.Enabled = enable;
-            randomizeAutomaticRewardsCheckbox.Enabled = enable;
-            randomizeBombLocations.Enabled = enable;
-            randomizeEFConnectingBridgeClaymores.Enabled = enable;
-            randomizeTankerControlUnitLocations.Enabled = enable;
-            if (!enable && randomizeAutomaticRewardsCheckbox.Checked)
+            try
             {
-                addCardsCheckbox.Enabled = enable;
+                _logger.Information($"Toggling controls to state: {enable}");
+                browseButton.Enabled = enable;
+                randomizeButton.Enabled = enable;
+                restoreBaseGameButton.Enabled = enable;
+                randomizeSpawnsCheckbox.Enabled = enable;
+                seedAlwaysBeatableCheckbox.Enabled = enable;
+                restrictNikitaCheckbox.Enabled = enable;
+                allWeaponsWillSpawnCheckbox.Enabled = enable;
+                randomizeRationsCheckbox.Enabled = enable;
+                randomizeStartingItemsCheckbox.Enabled = enable;
+                randomizeAutomaticRewardsCheckbox.Enabled = enable;
+                randomizeBombLocations.Enabled = enable;
+                randomizeEFConnectingBridgeClaymores.Enabled = enable;
+                randomizeTankerControlUnitLocations.Enabled = enable;
+                if (!enable && randomizeAutomaticRewardsCheckbox.Checked)
+                {
+                    addCardsCheckbox.Enabled = enable;
+                }
+                if (!enable && addCardsCheckbox.Checked)
+                {
+                    keepVanillaCardLevelsCheckbox.Enabled = enable;
+                }
+                if (!enable && customSeedCheckbox.Checked)
+                {
+                    seedUpDown.Enabled = enable;
+                }
+                else
+                    seedUpDown.Value = 0;
+                customSeedCheckbox.Enabled = enable;
+                _logger.Information("Controls toggled successfully");
             }
-            if (!enable && addCardsCheckbox.Checked)
+            catch(Exception e)
             {
-                keepVanillaCardLevelsCheckbox.Enabled = enable;
+                _logger.Error($"Controls failed to toggle as expected: {e}");
             }
-            if (!enable && customSeedCheckbox.Checked)
-            {
-                seedUpDown.Enabled = enable;
-            }
-            else
-                seedUpDown.Value = 0;
-            customSeedCheckbox.Enabled = enable;
         }
 
         private void browseButton_Click(object sender, EventArgs e)
         {
-            string executableLocation = mgs2ExeTextBox.Text;
-
-            if (string.IsNullOrWhiteSpace(executableLocation) || !File.Exists(executableLocation))
+            try
             {
-                executableLocation = Environment.CurrentDirectory;
+                string executableLocation = mgs2ExeTextBox.Text;
+
+                if (string.IsNullOrWhiteSpace(executableLocation) || !File.Exists(executableLocation))
+                {
+                    executableLocation = Environment.CurrentDirectory;
+                }
+
+                OpenFileDialog openFileDialog = new OpenFileDialog
+                {
+                    Multiselect = false,
+                    Title = "Where is 'METAL GEAR SOLID2.exe' on your machine?",
+                    DefaultExt = ".exe",
+                    InitialDirectory = Path.GetDirectoryName(executableLocation)
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _logger.Verbose($"Updated MGS2 Executable location to: {openFileDialog.FileName}");
+                    mgs2ExeTextBox.Text = openFileDialog.FileName;
+                }
             }
-
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            catch(Exception ex)
             {
-                Multiselect = false,
-                Title = "Where is 'METAL GEAR SOLID2.exe' on your machine?",
-                DefaultExt = ".exe",
-                InitialDirectory = Path.GetDirectoryName(executableLocation)
-            };
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                mgs2ExeTextBox.Text = openFileDialog.FileName;
+                _logger.Error($"Failed to update MGS2 Executable location: {ex}");
+                MessageBox.Show("Failed to update MGS2 executable location! If this persists, please report a bug and attach the `MGS2Randomizer.log` file from your documents to it!");
             }
         }
 
@@ -274,18 +333,28 @@ namespace MGS2_Randomizer
 
         private void restoreBaseGameButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Restoring MGS2's base game files, this will take but a moment...");
-            ToggleControls(false);
-            MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation);
-            randomizer.Derandomize();
-            ToggleControls(true);
-            MessageBox.Show("MGS2's base game files are restored! Enjoy vanilla MGS2!");
+            try
+            {
+                _logger.Information("Restoring base game files");
+                MessageBox.Show("Restoring MGS2's base game files, this will take but a moment...");
+                ToggleControls(false);
+                MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation);
+                randomizer.Derandomize();
+                ToggleControls(true);
+                MessageBox.Show("MGS2's base game files are restored! Enjoy vanilla MGS2!");
+                _logger.Information("Base game files restored");
+            }
+            catch(Exception ex)
+            {
+                _logger.Error($"Something went wrong when trying to restore base game files: {ex}");
+            }
         }
 
         private async void randomizeButton_Click(object sender, EventArgs e)
         {
             try
             {
+                _logger.Information("Randomizing game files...");
                 MessageBox.Show("Randomizing MGS2's game files to your specifications, this may take some time...", "Heads up!");
                 ToggleControls(false);
                 Application.DoEvents();
@@ -308,6 +377,7 @@ namespace MGS2_Randomizer
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
                         RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
                     };
+                    _logger.Debug($"Calling randomize item spawns with randomization options: {randomizationOptions}");
                     int seed = 0;
                     if (randomizer.Seed == 0)
                         randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
@@ -316,7 +386,9 @@ namespace MGS2_Randomizer
                         try
                         {
                             seed = randomizer.RandomizeItemSpawns(randomizationOptions);
+                            _logger.Debug("Items randomized successfully, now saving to disk");
                             randomizer.SaveRandomizationToDisk(true, false);
+                            _logger.Debug("Randomization saved to disk successfully!");
                         }
                         catch (OutOfMemoryException oome)
                         {
@@ -324,6 +396,7 @@ namespace MGS2_Randomizer
                         }
                         catch (MGS2Randomizer.RandomizerException ee)
                         {
+                            _logger.Debug("Bad seed, trying to randomize again");
                             //randomizer.Seed = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
                             //randomizer.Randomizer = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
                             randomizer.Seed = randomizer.Randomizer.Next();
@@ -342,6 +415,7 @@ namespace MGS2_Randomizer
             }
             catch(Exception ex)
             {
+                _logger.Error($"Randomization failed: {ex}");
                 MessageBox.Show("Randomization failed! If this error persists, please report a bug on Github!");
             }
             finally

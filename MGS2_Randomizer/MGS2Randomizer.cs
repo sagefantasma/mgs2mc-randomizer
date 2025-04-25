@@ -131,6 +131,7 @@ namespace MGS2_Randomizer
 
         private void BuildVanillaItemSet()
         {
+            RandomizationForm._logger.Debug("Building vanilla item set...");
             _vanillaItems = new MGS2ItemSet
             {
                 //0x30 spawns in tanker
@@ -254,6 +255,7 @@ namespace MGS2_Randomizer
 
         private void RandomizeClaymores()
         {
+            RandomizationForm._logger.Debug("Randomizing claymores...");
             int leftWall = 0xBF68;
             int rightSideLowerCatwalk = 0xABB0;
             uint topWall = 0xFFFF0218;
@@ -467,6 +469,7 @@ namespace MGS2_Randomizer
 
         private void RandomizeStartingItems()
         {
+            RandomizationForm._logger.Debug("Randomizing starting items...");
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_n_title"));
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
             byte[] snakeStartingAmmoBytes = new byte[] { 0x11, 0x00, 0x0A, 0x5C };
@@ -870,6 +873,7 @@ namespace MGS2_Randomizer
              * Randomizing card keys WILL require a restructuring of item sets.
              */
             //Insert automatic rewards into the spawning pools
+            RandomizationForm._logger.Debug("Randomizing automatic rewards...");
             AddAutomaticRewardsToPools();
             #region Olga USP
             string spoiler = "";
@@ -1108,6 +1112,7 @@ namespace MGS2_Randomizer
 
         private void RandomizeTankerSemtexControlUnitLocations()
         {
+            RandomizationForm._logger.Debug("Randomizing control units...");
             byte[] controlUnit1Bytes = { 0x6C, 0x55, 0xF5 };
             byte[] brokenControlUnit1Bytes = { 0xAD, 0x55, 0xD5 };
             byte[] controlUnit2Bytes = { 0x6B, 0x55, 0xF5 };
@@ -1247,6 +1252,7 @@ namespace MGS2_Randomizer
 
         private void RandomizeC4Locations()
         {
+            RandomizationForm._logger.Debug("Randomizing C4s...");
             byte[] bulC4InitBytes = { 0x11, 0xBB, 0xDB, 0x06 };
             string gcxFile;
             byte[] gcxContents;
@@ -1829,11 +1835,12 @@ namespace MGS2_Randomizer
 
         public void Derandomize()
         {
+            RandomizationForm._logger.Debug("Derandomizing files...");
             //So things are going to get EXTREMELY hairy if we try to "derandomize" things manually,
             //or once we have more options if we try to randomize on top of an already randomized gcx
             //To save myself a TON of work, instead we will copy the gcx files that will be modified into
             //a new subfolder, and push/pull from there to make this a simpler process.
-            foreach(FileInfo file in OriginalGcxFilesDirectory.GetFiles())
+            foreach (FileInfo file in OriginalGcxFilesDirectory.GetFiles())
             {
                 file.CopyTo(Path.Combine(OriginalGcxFilesDirectory.Parent.FullName, file.Name), true);
             }
@@ -1920,6 +1927,7 @@ namespace MGS2_Randomizer
                 #region Tanker Randomization
                 try
                 {
+                    RandomizationForm._logger.Debug("Randomizing tanker items...");
                     //Create a list of all spawns on the tanker chapter
                     List<Item> TankerSpawnsLeft = new List<Item>();
                     foreach (var kvp in _vanillaItems.TankerPart3.Entities)
@@ -1985,6 +1993,7 @@ namespace MGS2_Randomizer
                 #region Plant Randomization
                 try
                 {
+                    RandomizationForm._logger.Debug("Randomizing plant items...");
                     List<Item> PlantSpawns = new List<Item>();
 
                     int itemsAssigned = 0;
@@ -2756,6 +2765,7 @@ namespace MGS2_Randomizer
             //we should instead go spawn by spawn rather than file by file
             Dictionary<string, OpenedFileData> openedFiles = new Dictionary<string, OpenedFileData>();
             string cheatSheet = SpoilerContents;
+            RandomizationForm._logger.Debug("Saving tanker randomization to memory...");
             foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.TankerPart3.Entities)
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
@@ -2821,6 +2831,7 @@ namespace MGS2_Randomizer
                 }
             }
 
+            RandomizationForm._logger.Debug("Saving plant randomization to memory...");
             foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.PlantSet10.Entities)
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
@@ -2889,6 +2900,7 @@ namespace MGS2_Randomizer
             DirectoryInfo createdDirectory = new DirectoryInfo(Environment.CurrentDirectory);
             if (customDirectory)
                 createdDirectory = Directory.CreateDirectory($"{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}_randomizedGcxFiles");
+            RandomizationForm._logger.Debug("Saving randomization to disk from memory...");
             foreach (KeyValuePair<string, OpenedFileData> kvp in openedFiles)
             {
                 OpenedFileData openedFileData = kvp.Value;
@@ -2921,6 +2933,7 @@ namespace MGS2_Randomizer
 
         private void AddAllResources()
         {
+            RandomizationForm._logger.Debug("Adding all resources to resource files...");
             List<string> strings = new List<string>();
             foreach (Resource value in Resource.ResourceList)
             {
