@@ -2281,29 +2281,56 @@ namespace MGS2_Randomizer
                             }
 
                             //iteratively go through spawns in "sequential" order, setting random items to each
-                            if (itemsAssigned < _vanillaItems.PlantCard0Set.Entities.Count)
+                            if (!options.KeepVanillaCardAccess)
                             {
-                                _randomizedItems.PlantCard0Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                            }
-                            else if (itemsAssigned < _vanillaItems.PlantCard1Set.Entities.Count)
-                            {
-                                _randomizedItems.PlantCard1Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                            }
-                            else if (itemsAssigned < _vanillaItems.PlantCard2Set.Entities.Count)
-                            {
-                                _randomizedItems.PlantCard2Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                            }
-                            else if (itemsAssigned < _vanillaItems.PlantCard3Set.Entities.Count)
-                            {
-                                _randomizedItems.PlantCard3Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                            }
-                            else if (itemsAssigned < _vanillaItems.PlantCard4Set.Entities.Count)
-                            {
-                                _randomizedItems.PlantCard4Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                switch (_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.CardNeededToAccess)
+                                {
+                                    case 0:
+                                        _randomizedItems.PlantCard0Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                        break;
+                                    case 1:
+                                        _randomizedItems.PlantCard1Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                        break;
+                                    case 2:
+                                        _randomizedItems.PlantCard2Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                        break;
+                                    case 3:
+                                        _randomizedItems.PlantCard3Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                        break;
+                                    case 4:
+                                        _randomizedItems.PlantCard4Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                        break;
+                                    case 5:
+                                        _randomizedItems.PlantCard5Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                        break;
+                                }
                             }
                             else
                             {
-                                _randomizedItems.PlantCard5Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                if (itemsAssigned < _vanillaItems.PlantCard0Set.Entities.Count)
+                                {
+                                    _randomizedItems.PlantCard0Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                }
+                                else if (itemsAssigned < _vanillaItems.PlantCard1Set.Entities.Count)
+                                {
+                                    _randomizedItems.PlantCard1Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                }
+                                else if (itemsAssigned < _vanillaItems.PlantCard2Set.Entities.Count)
+                                {
+                                    _randomizedItems.PlantCard2Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                }
+                                else if (itemsAssigned < _vanillaItems.PlantCard3Set.Entities.Count)
+                                {
+                                    _randomizedItems.PlantCard3Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                }
+                                else if (itemsAssigned < _vanillaItems.PlantCard4Set.Entities.Count)
+                                {
+                                    _randomizedItems.PlantCard4Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                }
+                                else
+                                {
+                                    _randomizedItems.PlantCard5Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
+                                }
                             }
 
                             PlantSpawns.Remove(randomChoice);

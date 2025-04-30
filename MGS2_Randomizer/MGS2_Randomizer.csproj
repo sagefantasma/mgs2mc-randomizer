@@ -28,7 +28,7 @@
     <ErrorReportUrl>https://github.com/sagefantasma/mgs2mc-randomizer/issues</ErrorReportUrl>
     <ProductName>MGS2 Master Collection Randomizer</ProductName>
     <PublisherName>SageFantasma</PublisherName>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
