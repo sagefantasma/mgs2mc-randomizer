@@ -122,6 +122,12 @@ namespace MGS2_Randomizer
 
             decompilingProcess.WaitForExit();
 
+            while (!File.Exists(outputFile))
+            {
+                //there is an issue where the "compiled" python code does not spit out the output file fast enough for larger files
+                //this is here to fix the bug caused by this behavior that I can't fix with asynchronous code here in this project
+            }
+
             currentDecompiledFile = outputFile;
             string decompilingOutput = decompilingProcess.StandardOutput.ReadToEnd();
             string[] decompilingOutputs = decompilingOutput.Split('\n');

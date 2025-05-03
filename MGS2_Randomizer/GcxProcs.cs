@@ -201,7 +201,7 @@ namespace MGS2_Randomizer
             BigEndianRepresentation = "7F5DC3",
             LittleEndianRepresentation = new byte[] { 0xC3, 0x5D, 0x7F },
             ProcDependencies = new RawProc[] { UnknownCheck3 }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardDigitalCamera = new RawProc
         {
             CommonName = "Digital Camera",
@@ -272,91 +272,91 @@ namespace MGS2_Randomizer
             BigEndianRepresentation = "FFDAC8",
             LittleEndianRepresentation = new byte[] { 0xC8, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardSensorA = new RawProc
         {
             CommonName = "Sensor A",
             BigEndianRepresentation = "FFDAC9",
             LittleEndianRepresentation = new byte[] { 0xC9, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardAPSensor = new RawProc
         {
             CommonName = "AP Sensor",
             BigEndianRepresentation = "FFDACA",
             LittleEndianRepresentation = new byte[] { 0xCA, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardPhone = new RawProc
         {
             CommonName = "Phone",
             BigEndianRepresentation = "FFDACB",
             LittleEndianRepresentation = new byte[] { 0xCB, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardScope = new RawProc
         {
             CommonName = "Scope",
             BigEndianRepresentation = "FFDACC",
             LittleEndianRepresentation = new byte[] { 0xCC, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardMODisk = new RawProc
         {
             CommonName = "MO Disk",
             BigEndianRepresentation = "FFDACD",
             LittleEndianRepresentation = new byte[] { 0xCD, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardCamera = new RawProc
         {
             CommonName = "Camera",
             BigEndianRepresentation = "FFDACE",
             LittleEndianRepresentation = new byte[] { 0xCE, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardBDU = new RawProc
         {
             CommonName = "BDU",
             BigEndianRepresentation = "FFDACF",
             LittleEndianRepresentation = new byte[] { 0xCF, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardCard1 = new RawProc
         {
             CommonName = "Card 1",
             BigEndianRepresentation = "FFDAD0",
             LittleEndianRepresentation = new byte[] { 0xD0, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardCard2 = new RawProc
         {
             CommonName = "Card 2",
             BigEndianRepresentation = "FFDAD1",
             LittleEndianRepresentation = new byte[] { 0xD1, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardCard3 = new RawProc
         {
             CommonName = "Card 3",
             BigEndianRepresentation = "FFDAD2",
             LittleEndianRepresentation = new byte[] { 0xD2, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardCard4 = new RawProc
         {
             CommonName = "Card 4",
             BigEndianRepresentation = "FFDAD3",
             LittleEndianRepresentation = new byte[] { 0xD3, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         public static readonly RawProc AwardCard5 = new RawProc
         {
             CommonName = "Card 5",
             BigEndianRepresentation = "FFDAD4",
             LittleEndianRepresentation = new byte[] { 0xD4, 0xDA, 0xFF },
             ProcDependencies = new RawProc[] { InventoryCheck }
-        };
+        }; //custom function i made :)
         #endregion
         #region Weapons
         public static readonly RawProc AwardAksAmmo = new RawProc
