@@ -429,6 +429,7 @@ namespace MGS2_Randomizer
                         }
                         catch (Exception ee)
                         {
+                            //for some reason the guard values stuff is causing this to throw, every time
                             throw ee; //rethrow to help debug
                         }
                     }
