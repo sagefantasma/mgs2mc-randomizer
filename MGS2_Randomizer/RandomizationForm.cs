@@ -97,6 +97,12 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetShowHelp(this.randomizeTankerControlUnitLocations, true);
             this.helpProvider1.SetHelpString(this.randomizeTankerControlUnitLocations, "Randomize where control units spawn in the engine room on the Tanker.");
 
+            this.helpProvider1.SetShowHelp(this.randomizeGuardValuesCheckBox, true);
+            this.helpProvider1.SetHelpString(this.randomizeGuardValuesCheckBox, "Randomize guard vision ranges, hearing range, stun resistance, sleep duration, stun duration, etc.");
+
+            this.helpProvider1.SetShowHelp(this.keepGuardValuesConsistentAcrossLevelsCheckbox, true);
+            this.helpProvider1.SetHelpString(this.keepGuardValuesConsistentAcrossLevelsCheckbox, "If guard values are randomized, keep them consistent across all levels instead of differing with each level.");
+
             this.helpProvider1.SetShowHelp(this.restoreBaseGameButton, true);
             this.helpProvider1.SetHelpString(this.restoreBaseGameButton, "Restores the game's files to their 'vanilla' state. If this does not work properly, use Steam to 'Verify integrity of game files' to accomplish the same result.");
         }
@@ -124,6 +130,8 @@ namespace MGS2_Randomizer
                 randomizeTankerControlUnitLocations.Checked = config.LastOptionsSelected.RandomizeTankerControlUnits;
                 addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
                 keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
+                randomizeGuardValuesCheckBox.Checked = config.LastOptionsSelected.RandomizeGuardValues;
+                keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
                 _logger.Information($"Config loaded successfully!");
             }
             catch(Exception e)
@@ -157,7 +165,9 @@ namespace MGS2_Randomizer
                         RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
                         RandomizeCards = addCardsCheckbox.Checked,
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
-                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
+                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
+                        RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
+                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked
                     }
                 };
 
@@ -188,6 +198,11 @@ namespace MGS2_Randomizer
                 randomizeBombLocations.Enabled = enable;
                 randomizeEFConnectingBridgeClaymores.Enabled = enable;
                 randomizeTankerControlUnitLocations.Enabled = enable;
+                randomizeGuardValuesCheckBox.Enabled = enable;
+                if (!enable && randomizeGuardValuesCheckBox.Checked)
+                {
+                    keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = enable;
+                }
                 if (!enable && randomizeAutomaticRewardsCheckbox.Checked)
                 {
                     addCardsCheckbox.Enabled = enable;
@@ -375,7 +390,9 @@ namespace MGS2_Randomizer
                         RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
                         RandomizeCards = addCardsCheckbox.Checked,
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
-                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
+                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
+                        RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
+                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked
                     };
                     _logger.Debug($"Calling randomize item spawns with randomization options: {randomizationOptions}");
                     int seed = 0;
@@ -404,6 +421,7 @@ namespace MGS2_Randomizer
                         }
                         catch (Exception ee)
                         {
+                            //for some reason the guard values stuff is causing this to throw, every time
                             throw ee; //rethrow to help debug
                         }
                     }
@@ -451,6 +469,21 @@ namespace MGS2_Randomizer
             {
 
             }
+        }
+
+        private void randomizeGuardValuesCheckBox_CheckChanged(object sender, EventArgs e)
+        {
+            keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = randomizeGuardValuesCheckBox.Checked;
+            if (!randomizeGuardValuesCheckBox.Checked)
+            {
+                keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = false;
+            }
+            UpdateConfig();
+        }
+
+        private void keepGuardValuesConsistentAcrossLevelsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
         }
     }
 }
