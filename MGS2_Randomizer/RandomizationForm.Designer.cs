@@ -62,6 +62,8 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kofiButton = new System.Windows.Forms.Button();
+            this.insanityScalarTrackBar = new System.Windows.Forms.TrackBar();
+            this.insanityScalarLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -71,6 +73,7 @@
             this.worldRandoGroupBox.SuspendLayout();
             this.itemRandoGroupBox.SuspendLayout();
             this.menuStrip2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.insanityScalarTrackBar)).BeginInit();
             this.SuspendLayout();
             // 
             // randomizeButton
@@ -202,9 +205,11 @@
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
             // groupBox1
-            // randomizeStartingItemsCheckbox
+            // 
+            this.groupBox1.Controls.Add(this.insanityScalarLabel);
             this.groupBox1.Controls.Add(this.randomizeGuardValuesCheckBox);
             this.groupBox1.Controls.Add(this.keepGuardValuesConsistentAcrossLevelsCheckbox);
+            this.groupBox1.Controls.Add(this.insanityScalarTrackBar);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(3, 343);
             this.groupBox1.Name = "groupBox1";
@@ -229,7 +234,7 @@
             // randomizeRationsCheckbox
             this.keepGuardValuesConsistentAcrossLevelsCheckbox.AutoSize = true;
             this.keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = false;
-            this.keepGuardValuesConsistentAcrossLevelsCheckbox.Location = new System.Drawing.Point(9, 42);
+            this.keepGuardValuesConsistentAcrossLevelsCheckbox.Location = new System.Drawing.Point(24, 64);
             this.keepGuardValuesConsistentAcrossLevelsCheckbox.Name = "keepGuardValuesConsistentAcrossLevelsCheckbox";
             this.keepGuardValuesConsistentAcrossLevelsCheckbox.Size = new System.Drawing.Size(253, 17);
             this.keepGuardValuesConsistentAcrossLevelsCheckbox.TabIndex = 4;
@@ -422,7 +427,7 @@
             // 
             this.keepVanillaCardLevelsCheckbox.AutoSize = true;
             this.keepVanillaCardLevelsCheckbox.Enabled = false;
-            this.keepVanillaCardLevelsCheckbox.Location = new System.Drawing.Point(9, 203);
+            this.keepVanillaCardLevelsCheckbox.Location = new System.Drawing.Point(54, 203);
             this.keepVanillaCardLevelsCheckbox.Name = "keepVanillaCardLevelsCheckbox";
             this.keepVanillaCardLevelsCheckbox.Size = new System.Drawing.Size(221, 17);
             this.keepVanillaCardLevelsCheckbox.TabIndex = 12;
@@ -436,7 +441,7 @@
             this.randomizeRationsCheckbox.Checked = true;
             this.randomizeRationsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.randomizeRationsCheckbox.Enabled = false;
-            this.randomizeRationsCheckbox.Location = new System.Drawing.Point(9, 111);
+            this.randomizeRationsCheckbox.Location = new System.Drawing.Point(24, 111);
             this.randomizeRationsCheckbox.Name = "randomizeRationsCheckbox";
             this.randomizeRationsCheckbox.Size = new System.Drawing.Size(118, 17);
             this.randomizeRationsCheckbox.TabIndex = 5;
@@ -448,19 +453,20 @@
             // 
             this.addCardsCheckbox.AutoSize = true;
             this.addCardsCheckbox.Enabled = false;
-            this.addCardsCheckbox.Location = new System.Drawing.Point(9, 180);
+            this.addCardsCheckbox.Location = new System.Drawing.Point(39, 180);
             this.addCardsCheckbox.Name = "addCardsCheckbox";
             this.addCardsCheckbox.Size = new System.Drawing.Size(184, 17);
             this.addCardsCheckbox.TabIndex = 11;
             this.addCardsCheckbox.Text = "Add Cards to Randomization Pool";
             this.addCardsCheckbox.UseVisualStyleBackColor = true;
             this.addCardsCheckbox.CheckedChanged += new System.EventHandler(this.addCardsCheckbox_CheckedChanged);
+            this.addCardsCheckbox.EnabledChanged += new System.EventHandler(this.addCardsCheckbox_EnabledChanged);
             // 
             // allWeaponsWillSpawnCheckbox
             // 
             this.allWeaponsWillSpawnCheckbox.AutoSize = true;
             this.allWeaponsWillSpawnCheckbox.Enabled = false;
-            this.allWeaponsWillSpawnCheckbox.Location = new System.Drawing.Point(9, 88);
+            this.allWeaponsWillSpawnCheckbox.Location = new System.Drawing.Point(24, 88);
             this.allWeaponsWillSpawnCheckbox.Name = "allWeaponsWillSpawnCheckbox";
             this.allWeaponsWillSpawnCheckbox.Size = new System.Drawing.Size(142, 17);
             this.allWeaponsWillSpawnCheckbox.TabIndex = 6;
@@ -472,7 +478,7 @@
             // 
             this.randomizeStartingItemsCheckbox.AutoSize = true;
             this.randomizeStartingItemsCheckbox.Enabled = false;
-            this.randomizeStartingItemsCheckbox.Location = new System.Drawing.Point(9, 134);
+            this.randomizeStartingItemsCheckbox.Location = new System.Drawing.Point(24, 134);
             this.randomizeStartingItemsCheckbox.Name = "randomizeStartingItemsCheckbox";
             this.randomizeStartingItemsCheckbox.Size = new System.Drawing.Size(146, 17);
             this.randomizeStartingItemsCheckbox.TabIndex = 7;
@@ -484,13 +490,14 @@
             // 
             this.randomizeAutomaticRewardsCheckbox.AutoSize = true;
             this.randomizeAutomaticRewardsCheckbox.Enabled = false;
-            this.randomizeAutomaticRewardsCheckbox.Location = new System.Drawing.Point(9, 157);
+            this.randomizeAutomaticRewardsCheckbox.Location = new System.Drawing.Point(24, 157);
             this.randomizeAutomaticRewardsCheckbox.Name = "randomizeAutomaticRewardsCheckbox";
             this.randomizeAutomaticRewardsCheckbox.Size = new System.Drawing.Size(290, 17);
             this.randomizeAutomaticRewardsCheckbox.TabIndex = 2;
             this.randomizeAutomaticRewardsCheckbox.Text = "Randomize Automatic Rewards(Does not include Cards)";
             this.randomizeAutomaticRewardsCheckbox.UseVisualStyleBackColor = true;
             this.randomizeAutomaticRewardsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeAutomaticRewardsCheckbox_CheckedChanged);
+            this.randomizeAutomaticRewardsCheckbox.EnabledChanged += new System.EventHandler(this.randomizeAutomaticRewardsCheckbox_EnabledChanged);
             // 
             // menuStrip2
             // 
@@ -529,6 +536,25 @@
             this.kofiButton.UseVisualStyleBackColor = true;
             this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
             // 
+            // insanityScalarTrackBar
+            // 
+            this.insanityScalarTrackBar.Location = new System.Drawing.Point(147, 39);
+            this.insanityScalarTrackBar.Maximum = 100;
+            this.insanityScalarTrackBar.Name = "insanityScalarTrackBar";
+            this.insanityScalarTrackBar.Size = new System.Drawing.Size(200, 45);
+            this.insanityScalarTrackBar.TabIndex = 5;
+            this.insanityScalarTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.insanityScalarTrackBar.Value = 25;
+            // 
+            // insanityScalarLabel
+            // 
+            this.insanityScalarLabel.AutoSize = true;
+            this.insanityScalarLabel.Location = new System.Drawing.Point(41, 42);
+            this.insanityScalarLabel.Name = "insanityScalarLabel";
+            this.insanityScalarLabel.Size = new System.Drawing.Size(116, 13);
+            this.insanityScalarLabel.TabIndex = 6;
+            this.insanityScalarLabel.Text = "Randomization Bounds";
+            // 
             // RandomizationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -562,6 +588,7 @@
             this.optionsGroupBox.ResumeLayout(false);
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.insanityScalarTrackBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
