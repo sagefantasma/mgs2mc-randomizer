@@ -245,7 +245,7 @@ C2-00 (rotation, denotes a value of 1)
                 localSpawn.itemProc = replacementProc;
         }
 
-        public void SaveAutomatedChanges()
+        public void SaveAutomatedChangesToMemory()
         {
             foreach (ItemSpawn spawnProc in _spawnProcsCalled)
             {

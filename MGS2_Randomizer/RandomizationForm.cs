@@ -132,6 +132,22 @@ namespace MGS2_Randomizer
                 keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
                 randomizeGuardValuesCheckBox.Checked = config.LastOptionsSelected.RandomizeGuardValues;
                 keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
+
+                if (!randomizeAutomaticRewardsCheckbox.Checked)
+                {
+                    addCardsCheckbox.Checked = false;
+                    addCardsCheckbox.Enabled = false;
+                }
+                if(!addCardsCheckbox.Checked)
+                {
+                    keepVanillaCardLevelsCheckbox.Checked = false;
+                    keepVanillaCardLevelsCheckbox.Enabled = false;
+                }
+                if (!randomizeGuardValuesCheckBox.Checked)
+                {
+                    keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = false;
+                    keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = false;
+                }
                 _logger.Information($"Config loaded successfully!");
             }
             catch(Exception e)
@@ -289,10 +305,6 @@ namespace MGS2_Randomizer
         private void randomizeAutomaticRewardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             addCardsCheckbox.Enabled = randomizeAutomaticRewardsCheckbox.Checked;
-            if (!randomizeAutomaticRewardsCheckbox.Checked)
-            {
-                addCardsCheckbox.Checked = false;
-            }
             UpdateConfig();
         }
 
@@ -314,18 +326,12 @@ namespace MGS2_Randomizer
             randomizeRationsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
             randomizeStartingItemsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
             randomizeAutomaticRewardsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
-            addCardsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
-            keepVanillaCardLevelsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
             UpdateConfig();
         }
 
         private void addCardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked;
-            if (!addCardsCheckbox.Checked)
-            {
-                keepVanillaCardLevelsCheckbox.Checked = false;
-            }
             UpdateConfig();
         }
 
@@ -421,7 +427,6 @@ namespace MGS2_Randomizer
                         }
                         catch (Exception ee)
                         {
-                            //for some reason the guard values stuff is causing this to throw, every time
                             throw ee; //rethrow to help debug
                         }
                     }
@@ -474,16 +479,42 @@ namespace MGS2_Randomizer
         private void randomizeGuardValuesCheckBox_CheckChanged(object sender, EventArgs e)
         {
             keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = randomizeGuardValuesCheckBox.Checked;
-            if (!randomizeGuardValuesCheckBox.Checked)
-            {
-                keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = false;
-            }
             UpdateConfig();
         }
 
         private void keepGuardValuesConsistentAcrossLevelsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             UpdateConfig();
+        }
+
+        private void randomizeAutomaticRewardsCheckbox_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!randomizeAutomaticRewardsCheckbox.Enabled)
+            {
+                addCardsCheckbox.Enabled = false;
+            }
+            else
+            {
+                if (randomizeAutomaticRewardsCheckbox.Checked)
+                {
+                    addCardsCheckbox.Enabled = true;
+                }
+            }
+        }
+
+        private void addCardsCheckbox_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!addCardsCheckbox.Enabled)
+            {
+                keepVanillaCardLevelsCheckbox.Enabled = false;
+            }
+            else
+            {
+                if (addCardsCheckbox.Checked)
+                {
+                    keepVanillaCardLevelsCheckbox.Enabled = true;
+                }
+            }
         }
     }
 }

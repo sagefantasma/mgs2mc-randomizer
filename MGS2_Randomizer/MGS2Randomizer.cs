@@ -1167,13 +1167,13 @@ namespace MGS2_Randomizer
         private void RandomizeGuardValues(bool levelConsistency = true, bool valueConsistency = false, float insanityScalar = .25f)
         {
             byte[] normalVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xDE, 0x01 };
-            byte[] alertVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE0, 0x01 };
+            byte[] alertVisionSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE0, 0x01 };
             byte[] evasionVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE2, 0x01 };
             byte[] hearingRangeSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE4, 0x01 };
             byte[] lValueSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE6, 0x01 };
             byte[] hitsToStunSetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xE8};
-            byte[] sleepDurationSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xEC};
-            byte[] stunVisionSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xF0 };
+            byte[] sleepDurationSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xEC, 0x01};
+            byte[] stunVisionSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xF0, 0x01 };
             byte[] unknown1SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xEA };
             byte[] unknown2SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xF4 };
 
@@ -1186,43 +1186,43 @@ namespace MGS2_Randomizer
                 gcxContents = File.ReadAllBytes(gcxFile);
                 List<int> normalVisionSets = GcxEditor.FindAllSubArray(gcxContents, normalVisionSetBytes);
                 foreach(int normalVisionSet in normalVisionSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, normalVisionSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, normalVisionSet + normalVisionSetBytes.Length, 2);
 
                 List<int> alertVisionSets = GcxEditor.FindAllSubArray(gcxContents, alertVisionSetBytes);
                 foreach (int alertVisionSet in alertVisionSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, alertVisionSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, alertVisionSet + alertVisionSetBytes.Length, 2);
 
                 List<int> evasionVisionSets = GcxEditor.FindAllSubArray(gcxContents, evasionVisionSetBytes);
                 foreach (int evasionVisionSet in evasionVisionSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.EvasionVision), 0, gcxContents, evasionVisionSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.EvasionVision), 0, gcxContents, evasionVisionSet + evasionVisionSetBytes.Length, 2);
 
                 List<int> hearingRangeSets = GcxEditor.FindAllSubArray(gcxContents, hearingRangeSetBytes);
                 foreach (int hearingRangeSet in hearingRangeSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.HearingDistance), 0, gcxContents, hearingRangeSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.HearingDistance), 0, gcxContents, hearingRangeSet + hearingRangeSetBytes.Length, 2);
 
                 List<int> lValueSets = GcxEditor.FindAllSubArray(gcxContents, lValueSetBytes);
                 foreach (int lValueSet in lValueSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, lValueSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, lValueSet + lValueSetBytes.Length, 2);
 
                 List<int> hitsToStunSets = GcxEditor.FindAllSubArray(gcxContents, hitsToStunSetBytes);
                 foreach (int hitsToStunSet in hitsToStunSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.HitsToStun), 0, gcxContents, hitsToStunSet + 0x5, 1);
+                    Array.Copy(BitConverter.GetBytes(guardValues.HitsToStun), 0, gcxContents, hitsToStunSet + hitsToStunSetBytes.Length, 1);
 
                 List<int> sleepDurationSets = GcxEditor.FindAllSubArray(gcxContents, sleepDurationSetBytes);
                 foreach (int normalVisionSet in sleepDurationSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.SleepDuration), 0, gcxContents, normalVisionSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.SleepDuration), 0, gcxContents, normalVisionSet + sleepDurationSetBytes.Length, 2);
 
                 List<int> stunDurationSets = GcxEditor.FindAllSubArray(gcxContents, stunVisionSetBytes);
                 foreach (int normalVisionSet in stunDurationSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.StunDuration), 0, gcxContents, normalVisionSet + 0x6, 2);
+                    Array.Copy(BitConverter.GetBytes(guardValues.StunDuration), 0, gcxContents, normalVisionSet + stunVisionSetBytes.Length, 2);
 
                 List<int> unknown1Sets = GcxEditor.FindAllSubArray(gcxContents, unknown1SetBytes);
                 foreach (int unknown1Set in unknown1Sets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.Unknown1), 0, gcxContents, unknown1Set + 0x5, 1);
+                    Array.Copy(BitConverter.GetBytes(guardValues.Unknown1), 0, gcxContents, unknown1Set + unknown1SetBytes.Length, 1);
 
                 List<int> unknown2Sets = GcxEditor.FindAllSubArray(gcxContents, unknown2SetBytes);
                 foreach (int unknown2Set in unknown2Sets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.Unknown2), 0, gcxContents, unknown2Set + 0x5, 1);
+                    Array.Copy(BitConverter.GetBytes(guardValues.Unknown2), 0, gcxContents, unknown2Set + unknown2SetBytes.Length, 1);
 
                 if (!levelConsistency)
                 {
@@ -2930,17 +2930,31 @@ namespace MGS2_Randomizer
                 if (!openedFiles.ContainsKey(spawnToEdit.Key.GcxFile))
                 {
                     gcx_Editor = new GcxEditor();
-                    gcx_Editor.CallDecompiler(gcxFile);
-                    List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                    spawns = new List<DecodedProc>();
-                    foreach (DecodedProc entry in allFileFunctions)
+                    try
                     {
-                        if (ContainsSpawningFunctions(entry))
-                            spawns.Add(entry);
+                        gcx_Editor.CallDecompiler(gcxFile);
                     }
-                    AddAllProcs(gcx_Editor);
-                    procEditor = new ProcEditor(spawns, true);
-                    openedFiles.Add(spawnToEdit.Key.GcxFile, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                    catch(Exception e)
+                    {
+                        throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
+                    }
+                    try
+                    {
+                        List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
+                        spawns = new List<DecodedProc>();
+                        foreach (DecodedProc entry in allFileFunctions)
+                        {
+                            if (ContainsSpawningFunctions(entry))
+                                spawns.Add(entry);
+                        }
+                        AddAllProcs(gcx_Editor);
+                        procEditor = new ProcEditor(spawns, true);
+                        openedFiles.Add(spawnToEdit.Key.GcxFile, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
+                    }
                 }
                 else
                 {
@@ -2952,7 +2966,7 @@ namespace MGS2_Randomizer
 
                 cheatSheet += $"{spawnToEdit.Key.GcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
                 procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                procEditor.SaveAutomatedChanges();
+                procEditor.SaveAutomatedChangesToMemory();
                 if (spawnToEdit.Key.SisterSpawn != null)
                 {
                     //TODO: implement sister spawn duplication better
@@ -2960,17 +2974,31 @@ namespace MGS2_Randomizer
                     if (!openedFiles.ContainsKey(spawnToEdit.Key.SisterSpawn))
                     {
                         gcx_Editor = new GcxEditor();
-                        gcx_Editor.CallDecompiler(gcxFile);
-                        List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                        spawns = new List<DecodedProc>();
-                        foreach (DecodedProc entry in allFileFunctions)
+                        try
                         {
-                            if (ContainsSpawningFunctions(entry))
-                                spawns.Add(entry);
+                            gcx_Editor.CallDecompiler(gcxFile);
                         }
-                        AddAllProcs(gcx_Editor);
-                        procEditor = new ProcEditor(spawns, true);
-                        openedFiles.Add(spawnToEdit.Key.SisterSpawn, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                        catch (Exception e)
+                        {
+                            throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
+                        }
+                        try
+                        {
+                            List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
+                            spawns = new List<DecodedProc>();
+                            foreach (DecodedProc entry in allFileFunctions)
+                            {
+                                if (ContainsSpawningFunctions(entry))
+                                    spawns.Add(entry);
+                            }
+                            AddAllProcs(gcx_Editor);
+                            procEditor = new ProcEditor(spawns, true);
+                            openedFiles.Add(spawnToEdit.Key.SisterSpawn, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                        }
+                        catch (Exception e)
+                        {
+                            throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
+                        }
                     }
                     else
                     {
@@ -2982,7 +3010,7 @@ namespace MGS2_Randomizer
 
                     cheatSheet += $"{spawnToEdit.Key.SisterSpawn}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a  {spawnToEdit.Value.Name}\n";
                     procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                    procEditor.SaveAutomatedChanges();
+                    procEditor.SaveAutomatedChangesToMemory();
                 }
             }
 
@@ -2996,17 +3024,31 @@ namespace MGS2_Randomizer
                 if (!openedFiles.ContainsKey(spawnToEdit.Key.GcxFile))
                 {
                     gcx_Editor = new GcxEditor();
-                    gcx_Editor.CallDecompiler(gcxFile);
-                    List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                    spawns = new List<DecodedProc>();
-                    foreach (DecodedProc entry in allFileFunctions)
+                    try
                     {
-                        if (ContainsSpawningFunctions(entry))
-                            spawns.Add(entry);
+                        gcx_Editor.CallDecompiler(gcxFile);
                     }
-                    AddAllProcs(gcx_Editor);
-                    procEditor = new ProcEditor(spawns, true);
-                    openedFiles.Add(spawnToEdit.Key.GcxFile, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                    catch (Exception e)
+                    {
+                        throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
+                    }
+                    try
+                    {
+                        List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
+                        spawns = new List<DecodedProc>();
+                        foreach (DecodedProc entry in allFileFunctions)
+                        {
+                            if (ContainsSpawningFunctions(entry))
+                                spawns.Add(entry);
+                        }
+                        AddAllProcs(gcx_Editor);
+                        procEditor = new ProcEditor(spawns, true);
+                        openedFiles.Add(spawnToEdit.Key.GcxFile, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                    }
+                    catch (Exception e)
+                    {
+                        throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
+                    }
                 }
                 else
                 {
@@ -3018,7 +3060,7 @@ namespace MGS2_Randomizer
 
                 cheatSheet += $"{spawnToEdit.Key.GcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
                 procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                procEditor.SaveAutomatedChanges();
+                procEditor.SaveAutomatedChangesToMemory();
                 if (spawnToEdit.Key.SisterSpawn != null)
                 {
                     //TODO: implement sister spawn duplication better
@@ -3026,17 +3068,31 @@ namespace MGS2_Randomizer
                     if (!openedFiles.ContainsKey(spawnToEdit.Key.SisterSpawn))
                     {
                         gcx_Editor = new GcxEditor();
-                        gcx_Editor.CallDecompiler(gcxFile);
-                        List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                        spawns = new List<DecodedProc>();
-                        foreach (DecodedProc entry in allFileFunctions)
+                        try
                         {
-                            if (ContainsSpawningFunctions(entry))
-                                spawns.Add(entry);
+                            gcx_Editor.CallDecompiler(gcxFile);
                         }
-                        AddAllProcs(gcx_Editor);
-                        procEditor = new ProcEditor(spawns, true);
-                        openedFiles.Add(spawnToEdit.Key.SisterSpawn, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                        catch (Exception e)
+                        {
+                            throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
+                        }
+                        try
+                        {
+                            List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
+                            spawns = new List<DecodedProc>();
+                            foreach (DecodedProc entry in allFileFunctions)
+                            {
+                                if (ContainsSpawningFunctions(entry))
+                                    spawns.Add(entry);
+                            }
+                            AddAllProcs(gcx_Editor);
+                            procEditor = new ProcEditor(spawns, true);
+                            openedFiles.Add(spawnToEdit.Key.SisterSpawn, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+                        }
+                        catch (Exception e)
+                        {
+                            throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
+                        }
                     }
                     else
                     {
@@ -3048,7 +3104,7 @@ namespace MGS2_Randomizer
 
                     cheatSheet += $"{spawnToEdit.Key.SisterSpawn}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
                     procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                    procEditor.SaveAutomatedChanges();
+                    procEditor.SaveAutomatedChangesToMemory();
                 }
             }
 
