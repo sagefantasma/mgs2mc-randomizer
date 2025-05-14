@@ -41,31 +41,31 @@
             this.mgs2ExeTextBox = new System.Windows.Forms.TextBox();
             this.browseButton = new System.Windows.Forms.Button();
             this.optionsGroupBox = new System.Windows.Forms.GroupBox();
-            this.randomizeStartingItemsCheckbox = new System.Windows.Forms.CheckBox();
-            this.allWeaponsWillSpawnCheckbox = new System.Windows.Forms.CheckBox();
-            this.randomizeRationsCheckbox = new System.Windows.Forms.CheckBox();
-            this.randomizeEFConnectingBridgeClaymores = new System.Windows.Forms.CheckBox();
+            this.worldRandoGroupBox = new System.Windows.Forms.GroupBox();
             this.randomizeBombLocations = new System.Windows.Forms.CheckBox();
-            this.randomizeAutomaticRewardsCheckbox = new System.Windows.Forms.CheckBox();
-            this.restrictNikitaCheckbox = new System.Windows.Forms.CheckBox();
+            this.randomizeTankerControlUnitLocations = new System.Windows.Forms.CheckBox();
+            this.randomizeEFConnectingBridgeClaymores = new System.Windows.Forms.CheckBox();
+            this.itemRandoGroupBox = new System.Windows.Forms.GroupBox();
+            this.randomizeSpawnsCheckbox = new System.Windows.Forms.CheckBox();
             this.seedAlwaysBeatableCheckbox = new System.Windows.Forms.CheckBox();
+            this.restrictNikitaCheckbox = new System.Windows.Forms.CheckBox();
+            this.keepVanillaCardLevelsCheckbox = new System.Windows.Forms.CheckBox();
+            this.randomizeRationsCheckbox = new System.Windows.Forms.CheckBox();
+            this.addCardsCheckbox = new System.Windows.Forms.CheckBox();
+            this.allWeaponsWillSpawnCheckbox = new System.Windows.Forms.CheckBox();
+            this.randomizeStartingItemsCheckbox = new System.Windows.Forms.CheckBox();
+            this.randomizeAutomaticRewardsCheckbox = new System.Windows.Forms.CheckBox();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kofiButton = new System.Windows.Forms.Button();
-            this.randomizeTankerControlUnitLocations = new System.Windows.Forms.CheckBox();
-            this.keepVanillaCardLevelsCheckbox = new System.Windows.Forms.CheckBox();
-            this.addCardsCheckbox = new System.Windows.Forms.CheckBox();
-            this.itemRandoGroupBox = new System.Windows.Forms.GroupBox();
-            this.worldRandoGroupBox = new System.Windows.Forms.GroupBox();
-            this.randomizeSpawnsCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.optionsGroupBox.SuspendLayout();
-            this.menuStrip2.SuspendLayout();
-            this.itemRandoGroupBox.SuspendLayout();
             this.worldRandoGroupBox.SuspendLayout();
+            this.itemRandoGroupBox.SuspendLayout();
+            this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // randomizeButton
@@ -196,54 +196,18 @@
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
             // 
-            // randomizeStartingItemsCheckbox
+            // worldRandoGroupBox
             // 
-            this.randomizeStartingItemsCheckbox.AutoSize = true;
-            this.randomizeStartingItemsCheckbox.Enabled = false;
-            this.randomizeStartingItemsCheckbox.Location = new System.Drawing.Point(9, 134);
-            this.randomizeStartingItemsCheckbox.Name = "randomizeStartingItemsCheckbox";
-            this.randomizeStartingItemsCheckbox.Size = new System.Drawing.Size(146, 17);
-            this.randomizeStartingItemsCheckbox.TabIndex = 7;
-            this.randomizeStartingItemsCheckbox.Text = "Randomize Starting Items";
-            this.randomizeStartingItemsCheckbox.UseVisualStyleBackColor = true;
-            this.randomizeStartingItemsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeStartingItemsCheckbox_CheckedChanged);
-            // 
-            // allWeaponsWillSpawnCheckbox
-            // 
-            this.allWeaponsWillSpawnCheckbox.AutoSize = true;
-            this.allWeaponsWillSpawnCheckbox.Enabled = false;
-            this.allWeaponsWillSpawnCheckbox.Location = new System.Drawing.Point(9, 88);
-            this.allWeaponsWillSpawnCheckbox.Name = "allWeaponsWillSpawnCheckbox";
-            this.allWeaponsWillSpawnCheckbox.Size = new System.Drawing.Size(142, 17);
-            this.allWeaponsWillSpawnCheckbox.TabIndex = 6;
-            this.allWeaponsWillSpawnCheckbox.Text = "All Weapons Will Spawn";
-            this.allWeaponsWillSpawnCheckbox.UseVisualStyleBackColor = true;
-            this.allWeaponsWillSpawnCheckbox.CheckedChanged += new System.EventHandler(this.allWeaponsWillSpawnCheckbox_CheckedChanged);
-            // 
-            // randomizeRationsCheckbox
-            // 
-            this.randomizeRationsCheckbox.AutoSize = true;
-            this.randomizeRationsCheckbox.Checked = true;
-            this.randomizeRationsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.randomizeRationsCheckbox.Enabled = false;
-            this.randomizeRationsCheckbox.Location = new System.Drawing.Point(9, 111);
-            this.randomizeRationsCheckbox.Name = "randomizeRationsCheckbox";
-            this.randomizeRationsCheckbox.Size = new System.Drawing.Size(118, 17);
-            this.randomizeRationsCheckbox.TabIndex = 5;
-            this.randomizeRationsCheckbox.Text = "Randomize Rations";
-            this.randomizeRationsCheckbox.UseVisualStyleBackColor = true;
-            this.randomizeRationsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeRationsCheckbox_CheckedChanged);
-            // 
-            // randomizeEFConnectingBridgeClaymores
-            // 
-            this.randomizeEFConnectingBridgeClaymores.AutoSize = true;
-            this.randomizeEFConnectingBridgeClaymores.Location = new System.Drawing.Point(9, 42);
-            this.randomizeEFConnectingBridgeClaymores.Name = "randomizeEFConnectingBridgeClaymores";
-            this.randomizeEFConnectingBridgeClaymores.Size = new System.Drawing.Size(236, 17);
-            this.randomizeEFConnectingBridgeClaymores.TabIndex = 4;
-            this.randomizeEFConnectingBridgeClaymores.Text = "Randomize EF Connecting Bridge Claymores";
-            this.randomizeEFConnectingBridgeClaymores.UseVisualStyleBackColor = true;
-            this.randomizeEFConnectingBridgeClaymores.CheckedChanged += new System.EventHandler(this.randomizeEFConnectingBridgeClaymores_CheckedChanged);
+            this.worldRandoGroupBox.Controls.Add(this.randomizeBombLocations);
+            this.worldRandoGroupBox.Controls.Add(this.randomizeTankerControlUnitLocations);
+            this.worldRandoGroupBox.Controls.Add(this.randomizeEFConnectingBridgeClaymores);
+            this.worldRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.worldRandoGroupBox.Location = new System.Drawing.Point(3, 256);
+            this.worldRandoGroupBox.Name = "worldRandoGroupBox";
+            this.worldRandoGroupBox.Size = new System.Drawing.Size(348, 87);
+            this.worldRandoGroupBox.TabIndex = 15;
+            this.worldRandoGroupBox.TabStop = false;
+            this.worldRandoGroupBox.Text = "World Randomization";
             // 
             // randomizeBombLocations
             // 
@@ -256,17 +220,71 @@
             this.randomizeBombLocations.UseVisualStyleBackColor = true;
             this.randomizeBombLocations.CheckedChanged += new System.EventHandler(this.randomizeBombLocations_CheckedChanged);
             // 
-            // randomizeAutomaticRewardsCheckbox
+            // randomizeTankerControlUnitLocations
             // 
-            this.randomizeAutomaticRewardsCheckbox.AutoSize = true;
-            this.randomizeAutomaticRewardsCheckbox.Enabled = false;
-            this.randomizeAutomaticRewardsCheckbox.Location = new System.Drawing.Point(9, 157);
-            this.randomizeAutomaticRewardsCheckbox.Name = "randomizeAutomaticRewardsCheckbox";
-            this.randomizeAutomaticRewardsCheckbox.Size = new System.Drawing.Size(290, 17);
-            this.randomizeAutomaticRewardsCheckbox.TabIndex = 2;
-            this.randomizeAutomaticRewardsCheckbox.Text = "Randomize Automatic Rewards(Does not include Cards)";
-            this.randomizeAutomaticRewardsCheckbox.UseVisualStyleBackColor = true;
-            this.randomizeAutomaticRewardsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeAutomaticRewardsCheckbox_CheckedChanged);
+            this.randomizeTankerControlUnitLocations.AutoSize = true;
+            this.randomizeTankerControlUnitLocations.Location = new System.Drawing.Point(9, 65);
+            this.randomizeTankerControlUnitLocations.Name = "randomizeTankerControlUnitLocations";
+            this.randomizeTankerControlUnitLocations.Size = new System.Drawing.Size(179, 17);
+            this.randomizeTankerControlUnitLocations.TabIndex = 13;
+            this.randomizeTankerControlUnitLocations.Text = "Randomize Tanker Control Units";
+            this.randomizeTankerControlUnitLocations.UseVisualStyleBackColor = true;
+            this.randomizeTankerControlUnitLocations.CheckedChanged += new System.EventHandler(this.randomizeTankerControlUnitLocations_CheckedChanged);
+            // 
+            // randomizeEFConnectingBridgeClaymores
+            // 
+            this.randomizeEFConnectingBridgeClaymores.AutoSize = true;
+            this.randomizeEFConnectingBridgeClaymores.Location = new System.Drawing.Point(9, 42);
+            this.randomizeEFConnectingBridgeClaymores.Name = "randomizeEFConnectingBridgeClaymores";
+            this.randomizeEFConnectingBridgeClaymores.Size = new System.Drawing.Size(236, 17);
+            this.randomizeEFConnectingBridgeClaymores.TabIndex = 4;
+            this.randomizeEFConnectingBridgeClaymores.Text = "Randomize EF Connecting Bridge Claymores";
+            this.randomizeEFConnectingBridgeClaymores.UseVisualStyleBackColor = true;
+            this.randomizeEFConnectingBridgeClaymores.CheckedChanged += new System.EventHandler(this.randomizeEFConnectingBridgeClaymores_CheckedChanged);
+            // 
+            // itemRandoGroupBox
+            // 
+            this.itemRandoGroupBox.Controls.Add(this.randomizeSpawnsCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.seedAlwaysBeatableCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.restrictNikitaCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.keepVanillaCardLevelsCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.randomizeRationsCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.addCardsCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.allWeaponsWillSpawnCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.randomizeStartingItemsCheckbox);
+            this.itemRandoGroupBox.Controls.Add(this.randomizeAutomaticRewardsCheckbox);
+            this.itemRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.itemRandoGroupBox.Location = new System.Drawing.Point(3, 16);
+            this.itemRandoGroupBox.Name = "itemRandoGroupBox";
+            this.itemRandoGroupBox.Size = new System.Drawing.Size(348, 240);
+            this.itemRandoGroupBox.TabIndex = 14;
+            this.itemRandoGroupBox.TabStop = false;
+            this.itemRandoGroupBox.Text = "Item Randomization";
+            // 
+            // randomizeSpawnsCheckbox
+            // 
+            this.randomizeSpawnsCheckbox.AutoSize = true;
+            this.randomizeSpawnsCheckbox.Location = new System.Drawing.Point(9, 19);
+            this.randomizeSpawnsCheckbox.Name = "randomizeSpawnsCheckbox";
+            this.randomizeSpawnsCheckbox.Size = new System.Drawing.Size(156, 17);
+            this.randomizeSpawnsCheckbox.TabIndex = 13;
+            this.randomizeSpawnsCheckbox.Text = "Randomize Pickup Spawns";
+            this.randomizeSpawnsCheckbox.UseVisualStyleBackColor = true;
+            this.randomizeSpawnsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeSpawnsCheckbox_CheckedChanged);
+            // 
+            // seedAlwaysBeatableCheckbox
+            // 
+            this.seedAlwaysBeatableCheckbox.AutoSize = true;
+            this.seedAlwaysBeatableCheckbox.Checked = true;
+            this.seedAlwaysBeatableCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.seedAlwaysBeatableCheckbox.Enabled = false;
+            this.seedAlwaysBeatableCheckbox.Location = new System.Drawing.Point(9, 42);
+            this.seedAlwaysBeatableCheckbox.Name = "seedAlwaysBeatableCheckbox";
+            this.seedAlwaysBeatableCheckbox.Size = new System.Drawing.Size(132, 17);
+            this.seedAlwaysBeatableCheckbox.TabIndex = 0;
+            this.seedAlwaysBeatableCheckbox.Text = "Seed Always Beatable";
+            this.seedAlwaysBeatableCheckbox.UseVisualStyleBackColor = true;
+            this.seedAlwaysBeatableCheckbox.CheckedChanged += new System.EventHandler(this.seedAlwaysBeatableCheckbox_CheckedChanged);
             // 
             // restrictNikitaCheckbox
             // 
@@ -282,19 +300,79 @@
             this.restrictNikitaCheckbox.UseVisualStyleBackColor = true;
             this.restrictNikitaCheckbox.CheckedChanged += new System.EventHandler(this.restrictNikitaCheckbox_CheckedChanged);
             // 
-            // seedAlwaysBeatableCheckbox
+            // keepVanillaCardLevelsCheckbox
             // 
-            this.seedAlwaysBeatableCheckbox.AutoSize = true;
-            this.seedAlwaysBeatableCheckbox.Checked = true;
-            this.seedAlwaysBeatableCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.seedAlwaysBeatableCheckbox.Enabled = false;
-            this.seedAlwaysBeatableCheckbox.Location = new System.Drawing.Point(9, 42);
-            this.seedAlwaysBeatableCheckbox.Name = "seedAlwaysBeatableCheckbox";
-            this.seedAlwaysBeatableCheckbox.Size = new System.Drawing.Size(132, 17);
-            this.seedAlwaysBeatableCheckbox.TabIndex = 0;
-            this.seedAlwaysBeatableCheckbox.Text = "Seed Always Beatable";
-            this.seedAlwaysBeatableCheckbox.UseVisualStyleBackColor = true;
-            this.seedAlwaysBeatableCheckbox.CheckedChanged += new System.EventHandler(this.seedAlwaysBeatableCheckbox_CheckedChanged);
+            this.keepVanillaCardLevelsCheckbox.AutoSize = true;
+            this.keepVanillaCardLevelsCheckbox.Enabled = false;
+            this.keepVanillaCardLevelsCheckbox.Location = new System.Drawing.Point(9, 203);
+            this.keepVanillaCardLevelsCheckbox.Name = "keepVanillaCardLevelsCheckbox";
+            this.keepVanillaCardLevelsCheckbox.Size = new System.Drawing.Size(221, 17);
+            this.keepVanillaCardLevelsCheckbox.TabIndex = 12;
+            this.keepVanillaCardLevelsCheckbox.Text = "Keep Unique Items to Vanilla Card Levels";
+            this.keepVanillaCardLevelsCheckbox.UseVisualStyleBackColor = true;
+            this.keepVanillaCardLevelsCheckbox.CheckedChanged += new System.EventHandler(this.keepVanillaCardLevelsCheckbox_CheckedChanged);
+            // 
+            // randomizeRationsCheckbox
+            // 
+            this.randomizeRationsCheckbox.AutoSize = true;
+            this.randomizeRationsCheckbox.Checked = true;
+            this.randomizeRationsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.randomizeRationsCheckbox.Enabled = false;
+            this.randomizeRationsCheckbox.Location = new System.Drawing.Point(9, 111);
+            this.randomizeRationsCheckbox.Name = "randomizeRationsCheckbox";
+            this.randomizeRationsCheckbox.Size = new System.Drawing.Size(118, 17);
+            this.randomizeRationsCheckbox.TabIndex = 5;
+            this.randomizeRationsCheckbox.Text = "Randomize Rations";
+            this.randomizeRationsCheckbox.UseVisualStyleBackColor = true;
+            this.randomizeRationsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeRationsCheckbox_CheckedChanged);
+            // 
+            // addCardsCheckbox
+            // 
+            this.addCardsCheckbox.AutoSize = true;
+            this.addCardsCheckbox.Enabled = false;
+            this.addCardsCheckbox.Location = new System.Drawing.Point(9, 180);
+            this.addCardsCheckbox.Name = "addCardsCheckbox";
+            this.addCardsCheckbox.Size = new System.Drawing.Size(184, 17);
+            this.addCardsCheckbox.TabIndex = 11;
+            this.addCardsCheckbox.Text = "Add Cards to Randomization Pool";
+            this.addCardsCheckbox.UseVisualStyleBackColor = true;
+            this.addCardsCheckbox.CheckedChanged += new System.EventHandler(this.addCardsCheckbox_CheckedChanged);
+            // 
+            // allWeaponsWillSpawnCheckbox
+            // 
+            this.allWeaponsWillSpawnCheckbox.AutoSize = true;
+            this.allWeaponsWillSpawnCheckbox.Enabled = false;
+            this.allWeaponsWillSpawnCheckbox.Location = new System.Drawing.Point(9, 88);
+            this.allWeaponsWillSpawnCheckbox.Name = "allWeaponsWillSpawnCheckbox";
+            this.allWeaponsWillSpawnCheckbox.Size = new System.Drawing.Size(142, 17);
+            this.allWeaponsWillSpawnCheckbox.TabIndex = 6;
+            this.allWeaponsWillSpawnCheckbox.Text = "All Weapons Will Spawn";
+            this.allWeaponsWillSpawnCheckbox.UseVisualStyleBackColor = true;
+            this.allWeaponsWillSpawnCheckbox.CheckedChanged += new System.EventHandler(this.allWeaponsWillSpawnCheckbox_CheckedChanged);
+            // 
+            // randomizeStartingItemsCheckbox
+            // 
+            this.randomizeStartingItemsCheckbox.AutoSize = true;
+            this.randomizeStartingItemsCheckbox.Enabled = false;
+            this.randomizeStartingItemsCheckbox.Location = new System.Drawing.Point(9, 134);
+            this.randomizeStartingItemsCheckbox.Name = "randomizeStartingItemsCheckbox";
+            this.randomizeStartingItemsCheckbox.Size = new System.Drawing.Size(146, 17);
+            this.randomizeStartingItemsCheckbox.TabIndex = 7;
+            this.randomizeStartingItemsCheckbox.Text = "Randomize Starting Items";
+            this.randomizeStartingItemsCheckbox.UseVisualStyleBackColor = true;
+            this.randomizeStartingItemsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeStartingItemsCheckbox_CheckedChanged);
+            // 
+            // randomizeAutomaticRewardsCheckbox
+            // 
+            this.randomizeAutomaticRewardsCheckbox.AutoSize = true;
+            this.randomizeAutomaticRewardsCheckbox.Enabled = false;
+            this.randomizeAutomaticRewardsCheckbox.Location = new System.Drawing.Point(9, 157);
+            this.randomizeAutomaticRewardsCheckbox.Name = "randomizeAutomaticRewardsCheckbox";
+            this.randomizeAutomaticRewardsCheckbox.Size = new System.Drawing.Size(290, 17);
+            this.randomizeAutomaticRewardsCheckbox.TabIndex = 2;
+            this.randomizeAutomaticRewardsCheckbox.Text = "Randomize Automatic Rewards(Does not include Cards)";
+            this.randomizeAutomaticRewardsCheckbox.UseVisualStyleBackColor = true;
+            this.randomizeAutomaticRewardsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeAutomaticRewardsCheckbox_CheckedChanged);
             // 
             // menuStrip2
             // 
@@ -318,7 +396,7 @@
             // reportBugMenuItem
             // 
             this.reportBugMenuItem.Name = "reportBugMenuItem";
-            this.reportBugMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.reportBugMenuItem.Size = new System.Drawing.Size(142, 22);
             this.reportBugMenuItem.Text = "Report a Bug";
             this.reportBugMenuItem.Click += new System.EventHandler(this.ReportABug_Click);
             // 
@@ -332,84 +410,6 @@
             this.kofiButton.TabIndex = 11;
             this.kofiButton.UseVisualStyleBackColor = true;
             this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
-            // 
-            // randomizeTankerControlUnitLocations
-            // 
-            this.randomizeTankerControlUnitLocations.AutoSize = true;
-            this.randomizeTankerControlUnitLocations.Location = new System.Drawing.Point(9, 65);
-            this.randomizeTankerControlUnitLocations.Name = "randomizeTankerControlUnitLocations";
-            this.randomizeTankerControlUnitLocations.Size = new System.Drawing.Size(179, 17);
-            this.randomizeTankerControlUnitLocations.TabIndex = 13;
-            this.randomizeTankerControlUnitLocations.Text = "Randomize Tanker Control Units";
-            this.randomizeTankerControlUnitLocations.UseVisualStyleBackColor = true;
-            this.randomizeTankerControlUnitLocations.CheckedChanged += new System.EventHandler(this.randomizeTankerControlUnitLocations_CheckedChanged);
-            // 
-            // keepVanillaCardLevelsCheckbox
-            // 
-            this.keepVanillaCardLevelsCheckbox.AutoSize = true;
-            this.keepVanillaCardLevelsCheckbox.Enabled = false;
-            this.keepVanillaCardLevelsCheckbox.Location = new System.Drawing.Point(9, 203);
-            this.keepVanillaCardLevelsCheckbox.Name = "keepVanillaCardLevelsCheckbox";
-            this.keepVanillaCardLevelsCheckbox.Size = new System.Drawing.Size(221, 17);
-            this.keepVanillaCardLevelsCheckbox.TabIndex = 12;
-            this.keepVanillaCardLevelsCheckbox.Text = "Keep Unique Items to Vanilla Card Levels";
-            this.keepVanillaCardLevelsCheckbox.UseVisualStyleBackColor = true;
-            this.keepVanillaCardLevelsCheckbox.CheckedChanged += new System.EventHandler(this.keepVanillaCardLevelsCheckbox_CheckedChanged);
-            // 
-            // addCardsCheckbox
-            // 
-            this.addCardsCheckbox.AutoSize = true;
-            this.addCardsCheckbox.Enabled = false;
-            this.addCardsCheckbox.Location = new System.Drawing.Point(9, 180);
-            this.addCardsCheckbox.Name = "addCardsCheckbox";
-            this.addCardsCheckbox.Size = new System.Drawing.Size(184, 17);
-            this.addCardsCheckbox.TabIndex = 11;
-            this.addCardsCheckbox.Text = "Add Cards to Randomization Pool";
-            this.addCardsCheckbox.UseVisualStyleBackColor = true;
-            this.addCardsCheckbox.CheckedChanged += new System.EventHandler(this.addCardsCheckbox_CheckedChanged);
-            // 
-            // itemRandoGroupBox
-            // 
-            this.itemRandoGroupBox.Controls.Add(this.randomizeSpawnsCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.seedAlwaysBeatableCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.restrictNikitaCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.keepVanillaCardLevelsCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.randomizeRationsCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.addCardsCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.allWeaponsWillSpawnCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.randomizeStartingItemsCheckbox);
-            this.itemRandoGroupBox.Controls.Add(this.randomizeAutomaticRewardsCheckbox);
-            this.itemRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.itemRandoGroupBox.Location = new System.Drawing.Point(3, 16);
-            this.itemRandoGroupBox.Name = "itemRandoGroupBox";
-            this.itemRandoGroupBox.Size = new System.Drawing.Size(348, 240);
-            this.itemRandoGroupBox.TabIndex = 14;
-            this.itemRandoGroupBox.TabStop = false;
-            this.itemRandoGroupBox.Text = "Item Randomization";
-            // 
-            // worldRandoGroupBox
-            // 
-            this.worldRandoGroupBox.Controls.Add(this.randomizeBombLocations);
-            this.worldRandoGroupBox.Controls.Add(this.randomizeTankerControlUnitLocations);
-            this.worldRandoGroupBox.Controls.Add(this.randomizeEFConnectingBridgeClaymores);
-            this.worldRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.worldRandoGroupBox.Location = new System.Drawing.Point(3, 256);
-            this.worldRandoGroupBox.Name = "worldRandoGroupBox";
-            this.worldRandoGroupBox.Size = new System.Drawing.Size(348, 87);
-            this.worldRandoGroupBox.TabIndex = 15;
-            this.worldRandoGroupBox.TabStop = false;
-            this.worldRandoGroupBox.Text = "World Randomization";
-            // 
-            // randomizeSpawnsCheckbox
-            // 
-            this.randomizeSpawnsCheckbox.AutoSize = true;
-            this.randomizeSpawnsCheckbox.Location = new System.Drawing.Point(9, 19);
-            this.randomizeSpawnsCheckbox.Name = "randomizeSpawnsCheckbox";
-            this.randomizeSpawnsCheckbox.Size = new System.Drawing.Size(156, 17);
-            this.randomizeSpawnsCheckbox.TabIndex = 13;
-            this.randomizeSpawnsCheckbox.Text = "Randomize Pickup Spawns";
-            this.randomizeSpawnsCheckbox.UseVisualStyleBackColor = true;
-            this.randomizeSpawnsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeSpawnsCheckbox_CheckedChanged);
             // 
             // RandomizationForm
             // 
@@ -436,12 +436,12 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.optionsGroupBox.ResumeLayout(false);
-            this.menuStrip2.ResumeLayout(false);
-            this.menuStrip2.PerformLayout();
-            this.itemRandoGroupBox.ResumeLayout(false);
-            this.itemRandoGroupBox.PerformLayout();
             this.worldRandoGroupBox.ResumeLayout(false);
             this.worldRandoGroupBox.PerformLayout();
+            this.itemRandoGroupBox.ResumeLayout(false);
+            this.itemRandoGroupBox.PerformLayout();
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
