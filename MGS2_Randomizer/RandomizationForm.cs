@@ -115,7 +115,7 @@ namespace MGS2_Randomizer
                 string configContents = File.ReadAllText(_configLocation);
                 Config config = JsonSerializer.Deserialize<Config>(configContents);
 
-                mgs2ExeTextBox.Text = config.Mgs2ExePath;
+                InstallLocation = config.Mgs2ExePath;
                 DirectoryInfo fileInfo = new DirectoryInfo(config.Mgs2ExePath);
                 InstallLocation = fileInfo.FullName;
                 randomizeSpawnsCheckbox.Checked = config.LastOptionsSelected.RandomizeSpawns;
@@ -167,7 +167,7 @@ namespace MGS2_Randomizer
                 }
                 Config config = new Config
                 {
-                    Mgs2ExePath = mgs2ExeTextBox.Text,
+                    Mgs2ExePath = InstallLocation,
                     LastOptionsSelected = new MGS2Randomizer.RandomizationOptions
                     {
                         RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
@@ -246,9 +246,9 @@ namespace MGS2_Randomizer
         {
             try
             {
-                string executableLocation = mgs2ExeTextBox.Text;
+                string executableLocation = InstallLocation;
 
-                if (string.IsNullOrWhiteSpace(executableLocation) || !File.Exists(executableLocation))
+                if (string.IsNullOrWhiteSpace(executableLocation) || !Directory.Exists(executableLocation))
                 {
                     executableLocation = Environment.CurrentDirectory;
                 }
@@ -258,12 +258,14 @@ namespace MGS2_Randomizer
                     Multiselect = false,
                     Title = "Where is 'METAL GEAR SOLID2.exe' on your machine?",
                     DefaultExt = ".exe",
-                    InitialDirectory = Path.GetDirectoryName(executableLocation)
+                    InitialDirectory = executableLocation
                 };
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     _logger.Verbose($"Updated MGS2 Executable location to: {openFileDialog.FileName}");
-                    mgs2ExeTextBox.Text = openFileDialog.FileName;
+                    FileInfo selectedFileInfo = new FileInfo(openFileDialog.FileName);
+                    InstallLocation = selectedFileInfo.DirectoryName;
+                    UpdateConfig();
                 }
             }
             catch(Exception ex)
