@@ -97,6 +97,17 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetShowHelp(this.randomizeTankerControlUnitLocations, true);
             this.helpProvider1.SetHelpString(this.randomizeTankerControlUnitLocations, "Randomize where control units spawn in the engine room on the Tanker.");
 
+            this.helpProvider1.SetShowHelp(this.randomizeGuardValuesCheckBox, true);
+            this.helpProvider1.SetHelpString(this.randomizeGuardValuesCheckBox, "Randomize guard vision ranges, hearing range, stun resistance, sleep duration, stun duration, etc.");
+
+            this.helpProvider1.SetShowHelp(this.insanityScalarLabel, true);
+            this.helpProvider1.SetHelpString(this.insanityScalarLabel, "Slide this to the left to have smaller randomized results, or to the right to have a larger range. Default position will have the closest values to \"standard\" for vision and hearing range.");
+            this.helpProvider1.SetShowHelp(this.insanityScalarTrackBar, true);
+            this.helpProvider1.SetHelpString(this.insanityScalarTrackBar, "Slide this to the left to have smaller randomized results, or to the right to have a larger range. Default position will have the closest values to \"standard\" for vision and hearing range.");
+
+            this.helpProvider1.SetShowHelp(this.keepGuardValuesConsistentAcrossLevelsCheckbox, true);
+            this.helpProvider1.SetHelpString(this.keepGuardValuesConsistentAcrossLevelsCheckbox, "If guard values are randomized, keep them consistent across all levels instead of differing with each level.");
+
             this.helpProvider1.SetShowHelp(this.restoreBaseGameButton, true);
             this.helpProvider1.SetHelpString(this.restoreBaseGameButton, "Restores the game's files to their 'vanilla' state. If this does not work properly, use Steam to 'Verify integrity of game files' to accomplish the same result.");
         }
@@ -124,6 +135,24 @@ namespace MGS2_Randomizer
                 randomizeTankerControlUnitLocations.Checked = config.LastOptionsSelected.RandomizeTankerControlUnits;
                 addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
                 keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
+                randomizeGuardValuesCheckBox.Checked = config.LastOptionsSelected.RandomizeGuardValues;
+                keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
+
+                if (!randomizeAutomaticRewardsCheckbox.Checked)
+                {
+                    addCardsCheckbox.Checked = false;
+                    addCardsCheckbox.Enabled = false;
+                }
+                if(!addCardsCheckbox.Checked)
+                {
+                    keepVanillaCardLevelsCheckbox.Checked = false;
+                    keepVanillaCardLevelsCheckbox.Enabled = false;
+                }
+                if (!randomizeGuardValuesCheckBox.Checked)
+                {
+                    keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = false;
+                    keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = false;
+                }
                 _logger.Information($"Config loaded successfully!");
             }
             catch(Exception e)
@@ -157,7 +186,9 @@ namespace MGS2_Randomizer
                         RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
                         RandomizeCards = addCardsCheckbox.Checked,
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
-                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
+                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
+                        RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
+                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked
                     }
                 };
 
@@ -179,24 +210,34 @@ namespace MGS2_Randomizer
                 randomizeButton.Enabled = enable;
                 restoreBaseGameButton.Enabled = enable;
                 randomizeSpawnsCheckbox.Enabled = enable;
-                seedAlwaysBeatableCheckbox.Enabled = enable;
-                restrictNikitaCheckbox.Enabled = enable;
-                allWeaponsWillSpawnCheckbox.Enabled = enable;
-                randomizeRationsCheckbox.Enabled = enable;
-                randomizeStartingItemsCheckbox.Enabled = enable;
-                randomizeAutomaticRewardsCheckbox.Enabled = enable;
+                if (randomizeSpawnsCheckbox.Checked)
+                {
+                    seedAlwaysBeatableCheckbox.Enabled = enable;
+                    restrictNikitaCheckbox.Enabled = enable;
+                    allWeaponsWillSpawnCheckbox.Enabled = enable;
+                    randomizeRationsCheckbox.Enabled = enable;
+                    randomizeStartingItemsCheckbox.Enabled = enable;
+                    randomizeAutomaticRewardsCheckbox.Enabled = enable;
+                }
                 randomizeBombLocations.Enabled = enable;
                 randomizeEFConnectingBridgeClaymores.Enabled = enable;
                 randomizeTankerControlUnitLocations.Enabled = enable;
-                if (!enable && randomizeAutomaticRewardsCheckbox.Checked)
+                randomizeGuardValuesCheckBox.Enabled = enable;
+                if (randomizeGuardValuesCheckBox.Checked)
+                {
+                    insanityScalarLabel.Enabled = enable;
+                    insanityScalarTrackBar.Enabled = enable;
+                    keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = enable;
+                }
+                if (randomizeAutomaticRewardsCheckbox.Checked && randomizeAutomaticRewardsCheckbox.Enabled)
                 {
                     addCardsCheckbox.Enabled = enable;
                 }
-                if (!enable && addCardsCheckbox.Checked)
+                if (addCardsCheckbox.Checked && addCardsCheckbox.Enabled)
                 {
                     keepVanillaCardLevelsCheckbox.Enabled = enable;
                 }
-                if (!enable && customSeedCheckbox.Checked)
+                if (customSeedCheckbox.Checked)
                 {
                     seedUpDown.Enabled = enable;
                 }
@@ -275,11 +316,7 @@ namespace MGS2_Randomizer
 
         private void randomizeAutomaticRewardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            addCardsCheckbox.Enabled = randomizeAutomaticRewardsCheckbox.Checked;
-            if (!randomizeAutomaticRewardsCheckbox.Checked)
-            {
-                addCardsCheckbox.Checked = false;
-            }
+            addCardsCheckbox.Enabled = randomizeAutomaticRewardsCheckbox.Checked && randomizeAutomaticRewardsCheckbox.Enabled;
             UpdateConfig();
         }
 
@@ -301,18 +338,12 @@ namespace MGS2_Randomizer
             randomizeRationsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
             randomizeStartingItemsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
             randomizeAutomaticRewardsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
-            addCardsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
-            keepVanillaCardLevelsCheckbox.Enabled = randomizeSpawnsCheckbox.Checked;
             UpdateConfig();
         }
 
         private void addCardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked;
-            if (!addCardsCheckbox.Checked)
-            {
-                keepVanillaCardLevelsCheckbox.Checked = false;
-            }
+            keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked && addCardsCheckbox.Enabled;
             UpdateConfig();
         }
 
@@ -377,7 +408,9 @@ namespace MGS2_Randomizer
                         RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
                         RandomizeCards = addCardsCheckbox.Checked,
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
-                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked
+                        RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
+                        RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
+                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked
                     };
                     _logger.Debug($"Calling randomize item spawns with randomization options: {randomizationOptions}");
                     int seed = 0;
@@ -452,6 +485,49 @@ namespace MGS2_Randomizer
             catch(Exception ex)
             {
 
+            }
+        }
+
+        private void randomizeGuardValuesCheckBox_CheckChanged(object sender, EventArgs e)
+        {
+            keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = randomizeGuardValuesCheckBox.Checked;
+            insanityScalarLabel.Enabled = randomizeGuardValuesCheckBox.Checked;
+            insanityScalarTrackBar.Enabled = randomizeGuardValuesCheckBox.Checked;
+            UpdateConfig();
+        }
+
+        private void keepGuardValuesConsistentAcrossLevelsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
+        }
+
+        private void randomizeAutomaticRewardsCheckbox_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!randomizeAutomaticRewardsCheckbox.Enabled)
+            {
+                addCardsCheckbox.Enabled = false;
+            }
+            else
+            {
+                if (randomizeAutomaticRewardsCheckbox.Checked)
+                {
+                    addCardsCheckbox.Enabled = true;
+                }
+            }
+        }
+
+        private void addCardsCheckbox_EnabledChanged(object sender, EventArgs e)
+        {
+            if (!addCardsCheckbox.Enabled)
+            {
+                keepVanillaCardLevelsCheckbox.Enabled = false;
+            }
+            else
+            {
+                if (addCardsCheckbox.Checked)
+                {
+                    keepVanillaCardLevelsCheckbox.Enabled = true;
+                }
             }
         }
     }
