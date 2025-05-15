@@ -100,6 +100,11 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetShowHelp(this.randomizeGuardValuesCheckBox, true);
             this.helpProvider1.SetHelpString(this.randomizeGuardValuesCheckBox, "Randomize guard vision ranges, hearing range, stun resistance, sleep duration, stun duration, etc.");
 
+            this.helpProvider1.SetShowHelp(this.insanityScalarLabel, true);
+            this.helpProvider1.SetHelpString(this.insanityScalarLabel, "Slide this to the left to have smaller randomized results, or to the right to have a larger range. Default position will have the closest values to \"standard\" for vision and hearing range.");
+            this.helpProvider1.SetShowHelp(this.insanityScalarTrackBar, true);
+            this.helpProvider1.SetHelpString(this.insanityScalarTrackBar, "Slide this to the left to have smaller randomized results, or to the right to have a larger range. Default position will have the closest values to \"standard\" for vision and hearing range.");
+
             this.helpProvider1.SetShowHelp(this.keepGuardValuesConsistentAcrossLevelsCheckbox, true);
             this.helpProvider1.SetHelpString(this.keepGuardValuesConsistentAcrossLevelsCheckbox, "If guard values are randomized, keep them consistent across all levels instead of differing with each level.");
 
@@ -481,6 +486,8 @@ namespace MGS2_Randomizer
         private void randomizeGuardValuesCheckBox_CheckChanged(object sender, EventArgs e)
         {
             keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = randomizeGuardValuesCheckBox.Checked;
+            insanityScalarLabel.Enabled = randomizeGuardValuesCheckBox.Checked;
+            insanityScalarTrackBar.Enabled = randomizeGuardValuesCheckBox.Checked;
             UpdateConfig();
         }
 
