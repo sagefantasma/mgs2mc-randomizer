@@ -210,29 +210,34 @@ namespace MGS2_Randomizer
                 randomizeButton.Enabled = enable;
                 restoreBaseGameButton.Enabled = enable;
                 randomizeSpawnsCheckbox.Enabled = enable;
-                seedAlwaysBeatableCheckbox.Enabled = enable;
-                restrictNikitaCheckbox.Enabled = enable;
-                allWeaponsWillSpawnCheckbox.Enabled = enable;
-                randomizeRationsCheckbox.Enabled = enable;
-                randomizeStartingItemsCheckbox.Enabled = enable;
-                randomizeAutomaticRewardsCheckbox.Enabled = enable;
+                if (randomizeSpawnsCheckbox.Checked)
+                {
+                    seedAlwaysBeatableCheckbox.Enabled = enable;
+                    restrictNikitaCheckbox.Enabled = enable;
+                    allWeaponsWillSpawnCheckbox.Enabled = enable;
+                    randomizeRationsCheckbox.Enabled = enable;
+                    randomizeStartingItemsCheckbox.Enabled = enable;
+                    randomizeAutomaticRewardsCheckbox.Enabled = enable;
+                }
                 randomizeBombLocations.Enabled = enable;
                 randomizeEFConnectingBridgeClaymores.Enabled = enable;
                 randomizeTankerControlUnitLocations.Enabled = enable;
                 randomizeGuardValuesCheckBox.Enabled = enable;
-                if (!enable && randomizeGuardValuesCheckBox.Checked)
+                if (randomizeGuardValuesCheckBox.Checked)
                 {
+                    insanityScalarLabel.Enabled = enable;
+                    insanityScalarTrackBar.Enabled = enable;
                     keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = enable;
                 }
-                if (!enable && randomizeAutomaticRewardsCheckbox.Checked)
+                if (randomizeAutomaticRewardsCheckbox.Checked && randomizeAutomaticRewardsCheckbox.Enabled)
                 {
                     addCardsCheckbox.Enabled = enable;
                 }
-                if (!enable && addCardsCheckbox.Checked)
+                if (addCardsCheckbox.Checked && addCardsCheckbox.Enabled)
                 {
                     keepVanillaCardLevelsCheckbox.Enabled = enable;
                 }
-                if (!enable && customSeedCheckbox.Checked)
+                if (customSeedCheckbox.Checked)
                 {
                     seedUpDown.Enabled = enable;
                 }
@@ -311,7 +316,7 @@ namespace MGS2_Randomizer
 
         private void randomizeAutomaticRewardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            addCardsCheckbox.Enabled = randomizeAutomaticRewardsCheckbox.Checked;
+            addCardsCheckbox.Enabled = randomizeAutomaticRewardsCheckbox.Checked && randomizeAutomaticRewardsCheckbox.Enabled;
             UpdateConfig();
         }
 
@@ -338,7 +343,7 @@ namespace MGS2_Randomizer
 
         private void addCardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked;
+            keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked && addCardsCheckbox.Enabled;
             UpdateConfig();
         }
 
