@@ -1,4 +1,4 @@
-﻿namespace MGS2_Randomizer
+namespace MGS2_Randomizer
 {
     partial class RandomizationForm
     {
