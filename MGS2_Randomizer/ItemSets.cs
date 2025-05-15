@@ -394,10 +394,16 @@ namespace MGS2_Randomizer
         public static readonly ItemSet PlantCard4Set = new ItemSet();
         public static readonly ItemSet PlantCard5Set = new ItemSet();
 
+        private static bool _initialized = false;
+
         public static readonly Dictionary<Item, int> ItemAccessLevels = new Dictionary<Item, int>();
 
         public static void BuildVanillaItems()
         {
+            if (_initialized)
+            {
+                return;
+            }
             #region Tanker
             TankerPart1.Name = "Before Olga";
             TankerPart1.Entities = new Dictionary<Location, Item>();
@@ -962,6 +968,8 @@ namespace MGS2_Randomizer
                 }
             }
             #endregion
+
+            _initialized = true;
         }
     }
 }
