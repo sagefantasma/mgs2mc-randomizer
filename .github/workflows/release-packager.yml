@@ -47,11 +47,11 @@ jobs:
           done
 
       - name: Install 7z
-        if: steps.detect.outputs.release_needed = 'true'
+        if: steps.detect.outputs.release_needed == 'true'
         run: sudo apt-get update && sudo apt-get install -y p7zip-full
 
       - name: Compress version folder
-        if: steps.detect.outputs.release_needed = 'true'
+        if: steps.detect.outputs.release_needed == 'true'
         run: |
           FOLDER="${{ steps.detect.outputs.folder_path }}"
           ARCHIVE_NAME="MGS2_Randomizer_v${{ steps.detect.outputs.version_tag }}.7z"
