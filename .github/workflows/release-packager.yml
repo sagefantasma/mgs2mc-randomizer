@@ -1,0 +1,70 @@
+name: Auto Release on New Version
+
+on:
+  push:
+    branches:
+      - master  
+
+jobs:
+  check-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect new version
+        id: detect
+        run: |
+          echo "Checking for new 'publish' folders..."
+
+          # Get list of added folders in the last commit
+          ADDED_FOLDERS=$(git diff --name-status ${{ github.event.before }} ${{ github.sha }} | grep '^A' | awk '{print $2}' | grep '^clickonce_releases/Application Files/MGS2_Randomizer_' | cut -d/ -f1 | sort -u)
+
+          if [[ -z "$ADDED_FOLDERS" ]]; then
+            echo "No new version added."
+            echo "release_needed=false" >> $GITHUB_OUTPUT
+          else
+            FOLDER=$(echo "$ADDED_DIRS" | head -n 1)
+            VERSION_RAW=$(basename "$FOLDER" | sed 's/^MGS2_Randomizer_//')
+            VERSION_CLEAN=${VERSION_RAW//_/.} # replaces underscores in version with periods
+            
+            echo "New version detected: $FOLDER"
+            echo "release_needed=true" >> $GITHUB_OUTPUT
+            echo "folder_path=$FOLDER" >> $GITHUB_OUTPUT
+            echo "version_raw=$VERSION_RAW" >>$GITHUB_OUTPUT
+            echo "version_tag=$VERSION_CLEAN" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare version files
+        if: steps.detect.outputs.release_needed == 'true'
+        run: |
+          FOLDER="${{ steps.detect.outputs.folder_path }}"
+          echo "Renaming .deploy files in $FOLDER"
+
+          find "$FOLDER" -type f -name "*.deploy" | while read file; do
+            mv "$file" "${file%.deploy}"
+          done
+
+      - name: Install 7z
+        if: steps.detect.outputs.release_needed = 'true'
+        run: sudo apt-get update && sudo apt-get install -y p7zip-full
+
+      - name: Compress version folder
+        if: steps.detect.outputs.release_needed = 'true'
+        run: |
+          FOLDER="${{ steps.detect.outputs.folder_path }}"
+          ARCHIVE_NAME="MGS2_Randomizer_v${{ steps.detect.outputs.version_tag }}.7z"
+          7z a "$ARCHIVE_NAME" "$FOLDER"
+
+      - name: Create GitHub Release
+        if: steps.detect.outputs.release_needed == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.detect.outputs.version_tag }}
+          name: MGS2 Randomizer v${{ steps.detect.outputs.version_tag }} Release
+          body: |
+            Automated release for version: `${{ steps.detect.outputs.version_tag }}`
+          files: MGS2_Randomizer_${{ steps.detect.outputs.version_tag }}.7z
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
