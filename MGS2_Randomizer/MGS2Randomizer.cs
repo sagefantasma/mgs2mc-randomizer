@@ -2191,22 +2191,10 @@ namespace MGS2_Randomizer
                             //iteratively go through spawns in "sequential" order, setting random items to each
                             if (itemsAssigned < _vanillaItems.PlantSet1.Entities.Count)
                             {
-                                /*if (randomChoice.Name == "Sensor B" && options.NoHardLogicLocks)
-                                {
-                                    //if people report this issue, I'll create a new option for "reduce crash risk" and include this and others reported
-                                    //getting the Sensor B before meeting Stillman crashes the game(sometimes?)
-                                    continue;
-                                }*/
                                 _randomizedItems.PlantSet1.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
                             }
                             else if (itemsAssigned < _vanillaItems.PlantSet2.Entities.Count)
                             {
-                                /*if (randomChoice.Name == "Sensor B" && options.NoHardLogicLocks)
-                                {
-                                    //if people report this issue, I'll create a new option for "reduce crash risk" and include this and others reported
-                                    //getting the Sensor B before meeting Stillman crashes the game(sometimes?)
-                                    continue;
-                                }*/
                                 _randomizedItems.PlantSet2.Entities.Add(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key, randomChoice);
                             }
                             else if (itemsAssigned < _vanillaItems.PlantSet3.Entities.Count)
@@ -2489,6 +2477,11 @@ namespace MGS2_Randomizer
                         {
                             throw new RandomizerException("bad randomization seed");
                         }
+
+                        foreach (var entity in _randomizedItems.PlantCard5Set.Entities)
+                        {
+                            _randomizedItems.PlantSet10.Entities[entity.Key] = entity.Value;
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -2501,10 +2494,7 @@ namespace MGS2_Randomizer
                     }
                 }
 
-                foreach (var entity in _randomizedItems.PlantCard5Set.Entities)
-                {
-                    _randomizedItems.PlantSet10.Entities[entity.Key] = entity.Value;
-                }
+                
                 #endregion
             }
 
