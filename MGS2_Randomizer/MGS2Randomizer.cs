@@ -1254,7 +1254,7 @@ namespace MGS2_Randomizer
                     }
 
                     //Set the HP for tengus in this level
-                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xA8 });
+                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xAA });
                     foreach (int tenguSet in tengu2Sets)
                     {
                         Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + 0x6, 2);
