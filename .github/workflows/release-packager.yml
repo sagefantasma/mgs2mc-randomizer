@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'clickonce_releases/Application Files/**'
+    #paths:
+      #- 'clickonce_releases/Application Files/**'
 
 permissions:
   contents: write  # Needed for creating releases and uploading assets
