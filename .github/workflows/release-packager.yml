@@ -3,9 +3,9 @@ name: Auto Release from ClickOnce Folder
 on:
   push:
     branches:
-      - master
-    #paths:
-      #- 'clickonce_releases/Application Files/**'
+      - main
+    paths:
+      - 'clickonce_releases/Application Files/**'
 
 permissions:
   contents: write  # Needed for creating releases and uploading assets
@@ -21,7 +21,7 @@ jobs:
       - name: Install GitHub CLI
         run: |
           sudo apt update
-          sudo apt install -y gh
+          sudo apt install -y gh p7zip-full
 
       - name: Get highest version from folder names
         id: get-version
@@ -29,6 +29,7 @@ jobs:
           echo "Scanning folder versions..."
           cd "clickonce_releases/Application Files"
 
+          # Extract version pattern like 1_1_1_0 -> 1.1.1.0
           VERSIONS=$(find . -maxdepth 1 -mindepth 1 -type d | sed 's|./||' | grep -oE '[0-9]+(_[0-9]+)*$' | sed 's/_/./g')
 
           if [ -z "$VERSIONS" ]; then
@@ -47,12 +48,9 @@ jobs:
           echo "Checking GitHub releases for version: $VERSION"
 
           if gh release list | grep -q "$VERSION"; then
-            echo "✅ A release with version $VERSION already exists."
             echo "exists=true" >> $GITHUB_OUTPUT
           else
-            echo "❌ No release with version $VERSION found."
             echo "exists=false" >> $GITHUB_OUTPUT
-          fi
 
       - name: Stop if release already exists
         if: steps.check-release.outputs.exists == 'true'
@@ -66,39 +64,43 @@ jobs:
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
           BASE_DIR="clickonce_releases/Application Files"
-      
-          # Find target folder full name, e.g. MGS2_Randomizer_1_1_1_0
+
           TARGET_FOLDER=$(find "$BASE_DIR" -maxdepth 1 -type d -name "*${VERSION//./_}" | head -n 1)
           echo "Target folder: $TARGET_FOLDER"
-      
+
           if [ -z "$TARGET_FOLDER" ]; then
             echo "❌ Could not find folder for version $VERSION"
             exit 1
           fi
-      
-          # Rename .deploy files inside target folder
+
+          # Strip .deploy from files inside target folder
           find "$TARGET_FOLDER" -type f -name "*.deploy" | while read FILE; do
             NEW_FILE="${FILE%.deploy}"
             mv "$FILE" "$NEW_FILE"
           done
-      
-          # Install 7zip
-          sudo apt-get update && sudo apt-get install -y p7zip-full
-      
-          # Get just the folder name, without the full path
+
           FOLDER_NAME=$(basename "$TARGET_FOLDER")
-      
-          # Archive only the contents of the target folder (no parent folder in archive)
+
           cd "$BASE_DIR"
-          7z a "MGS2_Randomizer_${VERSION}.7z" "$FOLDER_NAME"/*
-      
-          echo "archive_path=MGS2_Randomizer_${VERSION}.7z" >> $GITHUB_OUTPUT
+
+          ARCHIVE_NAME="MGS2_Randomizer_${VERSION}.7z"
+
+          7z a "../$ARCHIVE_NAME" "$FOLDER_NAME"/*
+
+          echo "archive_path=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Debug - list archive file
+        if: steps.check-release.outputs.exists == 'false'
+        run: |
+          ARCHIVE=${{ steps.archive.outputs.archive_path }}
+          echo "Archive path: $ARCHIVE"
+          ls -l "$ARCHIVE"
 
       - name: Create GitHub Release and upload archive
         if: steps.check-release.outputs.exists == 'false'
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
+          set -o noglob
+
           VERSION=${{ steps.get-version.outputs.version }}
           ARCHIVE=${{ steps.archive.outputs.archive_path }}
           RELEASE_NAME="MGS2 Randomizer v$VERSION"
