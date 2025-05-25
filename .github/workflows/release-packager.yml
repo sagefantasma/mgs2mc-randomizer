@@ -87,9 +87,7 @@ jobs:
 
           # Create archive
           ARCHIVE_NAME="MGS2_Randomizer_${VERSION}.7z"
-          cd "$TARGET_FOLDER"
-          7z a "../../$ARCHIVE_NAME" . -r
-          cd - > /dev/null
+          7z a "../../$ARCHIVE_NAME" "$TARGET_FOLDER"/*
 
           echo "archive_path=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
 
