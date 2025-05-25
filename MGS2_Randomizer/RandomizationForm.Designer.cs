@@ -64,6 +64,7 @@ namespace MGS2_Randomizer
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kofiButton = new System.Windows.Forms.Button();
+            this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
             this.gameInstallLayoutPanel.SuspendLayout();
@@ -477,7 +478,8 @@ namespace MGS2_Randomizer
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reportBugMenuItem});
+            this.reportBugMenuItem,
+            this.changelogToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -502,6 +504,13 @@ namespace MGS2_Randomizer
             this.kofiButton.TabIndex = 11;
             this.kofiButton.UseVisualStyleBackColor = true;
             this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
+            // 
+            // changelogToolStripMenuItem
+            // 
+            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changelogToolStripMenuItem.Text = "Changelog";
+            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
             // RandomizationForm
             // 
@@ -578,6 +587,7 @@ namespace MGS2_Randomizer
         private System.Windows.Forms.CheckBox keepGuardValuesConsistentAcrossLevelsCheckbox;
         private System.Windows.Forms.TrackBar insanityScalarTrackBar;
         private System.Windows.Forms.Label insanityScalarLabel;
+        private System.Windows.Forms.ToolStripMenuItem changelogToolStripMenuItem;
     }
 }
 
