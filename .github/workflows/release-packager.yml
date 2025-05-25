@@ -90,7 +90,7 @@ jobs:
       
           # Archive only the contents of the target folder (no parent folder in archive)
           cd "$BASE_DIR"
-          7z a "../MGS2_Randomizer_${VERSION}.7z" "$FOLDER_NAME"/*
+          7z a "MGS2_Randomizer_${VERSION}.7z" "$FOLDER_NAME"/*
       
           echo "archive_path=MGS2_Randomizer_${VERSION}.7z" >> $GITHUB_OUTPUT
 
