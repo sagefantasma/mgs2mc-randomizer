@@ -41,7 +41,7 @@ jobs:
           NEW_FOUND=$(wc -l < meta/new_folders.txt)
           echo "new_count=$NEW_FOUND" >> $GITHUB_OUTPUT
 
-          FIRST_NEW_FOLDER = $(head -n 1 meta/new_folders.txt)
+          FIRST_NEW_FOLDER=$(head -n 1 meta/new_folders.txt)
           echo "folder_path=$FIRST_NEW_FOLDER" >> $GITHUB_OUTPUT
 
           FOLDER_NAME=$(basename "$FIRST_NEW_FOLDER")
