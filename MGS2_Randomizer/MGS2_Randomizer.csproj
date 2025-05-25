@@ -92,6 +92,7 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="MathNet.Numerics, Version=4.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.9.1\lib\net461\MathNet.Numerics.dll</HintPath>
@@ -157,12 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="RandomizationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RandomizationForm.Designer.cs">
-      <DependentUpon>RandomizationForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GcxEditor.cs" />
     <Compile Include="GcxProcs.cs" />
     <Compile Include="GcxTableMapping.cs" />
@@ -183,11 +178,23 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomizationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RandomizationForm.Designer.cs">
+      <DependentUpon>RandomizationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResourceEditor.cs" />
     <Content Include="AIColonel.ico" />
     <Content Include="mgs2-snake-kept-you-waiting-huh.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="RandomizationForm.ja.resx">
+      <DependentUpon>RandomizationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RandomizationForm.resx">
+      <DependentUpon>RandomizationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="MGS2_Randomizer_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Resources\kofi logo.png" />
@@ -207,9 +214,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RandomizationForm.resx">
-      <DependentUpon>RandomizationForm.cs</DependentUpon>
-    </EmbeddedResource>
     <Content Include="13 Electronica Emma.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
