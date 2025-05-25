@@ -52,6 +52,7 @@ jobs:
           else
             echo "❌ No release with version $VERSION found."
             echo "exists=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Stop if release already exists
         if: steps.check-release.outputs.exists == 'true'
