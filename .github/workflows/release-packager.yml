@@ -93,6 +93,8 @@ jobs:
 
       - name: Create GitHub Release and upload archive
         if: steps.check-release.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
           ARCHIVE=${{ steps.archive.outputs.archive_path }}
