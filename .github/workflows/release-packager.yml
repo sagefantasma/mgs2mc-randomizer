@@ -52,13 +52,12 @@ jobs:
           echo "Extracted version: $VERSION_DOTTED"
           echo "version_number=$VERSION_DOTTED" >> $GITHUB_OUTPUT
 
-      - name: Fail if new folders detected (optional)
-        if: steps.compare.outputs.new_count != '0'
+      - name: Fail if no new folders detected (optional)
+        if: steps.compare.outputs.new_count == '0'
         run: |
-          echo "release_needed=true" >> $GITHUB_OUTPUT
-          echo "❌ New folders were found:"
+          echo "No new folders were found. No need to make a release."
           cat meta/new_folders.txt
-          exit 1
+          exit 0
 
       - name: Save current folder list as artifact for next run
         uses: actions/upload-artifact@v4
@@ -67,7 +66,6 @@ jobs:
           path: meta/current_folders.txt
 
       - name: Prepare version files
-        if: steps.detect.outputs.release_needed == 'true'
         run: |
           FOLDER="${{ steps.detect.outputs.folder_path }}"
           echo "Renaming .deploy files in $FOLDER"
@@ -77,18 +75,15 @@ jobs:
           done
 
       - name: Install 7z
-        if: steps.detect.outputs.release_needed == 'true'
         run: sudo apt-get update && sudo apt-get install -y p7zip-full
 
       - name: Compress version folder
-        if: steps.detect.outputs.release_needed == 'true'
         run: |
           FOLDER="${{ steps.detect.outputs.folder_path }}"
           ARCHIVE_NAME="MGS2_Randomizer_v${{ steps.detect.outputs.version_number }}.7z"
           7z a "$ARCHIVE_NAME" "$FOLDER"
 
       - name: Create GitHub Release
-        if: steps.detect.outputs.release_needed == 'true'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ steps.detect.outputs.version_number }}
