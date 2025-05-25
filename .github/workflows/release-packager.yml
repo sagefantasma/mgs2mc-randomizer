@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    #paths:
-     # - 'clickonce_releases/Application Files/**'
 
 permissions:
   contents: write  # Needed for creating releases and uploading assets
@@ -21,90 +19,69 @@ jobs:
       - name: Install GitHub CLI
         run: |
           sudo apt update
-          sudo apt install -y gh p7zip-full
-
+          sudo apt install -y gh
       - name: Get highest version from folder names
         id: get-version
         run: |
           echo "Scanning folder versions..."
           cd "clickonce_releases/Application Files"
-
-          # Extract version pattern like 1_1_1_0 -> 1.1.1.0
           VERSIONS=$(find . -maxdepth 1 -mindepth 1 -type d | sed 's|./||' | grep -oE '[0-9]+(_[0-9]+)*$' | sed 's/_/./g')
-
           if [ -z "$VERSIONS" ]; then
             echo "No version folders found."
             exit 0
           fi
-
           HIGHEST_VERSION=$(echo "$VERSIONS" | sort -V | tail -n 1)
           echo "Highest version found: $HIGHEST_VERSION"
           echo "version=$HIGHEST_VERSION" >> $GITHUB_OUTPUT
-
       - name: Check if release exists for highest version
         id: check-release
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
           echo "Checking GitHub releases for version: $VERSION"
-
           if gh release list | grep -q "$VERSION"; then
+            echo "✅ A release with version $VERSION already exists."
             echo "exists=true" >> $GITHUB_OUTPUT
           else
+            echo "❌ No release with version $VERSION found."
             echo "exists=false" >> $GITHUB_OUTPUT
-
+          fi
       - name: Stop if release already exists
         if: steps.check-release.outputs.exists == 'true'
         run: |
           echo "Release already exists for version ${{ steps.get-version.outputs.version }}. Stopping workflow."
           exit 0
-
       - name: Rename files (strip .deploy) and create 7z archive
         if: steps.check-release.outputs.exists == 'false'
         id: archive
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
-          BASE_DIR="clickonce_releases/Application Files"
-
-          TARGET_FOLDER=$(find "$BASE_DIR" -maxdepth 1 -type d -name "*${VERSION//./_}" | head -n 1)
+          WORK_DIR="clickonce_releases/Application Files"
+          # Find matching folder (e.g., MGS2_Randomizer_1_1_1_0)
+          TARGET_FOLDER=$(find "$WORK_DIR" -maxdepth 1 -type d -name "*${VERSION//./_}" | head -n 1)
           echo "Target folder: $TARGET_FOLDER"
-
           if [ -z "$TARGET_FOLDER" ]; then
             echo "❌ Could not find folder for version $VERSION"
             exit 1
           fi
-
-          # Strip .deploy from files inside target folder
+          # Strip .deploy from files
           find "$TARGET_FOLDER" -type f -name "*.deploy" | while read FILE; do
-            NEW_FILE="${FILE%.deploy}"
+            NEW_FILE=$(echo "$FILE" | sed 's/\.deploy$//')
             mv "$FILE" "$NEW_FILE"
           done
-
-          FOLDER_NAME=$(basename "$TARGET_FOLDER")
-
-          cd "$BASE_DIR"
-
+          # Install 7zip
+          sudo apt-get update && sudo apt-get install -y p7zip-full
+          # Create archive
           ARCHIVE_NAME="MGS2_Randomizer_${VERSION}.7z"
-
-          7z a "../$ARCHIVE_NAME" "$FOLDER_NAME"/*
-
+          7z a "$ARCHIVE_NAME" "$TARGET_FOLDER"/*
           echo "archive_path=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
-
-      - name: Debug - list archive file
-        if: steps.check-release.outputs.exists == 'false'
-        run: |
-          ARCHIVE=${{ steps.archive.outputs.archive_path }}
-          echo "Archive path: $ARCHIVE"
-          ls -l "$ARCHIVE"
-
       - name: Create GitHub Release and upload archive
         if: steps.check-release.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          set -o noglob
-
           VERSION=${{ steps.get-version.outputs.version }}
           ARCHIVE=${{ steps.archive.outputs.archive_path }}
           RELEASE_NAME="MGS2 Randomizer v$VERSION"
-
           echo "Creating GitHub release: $RELEASE_NAME"
           gh release create "v$VERSION" "$ARCHIVE" \
             --title "$RELEASE_NAME" \
