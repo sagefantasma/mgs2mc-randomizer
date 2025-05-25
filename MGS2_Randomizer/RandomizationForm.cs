@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using MGS2_Randomizer.Properties;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,6 +45,20 @@ namespace MGS2_Randomizer
             {
                 AppVersion = $"{Assembly.GetExecutingAssembly().GetName().Version}(portable)";
             }
+
+            if (Settings.Default.LastVersion != AppVersion)
+            {
+                Settings.Default.ShowChangelog = "True";
+                Settings.Default.LastVersion = AppVersion;
+            }
+        }
+
+        private static void ShowChangelog()
+        {
+            string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
+                $" - Fixed an issue where some Arsenal Tengu weren't getting their values randomized correctly.\r\n" +
+                $" - Made some GUI changes to better support other localizations.";
+            MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
         public RandomizationForm()
@@ -57,6 +72,12 @@ namespace MGS2_Randomizer
             LoadConfig();
             SetupHelperButton();
             _loaded = true;
+            if (Settings.Default.ShowChangelog == "True")
+            {
+                Settings.Default.ShowChangelog = "False";
+                Settings.Default.Save();
+                ShowChangelog();
+            }
         }
 
         private void SetupHelperButton()
@@ -529,6 +550,11 @@ namespace MGS2_Randomizer
                     keepVanillaCardLevelsCheckbox.Enabled = true;
                 }
             }
+        }
+
+        private void changelogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowChangelog();
         }
     }
 }

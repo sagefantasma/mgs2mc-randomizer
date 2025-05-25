@@ -36,8 +36,8 @@ namespace MGS2_Randomizer
             this.seedUpDown = new System.Windows.Forms.NumericUpDown();
             this.customSeedLabel = new System.Windows.Forms.Label();
             this.executionFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.gameInstallLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.mgs2LocationLabel = new System.Windows.Forms.Label();
             this.mgs2ExeTextBox = new System.Windows.Forms.TextBox();
             this.browseButton = new System.Windows.Forms.Button();
             this.optionsGroupBox = new System.Windows.Forms.GroupBox();
@@ -64,9 +64,10 @@ namespace MGS2_Randomizer
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kofiButton = new System.Windows.Forms.Button();
+            this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.gameInstallLayoutPanel.SuspendLayout();
             this.optionsGroupBox.SuspendLayout();
             this.enemyRandoGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.insanityScalarTrackBar)).BeginInit();
@@ -77,10 +78,13 @@ namespace MGS2_Randomizer
             // 
             // randomizeButton
             // 
+            this.randomizeButton.AutoSize = true;
+            this.randomizeButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.randomizeButton.BackColor = System.Drawing.Color.IndianRed;
-            this.randomizeButton.Location = new System.Drawing.Point(180, 29);
+            this.randomizeButton.Location = new System.Drawing.Point(153, 29);
             this.randomizeButton.Name = "randomizeButton";
-            this.randomizeButton.Size = new System.Drawing.Size(171, 41);
+            this.randomizeButton.Padding = new System.Windows.Forms.Padding(8);
+            this.randomizeButton.Size = new System.Drawing.Size(141, 39);
             this.randomizeButton.TabIndex = 4;
             this.randomizeButton.Text = "Randomize Game Files";
             this.randomizeButton.UseVisualStyleBackColor = false;
@@ -88,10 +92,13 @@ namespace MGS2_Randomizer
             // 
             // restoreBaseGameButton
             // 
+            this.restoreBaseGameButton.AutoSize = true;
+            this.restoreBaseGameButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.restoreBaseGameButton.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.restoreBaseGameButton.Location = new System.Drawing.Point(3, 29);
             this.restoreBaseGameButton.Name = "restoreBaseGameButton";
-            this.restoreBaseGameButton.Size = new System.Drawing.Size(171, 41);
+            this.restoreBaseGameButton.Padding = new System.Windows.Forms.Padding(8);
+            this.restoreBaseGameButton.Size = new System.Drawing.Size(144, 39);
             this.restoreBaseGameButton.TabIndex = 3;
             this.restoreBaseGameButton.Text = "Restore to Vanilla State";
             this.restoreBaseGameButton.UseVisualStyleBackColor = false;
@@ -100,7 +107,7 @@ namespace MGS2_Randomizer
             // customSeedCheckbox
             // 
             this.customSeedCheckbox.AutoSize = true;
-            this.customSeedCheckbox.Location = new System.Drawing.Point(226, 5);
+            this.customSeedCheckbox.Location = new System.Drawing.Point(178, 5);
             this.customSeedCheckbox.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.customSeedCheckbox.Name = "customSeedCheckbox";
             this.customSeedCheckbox.Size = new System.Drawing.Size(125, 17);
@@ -111,15 +118,16 @@ namespace MGS2_Randomizer
             // 
             // seedUpDown
             // 
+            this.seedUpDown.AutoSize = true;
             this.seedUpDown.Enabled = false;
-            this.seedUpDown.Location = new System.Drawing.Point(79, 3);
+            this.seedUpDown.Location = new System.Drawing.Point(89, 3);
             this.seedUpDown.Maximum = new decimal(new int[] {
-            -1304428545,
-            434162106,
-            542,
+            2147483647,
+            0,
+            0,
             0});
             this.seedUpDown.Name = "seedUpDown";
-            this.seedUpDown.Size = new System.Drawing.Size(141, 20);
+            this.seedUpDown.Size = new System.Drawing.Size(83, 20);
             this.seedUpDown.TabIndex = 0;
             // 
             // customSeedLabel
@@ -128,13 +136,16 @@ namespace MGS2_Randomizer
             this.customSeedLabel.Location = new System.Drawing.Point(3, 6);
             this.customSeedLabel.Margin = new System.Windows.Forms.Padding(3, 6, 3, 6);
             this.customSeedLabel.Name = "customSeedLabel";
-            this.customSeedLabel.Size = new System.Drawing.Size(70, 13);
+            this.customSeedLabel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.customSeedLabel.Size = new System.Drawing.Size(80, 13);
             this.customSeedLabel.TabIndex = 1;
             this.customSeedLabel.Text = "Custom Seed";
             this.customSeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // executionFlowLayoutPanel
             // 
+            this.executionFlowLayoutPanel.AutoSize = true;
+            this.executionFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.executionFlowLayoutPanel.BackColor = System.Drawing.SystemColors.Window;
             this.executionFlowLayoutPanel.Controls.Add(this.customSeedLabel);
             this.executionFlowLayoutPanel.Controls.Add(this.seedUpDown);
@@ -142,32 +153,34 @@ namespace MGS2_Randomizer
             this.executionFlowLayoutPanel.Controls.Add(this.restoreBaseGameButton);
             this.executionFlowLayoutPanel.Controls.Add(this.randomizeButton);
             this.executionFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 479);
+            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 523);
             this.executionFlowLayoutPanel.Name = "executionFlowLayoutPanel";
             this.executionFlowLayoutPanel.Size = new System.Drawing.Size(354, 71);
             this.executionFlowLayoutPanel.TabIndex = 4;
             // 
-            // flowLayoutPanel1
+            // gameInstallLayoutPanel
             // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.SystemColors.Window;
-            this.flowLayoutPanel1.Controls.Add(this.label1);
-            this.flowLayoutPanel1.Controls.Add(this.mgs2ExeTextBox);
-            this.flowLayoutPanel1.Controls.Add(this.browseButton);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 24);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(354, 40);
-            this.flowLayoutPanel1.TabIndex = 7;
+            this.gameInstallLayoutPanel.AutoSize = true;
+            this.gameInstallLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.gameInstallLayoutPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.gameInstallLayoutPanel.Controls.Add(this.mgs2LocationLabel);
+            this.gameInstallLayoutPanel.Controls.Add(this.mgs2ExeTextBox);
+            this.gameInstallLayoutPanel.Controls.Add(this.browseButton);
+            this.gameInstallLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gameInstallLayoutPanel.Location = new System.Drawing.Point(0, 24);
+            this.gameInstallLayoutPanel.Name = "gameInstallLayoutPanel";
+            this.gameInstallLayoutPanel.Size = new System.Drawing.Size(354, 39);
+            this.gameInstallLayoutPanel.TabIndex = 7;
             // 
-            // label1
+            // mgs2LocationLabel
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 13);
-            this.label1.TabIndex = 100;
-            this.label1.Text = "MGS2 Location:";
+            this.mgs2LocationLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.mgs2LocationLabel.AutoSize = true;
+            this.mgs2LocationLabel.Location = new System.Drawing.Point(3, 13);
+            this.mgs2LocationLabel.Name = "mgs2LocationLabel";
+            this.mgs2LocationLabel.Size = new System.Drawing.Size(84, 13);
+            this.mgs2LocationLabel.TabIndex = 100;
+            this.mgs2LocationLabel.Text = "MGS2 Location:";
             // 
             // mgs2ExeTextBox
             // 
@@ -182,9 +195,11 @@ namespace MGS2_Randomizer
             // browseButton
             // 
             this.browseButton.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.browseButton.AutoSize = true;
+            this.browseButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.browseButton.Location = new System.Drawing.Point(275, 8);
             this.browseButton.Name = "browseButton";
-            this.browseButton.Size = new System.Drawing.Size(75, 23);
+            this.browseButton.Size = new System.Drawing.Size(52, 23);
             this.browseButton.TabIndex = 102;
             this.browseButton.Text = "Browse";
             this.browseButton.UseVisualStyleBackColor = true;
@@ -192,28 +207,32 @@ namespace MGS2_Randomizer
             // 
             // optionsGroupBox
             // 
+            this.optionsGroupBox.AutoSize = true;
+            this.optionsGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.optionsGroupBox.BackColor = System.Drawing.SystemColors.Window;
             this.optionsGroupBox.Controls.Add(this.enemyRandoGroupBox);
             this.optionsGroupBox.Controls.Add(this.worldRandoGroupBox);
             this.optionsGroupBox.Controls.Add(this.itemRandoGroupBox);
             this.optionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.optionsGroupBox.Location = new System.Drawing.Point(0, 64);
+            this.optionsGroupBox.Location = new System.Drawing.Point(0, 63);
             this.optionsGroupBox.Name = "optionsGroupBox";
-            this.optionsGroupBox.Size = new System.Drawing.Size(354, 415);
+            this.optionsGroupBox.Size = new System.Drawing.Size(354, 460);
             this.optionsGroupBox.TabIndex = 8;
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
             // 
             // enemyRandoGroupBox
             // 
+            this.enemyRandoGroupBox.AutoSize = true;
+            this.enemyRandoGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.enemyRandoGroupBox.Controls.Add(this.insanityScalarLabel);
             this.enemyRandoGroupBox.Controls.Add(this.randomizeGuardValuesCheckBox);
             this.enemyRandoGroupBox.Controls.Add(this.keepGuardValuesConsistentAcrossLevelsCheckbox);
             this.enemyRandoGroupBox.Controls.Add(this.insanityScalarTrackBar);
             this.enemyRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.enemyRandoGroupBox.Location = new System.Drawing.Point(3, 328);
+            this.enemyRandoGroupBox.Location = new System.Drawing.Point(3, 356);
             this.enemyRandoGroupBox.Name = "enemyRandoGroupBox";
-            this.enemyRandoGroupBox.Size = new System.Drawing.Size(348, 87);
+            this.enemyRandoGroupBox.Size = new System.Drawing.Size(348, 103);
             this.enemyRandoGroupBox.TabIndex = 16;
             this.enemyRandoGroupBox.TabStop = false;
             this.enemyRandoGroupBox.Text = "Enemy Randomization (Applies to All Difficulties)";
@@ -264,22 +283,26 @@ namespace MGS2_Randomizer
             // 
             // worldRandoGroupBox
             // 
+            this.worldRandoGroupBox.AutoSize = true;
+            this.worldRandoGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.worldRandoGroupBox.Controls.Add(this.randomizeBombLocations);
             this.worldRandoGroupBox.Controls.Add(this.randomizeTankerControlUnitLocations);
             this.worldRandoGroupBox.Controls.Add(this.randomizeEFConnectingBridgeClaymores);
             this.worldRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.worldRandoGroupBox.Location = new System.Drawing.Point(3, 241);
+            this.worldRandoGroupBox.Location = new System.Drawing.Point(3, 255);
             this.worldRandoGroupBox.Name = "worldRandoGroupBox";
-            this.worldRandoGroupBox.Size = new System.Drawing.Size(348, 87);
+            this.worldRandoGroupBox.Size = new System.Drawing.Size(348, 101);
             this.worldRandoGroupBox.TabIndex = 15;
             this.worldRandoGroupBox.TabStop = false;
             this.worldRandoGroupBox.Text = "World Randomization";
             // 
             // randomizeBombLocations
             // 
-            this.randomizeBombLocations.Location = new System.Drawing.Point(9, 14);
+            this.randomizeBombLocations.AutoSize = true;
+            this.randomizeBombLocations.Location = new System.Drawing.Point(9, 19);
+            this.randomizeBombLocations.Margin = new System.Windows.Forms.Padding(3, 3, 500, 3);
             this.randomizeBombLocations.Name = "randomizeBombLocations";
-            this.randomizeBombLocations.Size = new System.Drawing.Size(336, 24);
+            this.randomizeBombLocations.Size = new System.Drawing.Size(335, 17);
             this.randomizeBombLocations.TabIndex = 0;
             this.randomizeBombLocations.Text = "Randomize Bomb Locations (Sensor A Does Not Reflect Position)";
             // 
@@ -307,6 +330,8 @@ namespace MGS2_Randomizer
             // 
             // itemRandoGroupBox
             // 
+            this.itemRandoGroupBox.AutoSize = true;
+            this.itemRandoGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.itemRandoGroupBox.Controls.Add(this.randomizeSpawnsCheckbox);
             this.itemRandoGroupBox.Controls.Add(this.seedAlwaysBeatableCheckbox);
             this.itemRandoGroupBox.Controls.Add(this.restrictNikitaCheckbox);
@@ -319,7 +344,7 @@ namespace MGS2_Randomizer
             this.itemRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.itemRandoGroupBox.Location = new System.Drawing.Point(3, 16);
             this.itemRandoGroupBox.Name = "itemRandoGroupBox";
-            this.itemRandoGroupBox.Size = new System.Drawing.Size(348, 225);
+            this.itemRandoGroupBox.Size = new System.Drawing.Size(348, 239);
             this.itemRandoGroupBox.TabIndex = 14;
             this.itemRandoGroupBox.TabStop = false;
             this.itemRandoGroupBox.Text = "Item Randomization";
@@ -453,7 +478,8 @@ namespace MGS2_Randomizer
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reportBugMenuItem});
+            this.reportBugMenuItem,
+            this.changelogToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
@@ -461,46 +487,56 @@ namespace MGS2_Randomizer
             // reportBugMenuItem
             // 
             this.reportBugMenuItem.Name = "reportBugMenuItem";
-            this.reportBugMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.reportBugMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reportBugMenuItem.Text = "Report a Bug";
             this.reportBugMenuItem.Click += new System.EventHandler(this.ReportABug_Click);
             // 
             // kofiButton
             // 
+            this.kofiButton.AutoSize = true;
+            this.kofiButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.kofiButton.BackgroundImage = global::MGS2_Randomizer.Properties.Resources.kofi_logo;
             this.kofiButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.kofiButton.Location = new System.Drawing.Point(306, 0);
             this.kofiButton.Name = "kofiButton";
-            this.kofiButton.Size = new System.Drawing.Size(27, 23);
+            this.kofiButton.Padding = new System.Windows.Forms.Padding(10, 8, 10, 8);
+            this.kofiButton.Size = new System.Drawing.Size(26, 22);
             this.kofiButton.TabIndex = 11;
             this.kofiButton.UseVisualStyleBackColor = true;
             this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
+            // 
+            // changelogToolStripMenuItem
+            // 
+            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changelogToolStripMenuItem.Text = "Changelog";
+            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.changelogToolStripMenuItem_Click);
             // 
             // RandomizationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 550);
+            this.ClientSize = new System.Drawing.Size(354, 594);
             this.Controls.Add(this.kofiButton);
             this.Controls.Add(this.optionsGroupBox);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.gameInstallLayoutPanel);
             this.Controls.Add(this.executionFlowLayoutPanel);
             this.Controls.Add(this.menuStrip2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(370, 633);
             this.Name = "RandomizationForm";
             this.helpProvider1.SetShowHelp(this, false);
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "MGS2 Randomizer";
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).EndInit();
             this.executionFlowLayoutPanel.ResumeLayout(false);
             this.executionFlowLayoutPanel.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.gameInstallLayoutPanel.ResumeLayout(false);
+            this.gameInstallLayoutPanel.PerformLayout();
             this.optionsGroupBox.ResumeLayout(false);
+            this.optionsGroupBox.PerformLayout();
             this.enemyRandoGroupBox.ResumeLayout(false);
             this.enemyRandoGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.insanityScalarTrackBar)).EndInit();
@@ -523,8 +559,8 @@ namespace MGS2_Randomizer
         private System.Windows.Forms.NumericUpDown seedUpDown;
         private System.Windows.Forms.Label customSeedLabel;
         private System.Windows.Forms.FlowLayoutPanel executionFlowLayoutPanel;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FlowLayoutPanel gameInstallLayoutPanel;
+        private System.Windows.Forms.Label mgs2LocationLabel;
         private System.Windows.Forms.GroupBox optionsGroupBox;
         private System.Windows.Forms.CheckBox randomizeStartingItemsCheckbox;
         private System.Windows.Forms.CheckBox allWeaponsWillSpawnCheckbox;
@@ -551,6 +587,7 @@ namespace MGS2_Randomizer
         private System.Windows.Forms.CheckBox keepGuardValuesConsistentAcrossLevelsCheckbox;
         private System.Windows.Forms.TrackBar insanityScalarTrackBar;
         private System.Windows.Forms.Label insanityScalarLabel;
+        private System.Windows.Forms.ToolStripMenuItem changelogToolStripMenuItem;
     }
 }
 

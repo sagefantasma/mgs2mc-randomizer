@@ -1224,6 +1224,62 @@ namespace MGS2_Randomizer
                 foreach (int unknown2Set in unknown2Sets)
                     Array.Copy(BitConverter.GetBytes(guardValues.Unknown2), 0, gcxContents, unknown2Set + unknown2SetBytes.Length, 1);
 
+                if (gcxFile.Contains("w42a"))
+                {
+                    //need to alter calls to both tengu spawners
+                    List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x88, 0x94, 0x70, 0x0D });
+                    foreach(int tenguSet in tengu1Sets)
+                    {
+                        Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, tenguSet + 0xA, 2);
+                        Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + 0xD, 2);
+                    }
+
+                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x45, 0x6B, 0x8F, 0x0D });
+                    foreach (int tenguSet in tengu2Sets)
+                    {
+                        Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, tenguSet + 0xA, 2);
+                        Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + 0xD, 2);
+                    }
+                }
+
+                if (gcxFile.Contains("w44a"))
+                {
+                    //need to alter varbuf_0x9A8 (Vision) and varbuf_0x9AA (HP)
+
+                    //Set the vision for tengus in this level
+                    List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xA8 });
+                    foreach (int tenguSet in tengu1Sets)
+                    {
+                        Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + 0x6, 2);
+                    }
+
+                    //Set the HP for tengus in this level
+                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xAA });
+                    foreach (int tenguSet in tengu2Sets)
+                    {
+                        Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + 0x6, 2);
+                    }
+                }
+
+                if (gcxFile.Contains("w45a"))
+                {
+                    //need to alter varbuf_0xA0C (Life) and varbuf_0xA0E (Hits to stun)
+
+                    //Set the vision for tengus in this level
+                    List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x0A, 0x0C });
+                    foreach (int tenguSet in tengu1Sets)
+                    {
+                        Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + 0x6, 2);
+                    }
+
+                    //Set the HP for tengus in this level
+                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x37, 0x11, 0x00, 0x0A, 0x0E });
+                    foreach (int tenguSet in tengu2Sets)
+                    {
+                        Array.Copy(BitConverter.GetBytes(guardValues.HitsToStun), 0, gcxContents, tenguSet + 0x5, 1);
+                    }
+                }
+
                 if (!levelConsistency)
                 {
                     guardValues = GetRandomGuardValues(valueConsistency, insanityScalar);
