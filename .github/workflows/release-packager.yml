@@ -3,7 +3,7 @@ name: Auto Release from ClickOnce Folder
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'clickonce_releases/Application Files/**'
 
