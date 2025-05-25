@@ -21,6 +21,8 @@ jobs:
           echo "Checking for new 'publish' folders..."
 
           # Get list of added folders in the last commit
+          echo "$github.event.before"
+          echo "$github.sha"
           ADDED_FOLDERS=$(git diff --name-status ${{ github.event.before }} ${{ github.sha }} | grep '^A' | awk '{print $2}' | grep '^clickonce_releases/Application Files/MGS2_Randomizer_' | cut -d/ -f1 | sort -u)
 
           if [[ -z "$ADDED_FOLDERS" ]]; then
