@@ -1,49 +1,43 @@
-name: Auto Release on New Version
+name: Auto Release from ClickOnce Folder
 
 on:
   push:
     branches:
-      - master  
+      - main
+    paths:
+      - 'clickonce_releases/Application Files/**'
+
+permissions:
+  contents: write  # Needed for creating releases and uploading assets
 
 jobs:
-  check-and-release:
+  release:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with: 
-          fetch-depth: 0
-      - name: List current folders
-        run: |
-          mkdir -p meta
-          find "clickonce_releases/Application Files" -maxdepth 1 -mindepth 1 -type d | sort > meta/current_folders.txt
-          cat meta/current_folders.txt
+        uses: actions/checkout@v3
 
-      - name: Set up GitHub CLI
-        uses: cli/cli-action@v2
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install -y gh
 
       - name: Get highest version from folder names
         id: get-version
         run: |
           echo "Scanning folder versions..."
           cd "clickonce_releases/Application Files"
-          
-          # Extract version parts, assuming folder names like MGS2_Randomizer_1_1_1_0
+
           VERSIONS=$(find . -maxdepth 1 -mindepth 1 -type d | sed 's|./||' | grep -oE '[0-9]+(_[0-9]+)*$' | sed 's/_/./g')
-          
+
           if [ -z "$VERSIONS" ]; then
             echo "No version folders found."
             exit 0
           fi
-          
-          # Sort version numbers and get the highest one
+
           HIGHEST_VERSION=$(echo "$VERSIONS" | sort -V | tail -n 1)
           echo "Highest version found: $HIGHEST_VERSION"
-          
           echo "version=$HIGHEST_VERSION" >> $GITHUB_OUTPUT
 
       - name: Check if release exists for highest version
@@ -52,7 +46,6 @@ jobs:
           VERSION=${{ steps.get-version.outputs.version }}
           echo "Checking GitHub releases for version: $VERSION"
 
-          # Use GitHub CLI to list all releases and check if any contain the version
           if gh release list | grep -q "$VERSION"; then
             echo "✅ A release with version $VERSION already exists."
             echo "exists=true" >> $GITHUB_OUTPUT
@@ -66,19 +59,14 @@ jobs:
           echo "Release already exists for version ${{ steps.get-version.outputs.version }}. Stopping workflow."
           exit 0
 
-      - name: Continue if new version
-        if: steps.check-release.outputs.exists == 'false'
-        run: |
-          echo "Proceeding to create release for version ${{ steps.get-version.outputs.version }}..."
-
       - name: Rename files (strip .deploy) and create 7z archive
         if: steps.check-release.outputs.exists == 'false'
         id: archive
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
           WORK_DIR="clickonce_releases/Application Files"
-          
-          # Find the folder that matches the version (MGS2_Randomizer_1_1_1_0)
+
+          # Find matching folder (e.g., MGS2_Randomizer_1_1_1_0)
           TARGET_FOLDER=$(find "$WORK_DIR" -maxdepth 1 -type d -name "*${VERSION//./_}" | head -n 1)
           echo "Target folder: $TARGET_FOLDER"
 
@@ -87,7 +75,7 @@ jobs:
             exit 1
           fi
 
-          # Strip .deploy from filenames
+          # Strip .deploy from files
           find "$TARGET_FOLDER" -type f -name "*.deploy" | while read FILE; do
             NEW_FILE=$(echo "$FILE" | sed 's/\.deploy$//')
             mv "$FILE" "$NEW_FILE"
@@ -96,13 +84,10 @@ jobs:
           # Install 7zip
           sudo apt-get update && sudo apt-get install -y p7zip-full
 
-          # Create archive name
+          # Create archive
           ARCHIVE_NAME="MGS2_Randomizer_${VERSION}.7z"
-
-          # Compress folder contents (not the folder itself)
           7z a "$ARCHIVE_NAME" "$TARGET_FOLDER"/*
 
-          # Set archive path output
           echo "archive_path=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release and upload archive
