@@ -65,31 +65,34 @@ jobs:
         id: archive
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
-          WORK_DIR="clickonce_releases/Application Files"
-
-          # Find matching folder (e.g., MGS2_Randomizer_1_1_1_0)
-          TARGET_FOLDER=$(find "$WORK_DIR" -maxdepth 1 -type d -name "*${VERSION//./_}" | head -n 1)
+          BASE_DIR="clickonce_releases/Application Files"
+      
+          # Find target folder full name, e.g. MGS2_Randomizer_1_1_1_0
+          TARGET_FOLDER=$(find "$BASE_DIR" -maxdepth 1 -type d -name "*${VERSION//./_}" | head -n 1)
           echo "Target folder: $TARGET_FOLDER"
-
+      
           if [ -z "$TARGET_FOLDER" ]; then
             echo "❌ Could not find folder for version $VERSION"
             exit 1
           fi
-
-          # Strip .deploy from files
+      
+          # Rename .deploy files inside target folder
           find "$TARGET_FOLDER" -type f -name "*.deploy" | while read FILE; do
-            NEW_FILE=$(echo "$FILE" | sed 's/\.deploy$//')
+            NEW_FILE="${FILE%.deploy}"
             mv "$FILE" "$NEW_FILE"
           done
-
+      
           # Install 7zip
           sudo apt-get update && sudo apt-get install -y p7zip-full
-
-          # Create archive
-          ARCHIVE_NAME="MGS2_Randomizer_${VERSION}.7z"
-          7z a "../../$ARCHIVE_NAME" "$TARGET_FOLDER"/*
-
-          echo "archive_path=$ARCHIVE_NAME" >> $GITHUB_OUTPUT
+      
+          # Get just the folder name, without the full path
+          FOLDER_NAME=$(basename "$TARGET_FOLDER")
+      
+          # Archive only the contents of the target folder (no parent folder in archive)
+          cd "$BASE_DIR"
+          7z a "../MGS2_Randomizer_${VERSION}.7z" "$FOLDER_NAME"/*
+      
+          echo "archive_path=MGS2_Randomizer_${VERSION}.7z" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release and upload archive
         if: steps.check-release.outputs.exists == 'false'
