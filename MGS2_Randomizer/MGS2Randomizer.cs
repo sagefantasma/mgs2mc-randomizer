@@ -2122,6 +2122,13 @@ namespace MGS2_Randomizer
                     int retries = 1000;
                     while (TankerSpawnsLeft.Count > 0)
                     {
+                        if (!options.IncludeRations &&
+                            _vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Value == MGS2Items.Ration)
+                        {
+                            itemsAssigned++; //increase the assigned count, but do not randomize the item.
+                            continue;
+                        }
+
                         int randomNum = Randomizer.Next();
                         int modValue = randomNum % TankerSpawnsLeft.Count;
                         Item randomChoice = TankerSpawnsLeft[modValue];
@@ -2190,6 +2197,12 @@ namespace MGS2_Randomizer
 
                         while (PlantSpawns.Count > 0)
                         {
+                            if (!options.IncludeRations &&
+                            _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Value == MGS2Items.Ration)
+                            {
+                                itemsAssigned++; //increase the assigned count, but do not randomize the item.
+                                continue;
+                            }
                             int randomNum = Randomizer.Next();
                             int modValue = randomNum % PlantSpawns.Count;
                             Item randomChoice = PlantSpawns[modValue];
@@ -2347,6 +2360,12 @@ namespace MGS2_Randomizer
 
                         while (PlantSpawns.Count > 0)
                         {
+                            if (!options.IncludeRations &&
+                            _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Value == MGS2Items.Ration)
+                            {
+                                itemsAssigned++; //increase the assigned count, but do not randomize the item.
+                                continue;
+                            }
                             int randomNum = Randomizer.Next();
                             int modValue = randomNum % PlantSpawns.Count;
                             Item randomChoice = PlantSpawns[modValue];

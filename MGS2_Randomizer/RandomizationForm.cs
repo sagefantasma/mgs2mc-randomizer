@@ -56,6 +56,9 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
+                $" - Fixed an issue with two spawns in Strut F being assigned to the wrong logic pool.\r\n"+
+                $" - Fixed an issue with randomization when Randomize Rations was disabled.\r\n\r\n"+
+                $"Changes in v1.1.1.0:\r\n\r\n" +
                 $" - Fixed an issue where some Arsenal Tengu weren't getting their values randomized correctly.\r\n" +
                 $" - Made some GUI changes to better support other localizations.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
