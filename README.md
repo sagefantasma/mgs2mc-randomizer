@@ -2,7 +2,8 @@
 
 The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: Sons of Liberty**!
 
-![image](https://github.com/user-attachments/assets/284d6d58-693e-4a03-9942-2027bcb5c8ce)
+![image](https://github.com/user-attachments/assets/742c25d1-6e28-4de9-85bb-4696932a9e0d)
+
 
 ## How do I use this?
 ### Installation
@@ -52,6 +53,9 @@ The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: 
 - **Randomize Bomb Locations** - Randomize where all sensor A bombs during the bomb defusal segment spawn.
 - **Randomize EF Connecting Bridge Claymores** - Randomize where the claymores spawn on the EF Connecting Bridge.
 - **Randomize Tanker Control Units** - Randomize where control units spawn in the engine room on the Tanker.
+- **Randomize Guard Values** - Randomize guard vision ranges, hearing range, stun resistance, sleep duration, stun duration, etc.
+  - **Randomization Bounds** - Slide this to the left to have smaller randomized results, or to the right to have a larger range. Default position will have the closest values to "standard" for vision and hearing range.
+- **Keep Guard Values Consistent Across Levels** - If guard values are randomized, keep them consistent across all levels instead of differing with each level.
 - **Custom Seed** - Use a known seed to replicate a randomized run! Be sure to set your options up to match the one the seed originally had on creation to get accurate results.
 
 
