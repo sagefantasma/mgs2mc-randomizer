@@ -35,6 +35,8 @@ jobs:
           echo "version=$HIGHEST_VERSION" >> $GITHUB_OUTPUT
       - name: Check if release exists for highest version
         id: check-release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION=${{ steps.get-version.outputs.version }}
           echo "Checking GitHub releases for version: $VERSION"
