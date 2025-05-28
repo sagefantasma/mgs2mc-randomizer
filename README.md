@@ -11,7 +11,7 @@ The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: 
 
   **OR**
   
-- Portable Installation: Download the latest Github release and run a standalone version of the MGS2 Randomizer. Feel free to ping me to see if the portable version is the latest version(I am not great at remembering to update the Github releases).
+- Portable Installation: Download the latest Github release and run a standalone version of the MGS2 Randomizer. These are now automatically archived every time there's a new release on ClickOnce!
 
 ### Usage
 1. Launch the MGS2 Randomizer app.
