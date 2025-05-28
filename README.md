@@ -39,6 +39,8 @@ The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: 
     - :warning: **WARNING**: _Sensor A does NOT accurately reflect the new bomb positions._ :warning:
 6. Randomize EF Connecting Bridge claymores!
     - If you're tired of not being afraid of the bridge, we've got you covered. Just so you're aware, you might run into a claymore coming right out of the door :^)
+7. Randomize Guard Values!
+    - Want to add even more fun, but don't mind if it's a little ridiculous? Randomize the guard values: their vision ranges, hearing ranges, hits to stun, time stunned, time tranquilized, and even their HP will be randomized! You can keep the bounds at the pre-selected range for an "ideal" experience, or let it rip and have potential for truly super-human guards!
 
 ## What do the randomizer options mean?
 - **Randomize Pickup Spawns** - This option, when enabled, will cause spawned items/weapons/ammo to be randomized according to the options selected below in this group.
