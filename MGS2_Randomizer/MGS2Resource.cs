@@ -34,7 +34,7 @@ namespace MGS2_Randomizer
         public static Resource AKAmmoLabel = new Resource("aks_amo_label",
             kms: "assets/kms/us/aks_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003ce0e9.kms,cache/003ce0e9.kms\r\r\n",
             cmdl: "assets/kms/us/aks_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003ce0e9.cmdl,eu/stage/XXXX/cache/003ce0e9.cmdl\r\r\n",
-            ctxr: "", tri: "");
+            ctxr: ""/*"textures/flatlist/rifle_ammo_side.bmp.ctxr,stage/XXXX/cache/rifle_ammo_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/00c84cc6.ctxr\r\r\n"*/, tri: "");
         public static Resource AKWeaponLabel = new Resource("ak_label",
             kms: "assets/kms/us/ak_label_stage_a03b.kms,us/stage/XXXX/cache/00f53890.kms,cache/00f53890.kms\r\r\n",
             cmdl: "assets/kms/us/ak_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f53890.cmdl,eu/stage/XXXX/cache/00f53890.cmdl\r\r\n",
@@ -70,7 +70,7 @@ namespace MGS2_Randomizer
         public static Resource M4AmmoLabel = new Resource("m4_amo_label",
             kms: "assets/kms/us/m4_amo_label_stage_a03b.kms,us/stage/XXXX/cache/0036d0ed.kms,cache/0036d0ed.kms\r\r\n",
             cmdl: "assets/kms/us/m4_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/0036d0ed.cmdl,eu/stage/XXXX/cache/0036d0ed.cmdl\r\r\n",
-            ctxr: "", tri: "");
+            ctxr: ""/*"textures/flatlist/rifle_ammo_rabel_alp_ovl.bmp.ctxr,stage/XXXX/cache/rifle_ammo_rabel_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/00883186/007951dc.ctxr\r\r\n"*/, tri: "");
         public static Resource M4WeaponLabel = new Resource("m4_label",
             kms: "assets/kms/us/m4_label_stage_a03b.kms,us/stage/XXXX/cache/00f58ad0.kms,cache/00f58ad0.kms\r\r\n",
             cmdl: "assets/kms/us/m4_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f58ad0.cmdl,eu/stage/XXXX/cache/00f58ad0.cmdl\r\r\n",
@@ -78,7 +78,7 @@ namespace MGS2_Randomizer
         public static Resource NikitaAmmoLabel = new Resource("nkt_amo_label",
             kms: "assets/kms/us/nkt_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003db0ed.kms,cache/003db0ed.kms\r\r\n",
             cmdl: "assets/kms/us/nkt_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003db0ed.cmdl,eu/stage/XXXX/cache/003db0ed.cmdl\r\r\n",
-            ctxr: "", tri: "");
+            ctxr: ""/*"textures/flatlist/launch_rabel_alp_ovl.bmp.ctxr,stage/XXXX/cache/launch_rabel_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/00883186/0098bfca.ctxr\r\r\n"*/, tri: "");
         public static Resource NikitaWeaponLabel = new Resource("nkt_label",
             kms: "assets/kms/us/nkt_label_stage_a03b.kms,us/stage/XXXX/cache/00638ad1.kms,cache/00638ad1.kms\r\r\n",
             cmdl: "assets/kms/us/nkt_label_stage_a03b.cmdl,us/stage/XXXX/cache/00638ad1.cmdl,eu/stage/XXXX/cache/00638ad1.cmdl\r\r\n",
@@ -86,10 +86,26 @@ namespace MGS2_Randomizer
         public static Resource PSG1AmmoLabel = new Resource("psg_amo_label",
             kms: "assets/kms/us/psg_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003dd4b9.kms,cache/003dd4b9.kms\r\r\n",
             cmdl: "assets/kms/us/psg_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003dd4b9.cmdl,eu/stage/XXXX/cache/003dd4b9.cmdl\r\r\n",
-            ctxr: "", tri: "");
+            ctxr: ""/*"textures/flatlist/rifle_ammo_top.bmp.ctxr,stage/XXXX/cache/rifle_ammo_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/000e472f.ctxr\r\r\n"*/, tri: "");
         public static Resource PSG1WeaponLabel = new Resource("psg_label",
             kms: "assets/kms/us/psg_label_stage_a03b.kms,us/stage/XXXX/cache/0065c791.kms,cache/0065c791.kms\r\r\n",
             cmdl: "assets/kms/us/psg_label_stage_a03b.cmdl,us/stage/XXXX/cache/0065c791.cmdl,eu/stage/XXXX/cache/0065c791.cmdl\r\r\n",
+            ctxr: "", tri: "");
+        public static Resource RifleAmmoIbox1 = new Resource("006ab337",
+            kms: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/006ab337.kms,cache/006ab337.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/006ab337.cmdl,eu/stage/XXXX/cache/006ab337.cmdl\r\r\n",
+            ctxr: "", tri: "");
+        public static Resource RifleAmmoIbox2 = new Resource("00130222",
+            kms: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/00130222.kms,cache/00130222.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00130222.cmdl,eu/stage/XXXX/cache/00130222.cmdl\r\r\n",
+            ctxr: "", tri: "");
+        public static Resource RilfeIbox = new Resource("rilfe_ibox",
+            kms: "assets/kms/us/rilfe_ibox.kms,us/stage/XXXX/cache/00d290b6.kms,cache/00d290b6.kms\r\r\n",
+            cmdl: "assets/kms/us/rilfe_ibox.cmdl,us/stage/XXXX/cache/00d290b6.cmdl,eu/stage/XXXX/cache/00d290b6.cmdl\r\r\n",
+            ctxr: "", tri: "");
+        public static Resource IboxAmoNkt = new Resource("ibox_amo_nkt",
+            kms: "assets/kms/us/ibox_amo_nkt.kms,us/stage/XXXX/cache/007c8d0b.kms,cache/007c8d0b.kms\r\r\n",
+            cmdl: "assets/kms/us/ibox_amo_nkt.cmdl,us/stage/XXXX/cache/007c8d0b.cmdl,eu/stage/XXXX/cache/007c8d0b.cmdl\r\r\n",
             ctxr: "", tri: "");
         public static Resource PSG1TAmmoLabel = new Resource("psgt_amo_label",
             kms: "assets/kms/us/psgt_amo_label_stage_a03b.kms,us/stage/XXXX/cache/001dfe6e.kms,cache/001dfe6e.kms\r\r\n",
@@ -186,7 +202,7 @@ namespace MGS2_Randomizer
         public static Resource LauncherSh = new Resource("launcher_ibox_sh",
             kms: "assets/kms/us/launcher_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0073b479.kms,cache/0073b479.kms\r\r\n",
             cmdl: "assets/kms/us/launcher_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0073b479.cmdl,eu/stage/XXXX/cache/0073b479.cmdl\r\r\n",
-            ctxr: "", tri: "");
+            ctxr: ""/*"textures/flatlist/launch_box_top.bmp.ctxr,stage/XXXX/cache/launch_box_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/005abbfb.ctxr\r\r\n"*/, tri: "");
         public static Resource Box2Ibox = new Resource("box2_ibox",
             kms: "assets/kms/us/box2_ibox_stage_a03b.kms,us/stage/XXXX/cache/008bacc2.kms,cache/008bacc2.kms\r\r\n",
             cmdl: "assets/kms/us/box2_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/008bacc2.cmdl,eu/stage/XXXX/cache/008bacc2.cmdl\r\r\n",
@@ -355,7 +371,8 @@ namespace MGS2_Randomizer
             MGS2Resource.ChaffLabel, MGS2Resource.SocomAmmoLabel, MGS2Resource.GrenadeIbox, MGS2Resource.GrenadeSh, MGS2Resource.HandgunAmmoIbox,
             MGS2Resource.HandgunAmmoSh, MGS2Resource.RationSh, MGS2Resource.RationLabel, MGS2Resource.CoolantSprayLabel, MGS2Resource.SocomLabel,
             MGS2Resource.UspLabel, MGS2Resource.ScopeCustomBox, MGS2Resource.ItemBox, MGS2Resource.CigarettesIbox, MGS2Resource.CigarettesIboxSh,
-            MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2
+            MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2,
+            /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 
         public static List<string> AllPlantWeaponItemResources = new List<string>()

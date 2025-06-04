@@ -70,7 +70,11 @@ namespace MGS2_Randomizer
         public static readonly Item DigitalCamera = new Item { Name = "Digital Camera", Id = GcxTableMapping.DigitalCamera, ProcId = KnownProc.AwardDigitalCamera };
         public static readonly Item Box1 = new Item { Name = "Box1", Id = GcxTableMapping.Box1, ProcId = KnownProc.AwardBox1 };
         public static readonly Item Cigs = new Item { Name = "Cigarettes", Id = GcxTableMapping.Cigs, ProcId = KnownProc.AwardCigarettes };
-        public static readonly Item Card = new Item { Name = "Card", Id = GcxTableMapping.Card, ProcId = KnownProc.AwardCard1 };
+        public static readonly Item Card1 = new Item { Name = "Card 1", Id = GcxTableMapping.Card, ProcId = KnownProc.AwardCard1 };
+        public static readonly Item Card2 = new Item { Name = "Card 2", Id = GcxTableMapping.Card, ProcId = KnownProc.AwardCard2 };
+        public static readonly Item Card3 = new Item { Name = "Card 3", Id = GcxTableMapping.Card, ProcId = KnownProc.AwardCard3 };
+        public static readonly Item Card4 = new Item { Name = "Card 4", Id = GcxTableMapping.Card, ProcId = KnownProc.AwardCard4 };
+        public static readonly Item Card5 = new Item { Name = "Card 5", Id = GcxTableMapping.Card, ProcId = KnownProc.AwardCard5 };
         public static readonly Item Shaver = new Item { Name = "Shaver", Id = GcxTableMapping.Shaver, ProcId = KnownProc.AwardShaver };
         public static readonly Item Phone = new Item { Name = "Phone", Id = GcxTableMapping.Phone, ProcId = KnownProc.AwardPhone };
         public static readonly Item Camera1 = new Item { Name = "Camera", Id = GcxTableMapping.Camera1, ProcId = KnownProc.AwardCamera };
@@ -286,7 +290,7 @@ namespace MGS2_Randomizer
 
         public static List<string> AutoAwardedProgressionItems = new List<string>
         {
-            MGS2Items.Card.Name,
+            MGS2Items.Card1.Name,
             MGS2Weapons.Socom.Name,
             MGS2Weapons.Coolant.Name,
             MGS2Items.BDU.Name
@@ -331,7 +335,7 @@ namespace MGS2_Randomizer
 
             PlantSet2.Name = "Before Stillman";
             PlantSet2.Entities = new Dictionary<Location, Item>();
-            PlantSet2.ItemsNeededToProgress.AddRange(new Item[] { MGS2Weapons.Coolant, MGS2Items.Card }); //level 1 card;
+            PlantSet2.ItemsNeededToProgress.AddRange(new Item[] { MGS2Weapons.Coolant, MGS2Items.Card1 }); //level 1 card;
 
             PlantSet3.Name = "Before Fatman";
             PlantSet3.Entities = new Dictionary<Location, Item>();
@@ -341,7 +345,7 @@ namespace MGS2_Randomizer
             PlantSet4.Name = "Before Shell 1 Elevator";
             PlantSet4.Entities = new Dictionary<Location, Item>();
             PlantSet4.ItemsNeededToProgress.AddRange(PlantSet3.ItemsNeededToProgress);
-            PlantSet4.ItemsNeededToProgress.AddRange(new Item[] { MGS2Items.Card, MGS2Items.BDU, MGS2Weapons.Aks74u }); //level 2 card;
+            PlantSet4.ItemsNeededToProgress.AddRange(new Item[] { MGS2Items.Card1, MGS2Items.BDU, MGS2Weapons.Aks74u }); //level 2 card;
 
             PlantSet5.Name = "Before Ames";
             PlantSet5.Entities = new Dictionary<Location, Item>();
@@ -351,7 +355,7 @@ namespace MGS2_Randomizer
             PlantSet6.Name = "Before Shells Connecting Bridge";
             PlantSet6.Entities = new Dictionary<Location, Item>();
             PlantSet6.ItemsNeededToProgress.AddRange(PlantSet5.ItemsNeededToProgress);
-            PlantSet6.ItemsNeededToProgress.AddRange(new Item[] { MGS2Weapons.Psg1, MGS2Items.Card }); //level 3 card
+            PlantSet6.ItemsNeededToProgress.AddRange(new Item[] { MGS2Weapons.Psg1, MGS2Items.Card1 }); //level 3 card
 
             PlantSet7.Name = "Before Johnson";
             PlantSet7.Entities = new Dictionary<Location, Item>();
@@ -361,12 +365,12 @@ namespace MGS2_Randomizer
             PlantSet8.Name = "Before Emma";
             PlantSet8.Entities = new Dictionary<Location, Item>();
             PlantSet8.ItemsNeededToProgress.AddRange(PlantSet7.ItemsNeededToProgress);
-            PlantSet8.ItemsNeededToProgress.Add(MGS2Items.Card); //level 4 card
+            PlantSet8.ItemsNeededToProgress.Add(MGS2Items.Card1); //level 4 card
 
             PlantSet9.Name = "Before Strut L";
             PlantSet9.Entities = new Dictionary<Location, Item>();
             PlantSet9.ItemsNeededToProgress.AddRange(PlantSet8.ItemsNeededToProgress);
-            PlantSet9.ItemsNeededToProgress.Add(MGS2Items.Card); //level 5 card
+            PlantSet9.ItemsNeededToProgress.Add(MGS2Items.Card1); //level 5 card
         }
     }
 

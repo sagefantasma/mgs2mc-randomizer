@@ -752,19 +752,19 @@ namespace MGS2_Randomizer
         private void AddCardsToPools()
         {
             Location card1Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w14a" && spawn.Key.Name == "Locker1").Key;
-            _vanillaItems.PlantCard5Set.Entities[card1Location] = MGS2Items.Card;
+            _vanillaItems.PlantCard5Set.Entities[card1Location] = MGS2Items.Card1;
 
             Location card2Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w22a" && spawn.Key.Name == "LockerNearNode1").Key;
-            _vanillaItems.PlantCard5Set.Entities[card2Location] = MGS2Items.Card;
+            _vanillaItems.PlantCard5Set.Entities[card2Location] = MGS2Items.Card2;
 
             Location card3Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w22a" && spawn.Key.Name == "C4Room2").Key;
-            _vanillaItems.PlantCard5Set.Entities[card3Location] = MGS2Items.Card;
+            _vanillaItems.PlantCard5Set.Entities[card3Location] = MGS2Items.Card3;
 
             Location card4Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w31b" && spawn.Key.Name == "MiddleHallwayAlcove").Key;
-            _vanillaItems.PlantCard5Set.Entities[card4Location] = MGS2Items.Card;
+            _vanillaItems.PlantCard5Set.Entities[card4Location] = MGS2Items.Card4;
 
             Location card5Location = _vanillaItems.PlantCard5Set.Entities.First(spawn => spawn.Key.GcxFile == "w31d" && spawn.Key.Name == "LeftsideAlcove").Key;
-            _vanillaItems.PlantCard5Set.Entities[card5Location] = MGS2Items.Card;
+            _vanillaItems.PlantCard5Set.Entities[card5Location] = MGS2Items.Card5;
         }
 
         private void CheckAndRemoveFromRequirements(RandomizedItem item, ItemSet itemSetAdjusted)
@@ -2768,11 +2768,11 @@ namespace MGS2_Randomizer
             #endregion
 
             #region Plant Checks
-            List<KeyValuePair<Location, Item>> cardSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => spawns.Value.Name == "Card").ToList();
+            List<KeyValuePair<Location, Item>> cardSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => spawns.Value.Name.Contains("Card")).ToList();
 
-            if (!setToCheck.PlantCard0Set.Entities.ContainsValue(MGS2Items.Card))
+            if (!setToCheck.PlantCard0Set.Entities.ContainsValue(MGS2Items.Card1))
             {
-                KeyValuePair<Location, Item> cardSpawn1 = cardSpawns[0];
+                KeyValuePair<Location, Item> cardSpawn1 = cardSpawns.Where(spawn => spawn.Value.Name == MGS2Items.Card1.Name).FirstOrDefault();
                 List<KeyValuePair<Location, Item>> lvl0MandatorySpawns = setToCheck.PlantCard0Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
                     && spawn.Key.CardNeededToAccess == 0).ToList();
                 KeyValuePair<Location, Item> lvl0SpawnToSwap = lvl0MandatorySpawns[Randomizer.Next(0, lvl0MandatorySpawns.Count - 1)];
@@ -2780,9 +2780,10 @@ namespace MGS2_Randomizer
                 setToCheck.PlantCard5Set.Entities[lvl0SpawnToSwap.Key] = cardSpawn1.Value;
                 setToCheck.PlantCard5Set.Entities[cardSpawn1.Key] = lvl0SpawnToSwap.Value;
             }
-            if (setToCheck.PlantCard1Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 1)
+            if (!setToCheck.PlantCard1Set.Entities.ContainsValue(MGS2Items.Card2)
+                || setToCheck.PlantCard1Set.Entities.Where(spawn => spawn.Value.Name == MGS2Items.Card2.Name).FirstOrDefault().Key.CardNeededToAccess != 1)
             {
-                KeyValuePair<Location, Item> cardSpawn2 = cardSpawns[1];
+                KeyValuePair<Location, Item> cardSpawn2 = cardSpawns.Where(spawn => spawn.Value.Name == MGS2Items.Card2.Name).FirstOrDefault();
                 List<KeyValuePair<Location, Item>> lvl1MandatorySpawns = setToCheck.PlantCard1Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
                     && spawn.Key.CardNeededToAccess == 1).ToList();
                 KeyValuePair<Location, Item> lvl1SpawnToSwap = lvl1MandatorySpawns[Randomizer.Next(0, lvl1MandatorySpawns.Count - 1)];
@@ -2791,9 +2792,10 @@ namespace MGS2_Randomizer
                 setToCheck.PlantCard5Set.Entities[cardSpawn2.Key] = lvl1SpawnToSwap.Value;
 
             }
-            if (setToCheck.PlantCard2Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 2)
+            if (!setToCheck.PlantCard2Set.Entities.ContainsValue(MGS2Items.Card3)
+                || setToCheck.PlantCard2Set.Entities.Where(spawn => spawn.Value.Name == MGS2Items.Card3.Name).FirstOrDefault().Key.CardNeededToAccess != 2)
             {
-                KeyValuePair<Location, Item> cardSpawn3 = cardSpawns[2];
+                KeyValuePair<Location, Item> cardSpawn3 = cardSpawns.Where(spawn => spawn.Value.Name == MGS2Items.Card3.Name).FirstOrDefault();
                 List<KeyValuePair<Location, Item>> lvl2MandatorySpawns = setToCheck.PlantCard2Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
                     && spawn.Key.CardNeededToAccess == 2).ToList();
                 KeyValuePair<Location, Item> lvl2SpawnToSwap = lvl2MandatorySpawns[Randomizer.Next(0, lvl2MandatorySpawns.Count - 1)];
@@ -2801,9 +2803,10 @@ namespace MGS2_Randomizer
                 setToCheck.PlantCard5Set.Entities[lvl2SpawnToSwap.Key] = cardSpawn3.Value;
                 setToCheck.PlantCard5Set.Entities[cardSpawn3.Key] = lvl2SpawnToSwap.Value;
             }
-            if (setToCheck.PlantCard3Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 3)
+            if (!setToCheck.PlantCard3Set.Entities.ContainsValue(MGS2Items.Card4) 
+                || setToCheck.PlantCard3Set.Entities.Where(spawn => spawn.Value.Name == MGS2Items.Card4.Name).FirstOrDefault().Key.CardNeededToAccess != 3)
             {
-                KeyValuePair<Location, Item> cardSpawn4 = cardSpawns[3];
+                KeyValuePair<Location, Item> cardSpawn4 = cardSpawns.Where(spawn => spawn.Value.Name == MGS2Items.Card4.Name).FirstOrDefault();
                 List<KeyValuePair<Location, Item>> lvl3MandatorySpawns = setToCheck.PlantCard3Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
                     && spawn.Key.CardNeededToAccess == 3).ToList();
                 KeyValuePair<Location, Item> lvl3SpawnToSwap = lvl3MandatorySpawns[Randomizer.Next(0, lvl3MandatorySpawns.Count - 1)];
@@ -2811,9 +2814,10 @@ namespace MGS2_Randomizer
                 setToCheck.PlantCard5Set.Entities[lvl3SpawnToSwap.Key] = cardSpawn4.Value;
                 setToCheck.PlantCard5Set.Entities[cardSpawn4.Key] = lvl3SpawnToSwap.Value;
             }
-            if (setToCheck.PlantCard4Set.Entities.Count(spawns => spawns.Value == MGS2Items.Card) <= 4)
+            if (!setToCheck.PlantCard4Set.Entities.ContainsValue(MGS2Items.Card5) 
+                || setToCheck.PlantCard4Set.Entities.Where(spawn => spawn.Value.Name == MGS2Items.Card5.Name).FirstOrDefault().Key.CardNeededToAccess != 4)
             {
-                KeyValuePair<Location, Item> cardSpawn5 = cardSpawns[4];
+                KeyValuePair<Location, Item> cardSpawn5 = cardSpawns.Where(spawn => spawn.Value.Name == MGS2Items.Card5.Name).FirstOrDefault();
                 List<KeyValuePair<Location, Item>> lvl4MandatorySpawns = setToCheck.PlantCard4Set.Entities.Where(spawn => spawn.Key.MandatorySpawn
                     && spawn.Key.CardNeededToAccess == 4).ToList();
                 KeyValuePair<Location, Item> lvl4SpawnToSwap = lvl4MandatorySpawns[Randomizer.Next(0, lvl4MandatorySpawns.Count - 1)];
@@ -2840,7 +2844,7 @@ namespace MGS2_Randomizer
                         List<KeyValuePair<Location, Item>> acceptableLevelSpawns = setToCheck.PlantCard5Set.Entities.Where(spawn => spawn.Key.CardNeededToAccess == uniqueItemSpawn.Value
                         && spawn.Key.MandatorySpawn
                         && !VanillaItems.ItemAccessLevels.ContainsKey(spawn.Value)
-                        && spawn.Value.Name != "Card").ToList();
+                        && !spawn.Value.Name.Contains("Card")).ToList();
                         KeyValuePair<Location, Item> spawnToSwap = acceptableLevelSpawns[Randomizer.Next(0, acceptableLevelSpawns.Count - 1)];
 
                         setToCheck.PlantCard5Set.Entities[randomizedUniqueSpawnToSwap.Key] = spawnToSwap.Value;
