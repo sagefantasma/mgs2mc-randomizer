@@ -56,11 +56,12 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed an issue with two spawns in Strut F being assigned to the wrong logic pool.\r\n"+
-                $" - Fixed an issue with randomization when Randomize Rations was disabled.\r\n\r\n"+
-                $"Changes in v1.1.1.0:\r\n\r\n" +
-                $" - Fixed an issue where some Arsenal Tengu weren't getting their values randomized correctly.\r\n" +
-                $" - Made some GUI changes to better support other localizations.";
+                $" - Fixed an issue causing cards to sometimes spawn in invalid positions.\r\n"+
+                $" - Fixed an issue where card 4 could cause a soft-lock with the Nikita option unset.\r\n\r\n"+
+                $"Changes in v1.1.2.0:\r\n\r\n" +
+                $" - Added unique names to each card that can be collected during randomization.\r\n" +
+                $" - Fixed some issues with card randomization.\r\n" +
+                $" - Fixed several items/weapons that can respawn erroneously during a randomized game.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
