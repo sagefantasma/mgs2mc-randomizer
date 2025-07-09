@@ -47,6 +47,14 @@ namespace MGS2_Randomizer
                         if (Manifest.TriFiles.Any(tri => tri.Contains(resource.Text)))
                             return false;
                         break;
+                    case FileType.Sar:
+                        if (Manifest.SarFiles.Any(sar => sar.Contains(resource.Resource.CommonName)))
+                            return false;
+                        break;
+                    case FileType.Mar:
+                        if (Manifest.MarFiles.Any(mar => mar.Contains(resource.Resource.CommonName)))
+                            return false;
+                        break;
                 }
 
                 return true;
@@ -212,7 +220,9 @@ namespace MGS2_Randomizer
             Kms,
             Cmdl,
             Ctxr,
-            Tri
+            Tri,
+            Sar,
+            Mar
         }
 
         private static LevelResources CollectExistingResources()
@@ -263,7 +273,7 @@ namespace MGS2_Randomizer
                 }
                 else if (resourceString.StartsWith("assets/row/"))
                 {
-                    existingResources.Manifest.SarFiles.Add(resourceString);
+                    existingResources.Manifest.RowFiles.Add(resourceString);
                 }
                 else if (resourceString.StartsWith("assets/o2d"))
                 {
@@ -358,6 +368,14 @@ namespace MGS2_Randomizer
                             modifiedManifest = true;
                             levelResources.Manifest.TriFiles.Add(dataToAdd.Text);
                             break;
+                        case FileType.Sar:
+                            modifiedManifest = true;
+                            levelResources.Manifest.SarFiles.Add(dataToAdd.Text);
+                            break;
+                        case FileType.Mar:
+                            modifiedManifest = true;
+                            levelResources.Manifest.MarFiles.Add(dataToAdd.Text);
+                            break;
                     }
                 }
 
@@ -371,158 +389,6 @@ namespace MGS2_Randomizer
             {
 
             }
-        }
-
-        [Obsolete("Use AddResources instead. This is error-prone, without duplicate detection, and just kind of crap.")]
-        public static bool AddResource(string gcxFile, string resourceSuperDirectory, string resourceToAdd)
-        {
-            //retooled this. This is causing problems(weirdly only with the manifest)
-            //that are entirely avoidable. Instead of _inserting_ data, let's do something
-            //similar to what we did with the gcx: just entirely recreate the data. The master files
-            //seemed to reveal that it at least _somewhat_ works in theory. So, if we instead
-            //create lists of all of the file types and create the file from those lists, that
-            //should, in theory, make this work more reliably.
-            try
-            {
-                //Thread.Sleep(2000); //determined this is NOT an I/O timing issue
-                DirectoryInfo resourceSuperDirectoryInfo = new DirectoryInfo(resourceSuperDirectory);
-                DirectoryInfo gcxResourceDirectory = resourceSuperDirectoryInfo.GetDirectories(gcxFile).FirstOrDefault();
-                FileInfo bpAssets = gcxResourceDirectory.GetFiles("bp_assets.txt").FirstOrDefault();
-                FileInfo manifest = gcxResourceDirectory.GetFiles("manifest.txt").FirstOrDefault();
-                _bpAssetsContents = File.ReadAllBytes(bpAssets.FullName).ToList();
-                _manifestContents = File.ReadAllBytes(manifest.FullName).ToList();
-
-                List<MGS2ResourceData> missingData = PrepareListOfDataToAdd(resourceToAdd);
-                ReplaceStageNames(missingData, gcxFile);
-                bool modifiedManifest = false;
-                bool modifiedBpAssets = false;
-                foreach (MGS2ResourceData dataToAdd in missingData)
-                {
-                    int insertionPoint = FindInsertionIndex(dataToAdd);
-                    if (insertionPoint == -1) //-1 means the new resource would be a duplicate, so don't add it
-                    {
-                        continue;
-                    }
-                    if (dataToAdd.FileType == FileType.Kms)
-                    {
-                        _manifestContents.InsertRange(insertionPoint, Encoding.UTF8.GetBytes(dataToAdd.Text));
-                        modifiedManifest = true;
-                    }
-                    else
-                    {
-                        _bpAssetsContents.InsertRange(insertionPoint, Encoding.UTF8.GetBytes(dataToAdd.Text));
-                        modifiedBpAssets = true;
-                    }
-                }
-
-                if (modifiedBpAssets)
-                {
-                    File.WriteAllBytes(bpAssets.FullName, _bpAssetsContents.ToArray());
-                }
-                if (modifiedManifest)
-                {
-                    File.WriteAllBytes(manifest.FullName, _manifestContents.ToArray());
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        private static int FindInsertionIndex(MGS2ResourceData resource)
-        {
-            int index;
-
-            if (resource.FileType == FileType.Kms)
-            {
-                byte[] startOfKms = Encoding.UTF8.GetBytes("assets/kms");
-                byte[] endOfKms = Encoding.UTF8.GetBytes(".kms");
-                byte[] encodedText = Encoding.UTF8.GetBytes(resource.Text);
-                index = MockAddResource(_manifestContents.ToArray(), startOfKms, endOfKms, encodedText, false);
-            }
-            else if (resource.FileType == FileType.Cmdl)
-            {
-                byte[] startOfKms = Encoding.UTF8.GetBytes("assets/kms");
-                byte[] endOfKms = Encoding.UTF8.GetBytes(".cmdl");
-                byte[] encodedText = Encoding.UTF8.GetBytes(resource.Text);
-                index = MockAddResource(_bpAssetsContents.ToArray(), startOfKms, endOfKms, encodedText, true);
-            }
-            else
-            {
-                byte[] startOfCmdl = Encoding.UTF8.GetBytes("textures/flatlist");
-                byte[] endOfCmdl = Encoding.UTF8.GetBytes(".ctxr");
-                byte[] encodedText = Encoding.UTF8.GetBytes(resource.Text);
-                index = MockAddResource(_bpAssetsContents.ToArray(), startOfCmdl, endOfCmdl, encodedText, true);
-            }
-
-            return index;
-        }
-        private static int MockAddResource(byte[] mainContents, byte[] startOfBlock, byte[] endOfBlock, byte[] encodedText, bool storedAlphabetically)
-        {
-            int index = GcxEditor.FindSubArray(mainContents, startOfBlock);
-            //next we need to find the asset that would come AFTER the asset we're adding
-            //(i.e.: if we're adding dog.kms, we need to find cat.kms after dump.kms)
-            int endSplitIndex = GcxEditor.FindAllSubArray(mainContents, endOfBlock).LastOrDefault() + endOfBlock.Length;
-            byte[] resourceArray = new byte[endSplitIndex - index];
-            Array.Copy(mainContents, index, resourceArray, 0, resourceArray.Length);
-
-            List<byte[]> individualizedResources = SplitResources(resourceArray);
-
-            if (DetermineIfDuplicate(individualizedResources, encodedText))
-            {
-                return -1;
-            }
-
-            int resourceArrayIndex = DetermineNewOrdering(individualizedResources, encodedText, storedAlphabetically);
-
-            index += resourceArrayIndex;
-
-            return index;
-        }
-
-        private static int DetermineNewOrdering(List<byte[]> individualizedResources, byte[] encodedText, bool storedAlphabetically)
-        {
-            individualizedResources = AlphabetizeResources(individualizedResources, encodedText, storedAlphabetically);
-            int resourceArrayIndex = 0;
-            foreach (byte[] resource in individualizedResources)
-            {
-                if (!resource.SequenceEqual(encodedText))
-                {
-                    resourceArrayIndex += resource.Length;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            return resourceArrayIndex;
-        }
-
-        private static List<byte[]> AlphabetizeResources(List<byte[]> existingResources, byte[] newResource, bool storedAlphabetically = true)
-        {
-            existingResources.Add(newResource);
-
-            List<string> stringedResources = new List<string>();
-
-            foreach (byte[] resource in existingResources)
-            {
-                stringedResources.Add(Encoding.UTF8.GetString(resource));
-            }
-
-            stringedResources.Sort();
-            if (!storedAlphabetically)
-                stringedResources.Reverse();
-
-            existingResources.Clear();
-            foreach (string resource in stringedResources)
-            {
-                existingResources.Add(Encoding.UTF8.GetBytes(resource));
-            }
-
-            return existingResources;
         }
 
         private static List<byte[]> SplitResources(byte[] resourceArray)
@@ -604,17 +470,6 @@ namespace MGS2_Randomizer
                 string replacementString = $"stage/{stageName}/cache";
                 resource.Text = resource.Text.Replace("stage/XXXX/cache", replacementString);
             }
-        }
-
-        private static bool DetermineIfDuplicate(List<byte[]> existingResources, byte[] newResource)
-        {
-            foreach (byte[] existingResource in existingResources)
-            {
-                if (existingResource.SequenceEqual(newResource))
-                    return true;
-            }
-
-            return false;
         }
     }
 }
