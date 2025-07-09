@@ -424,7 +424,7 @@ namespace MGS2_Randomizer
         {
             List<MGS2ResourceData> resourceData = new List<MGS2ResourceData>();
 
-            Resource resource = Resource.LookupResource(resourceToAdd);
+            BasicResource resource = Resource.LookupResource(resourceToAdd);
 
             MGS2ResourceData kmsFile = new MGS2ResourceData();
 

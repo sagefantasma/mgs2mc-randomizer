@@ -8,353 +8,305 @@ namespace MGS2_Randomizer
 {
     public struct MGS2Resource
     {
-        //TODO: MAY NEED TO ADD TRIs as well, sadge
-        //TODO: should all of these have ctxr's associated with them?
-        public static Resource ItemBox = new Resource("itembox",
-            kms: "", cmdl: "", ctxr: "", tri: "assets/tri/us/itembox.tri,us/stage/XXXX/cache/00883186.tri,cache/00883186.tri\r\r\n");
-        public static Resource ItemBox2 = new Resource("itembox2",
-            kms: "", cmdl: "", ctxr: "textures/flatlist/ibox_all2.bmp.ctxr,stage/XXXX/cache/ibox_all2.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a68.ctxr\r\r\n", tri: "");
-        public static Resource ColdMedsLabel = new Resource("cold_medicine_label",
-            kms: "assets/kms/us/cold_medicine_label_stage_a03b.kms,us/stage/XXXX/cache/00f971fb.kms,cache/00f971fb.kms\r\r\n",
-            cmdl: "assets/kms/us/cold_medicine_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f971fb.cmdl,eu/stage/XXXX/cache/00f971fb.cmdl\r\r\n",
-            ctxr: "textures/flatlist/coldmedicine_tx_alp.bmp.ctxr,stage/XXXX/cache/coldmedicine_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00ed17f6.ctxr\r\r\n", tri: "");
-        public static Resource ThermalGogglesLabel = new Resource("tgl_label",
-            kms: "assets/kms/us/tgl_label_stage_a03b.kms,us/stage/XXXX/cache/006968d1.kms,cache/006968d1.kms\r\r\n",
-            cmdl: "assets/kms/us/tgl_label_stage_a03b.cmdl,us/stage/XXXX/cache/006968d1.cmdl,eu/stage/XXXX/cache/006968d1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource GoggleIbox = new Resource("goggle_ibox_stage",
-            kms: "assets/kms/us/goggle_ibox_stage_a00c.kms,us/stage/XXXX/cache/00706bd2.kms,cache/00706bd2.kms\r\r\n",
-            cmdl: "assets/kms/us/goggle_ibox_stage_a00c.cmdl,us/stage/XXXX/cache/00706bd2.cmdl,eu/stage/XXXX/cache/00706bd2.cmdl\r\r\n",
-            ctxr: "textures/flatlist/ibox_all4.bmp.ctxr,stage/XXXX/cache/ibox_all4.bmp.ctxr,eu/stage/XXXX/cache/00706bd2/008e6a6a.ctxr\r\r\n",
-            tri: "assets/tri/us/goggle_ibox.tri,us/stage/XXXX/cache/00706bd2.tri,cache/00706bd2.tri\r\r\n");
-        public static Resource GoggleSh = new Resource("goggle_ibox_sh",
-            kms: "assets/kms/us/goggle_ibox_sh_stage_a00c.kms,us/stage/XXXX/cache/00eac2fd.kms,cache/00eac2fd.kms\r\r\n",
-            cmdl: "assets/kms/us/goggle_ibox_sh_stage_a00c.cmdl,us/stage/XXXX/cache/00eac2fd.cmdl,eu/stage/XXXX/cache/00eac2fd.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource AKAmmoLabel = new Resource("aks_amo_label",
-            kms: "assets/kms/us/aks_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003ce0e9.kms,cache/003ce0e9.kms\r\r\n",
-            cmdl: "assets/kms/us/aks_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003ce0e9.cmdl,eu/stage/XXXX/cache/003ce0e9.cmdl\r\r\n",
-            ctxr: ""/*"textures/flatlist/rifle_ammo_side.bmp.ctxr,stage/XXXX/cache/rifle_ammo_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/00c84cc6.ctxr\r\r\n"*/, tri: "");
-        public static Resource AKWeaponLabel = new Resource("ak_label",
-            kms: "assets/kms/us/ak_label_stage_a03b.kms,us/stage/XXXX/cache/00f53890.kms,cache/00f53890.kms\r\r\n",
-            cmdl: "assets/kms/us/ak_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f53890.cmdl,eu/stage/XXXX/cache/00f53890.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource MagazineIbox = new Resource("magazine_ibox",
-            kms: "assets/kms/us/magazine_ibox_stage_a03b.kms,us/stage/XXXX/cache/00ca7cd0.kms,cache/00ca7cd0.kms\r\r\n",
-            cmdl: "assets/kms/us/magazine_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00ca7cd0.cmdl,eu/stage/XXXX/cache/00ca7cd0.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource MagazineLabel = new Resource("magazine_label",
-            kms: "assets/kms/us/magazine_label_stage_a03b.kms,us/stage/XXXX/cache/007ee425.kms,cache/007ee425.kms\r\r\n",
-            cmdl: "assets/kms/us/magazine_label_stage_a03b.cmdl,us/stage/XXXX/cache/007ee425.cmdl,eu/stage/XXXX/cache/007ee425.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource MagazineSh = new Resource("magazine_sh",
-            kms: "assets/kms/us/magazine_sh_stage_a03b.kms,us/stage/XXXX/cache/009e33e1.kms,cache/009e33e1.kms\r\r\n",
-            cmdl: "assets/kms/us/magazine_sh_stage_a03b.cmdl,us/stage/XXXX/cache/009e33e1.cmdl,eu/stage/XXXX/cache/009e33e1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource C4Label = new Resource("cfr_label",
-            kms: "assets/kms/us/cfr_label_stage_a03b.kms,us/stage/XXXX/cache/00586251.kms,cache/00586251.kms\r\r\n",
-            cmdl: "assets/kms/us/cfr_label_stage_a03b.cmdl,us/stage/XXXX/cache/00586251.cmdl,eu/stage/XXXX/cache/00586251.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource ClaymoreLabel = new Resource("clm_label",
-            kms: "assets/kms/us/clm_label_stage_a03b.kms,us/stage/XXXX/cache/00589111.kms,cache/00589111.kms\r\r\n",
-            cmdl: "assets/kms/us/clm_label_stage_a03b.cmdl,us/stage/XXXX/cache/00589111.cmdl,eu/stage/XXXX/cache/00589111.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource DmicLabel = new Resource("dmp_label",
-            kms: "assets/kms/us/dmp_label_stage_a03b.kms,us/stage/XXXX/cache/005999d1.kms,cache/005999d1.kms\r\r\n",
-            cmdl: "assets/kms/us/dmp_label_stage_a03b.cmdl,us/stage/XXXX/cache/005999d1.cmdl,eu/stage/XXXX/cache/005999d1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource GrenadeLabel = new Resource("gre_label",
-            kms: "assets/kms/us/gre_label_stage_a03b.kms,us/stage/XXXX/cache/005cbf11.kms,cache/005cbf11.kms\r\r\n",
-            cmdl: "assets/kms/us/gre_label_stage_a03b.cmdl,us/stage/XXXX/cache/005cbf11.cmdl,eu/stage/XXXX/cache/005cbf11.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource M4AmmoLabel = new Resource("m4_amo_label",
-            kms: "assets/kms/us/m4_amo_label_stage_a03b.kms,us/stage/XXXX/cache/0036d0ed.kms,cache/0036d0ed.kms\r\r\n",
-            cmdl: "assets/kms/us/m4_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/0036d0ed.cmdl,eu/stage/XXXX/cache/0036d0ed.cmdl\r\r\n",
-            ctxr: ""/*"textures/flatlist/rifle_ammo_rabel_alp_ovl.bmp.ctxr,stage/XXXX/cache/rifle_ammo_rabel_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/00883186/007951dc.ctxr\r\r\n"*/, tri: "");
-        public static Resource M4WeaponLabel = new Resource("m4_label",
-            kms: "assets/kms/us/m4_label_stage_a03b.kms,us/stage/XXXX/cache/00f58ad0.kms,cache/00f58ad0.kms\r\r\n",
-            cmdl: "assets/kms/us/m4_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f58ad0.cmdl,eu/stage/XXXX/cache/00f58ad0.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource NikitaAmmoLabel = new Resource("nkt_amo_label",
-            kms: "assets/kms/us/nkt_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003db0ed.kms,cache/003db0ed.kms\r\r\n",
-            cmdl: "assets/kms/us/nkt_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003db0ed.cmdl,eu/stage/XXXX/cache/003db0ed.cmdl\r\r\n",
-            ctxr: ""/*"textures/flatlist/launch_rabel_alp_ovl.bmp.ctxr,stage/XXXX/cache/launch_rabel_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/00883186/0098bfca.ctxr\r\r\n"*/, tri: "");
-        public static Resource NikitaWeaponLabel = new Resource("nkt_label",
-            kms: "assets/kms/us/nkt_label_stage_a03b.kms,us/stage/XXXX/cache/00638ad1.kms,cache/00638ad1.kms\r\r\n",
-            cmdl: "assets/kms/us/nkt_label_stage_a03b.cmdl,us/stage/XXXX/cache/00638ad1.cmdl,eu/stage/XXXX/cache/00638ad1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource PSG1AmmoLabel = new Resource("psg_amo_label",
-            kms: "assets/kms/us/psg_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003dd4b9.kms,cache/003dd4b9.kms\r\r\n",
-            cmdl: "assets/kms/us/psg_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003dd4b9.cmdl,eu/stage/XXXX/cache/003dd4b9.cmdl\r\r\n",
-            ctxr: ""/*"textures/flatlist/rifle_ammo_top.bmp.ctxr,stage/XXXX/cache/rifle_ammo_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/000e472f.ctxr\r\r\n"*/, tri: "");
-        public static Resource PSG1WeaponLabel = new Resource("psg_label",
-            kms: "assets/kms/us/psg_label_stage_a03b.kms,us/stage/XXXX/cache/0065c791.kms,cache/0065c791.kms\r\r\n",
-            cmdl: "assets/kms/us/psg_label_stage_a03b.cmdl,us/stage/XXXX/cache/0065c791.cmdl,eu/stage/XXXX/cache/0065c791.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RifleAmmoIbox1 = new Resource("006ab337",
-            kms: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/006ab337.kms,cache/006ab337.kms\r\r\n",
-            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/006ab337.cmdl,eu/stage/XXXX/cache/006ab337.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RifleAmmoIbox2 = new Resource("00130222",
-            kms: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/00130222.kms,cache/00130222.kms\r\r\n",
-            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00130222.cmdl,eu/stage/XXXX/cache/00130222.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RilfeIbox = new Resource("rilfe_ibox",
-            kms: "assets/kms/us/rilfe_ibox.kms,us/stage/XXXX/cache/00d290b6.kms,cache/00d290b6.kms\r\r\n",
-            cmdl: "assets/kms/us/rilfe_ibox.cmdl,us/stage/XXXX/cache/00d290b6.cmdl,eu/stage/XXXX/cache/00d290b6.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource IboxAmoNkt = new Resource("ibox_amo_nkt",
-            kms: "assets/kms/us/ibox_amo_nkt.kms,us/stage/XXXX/cache/007c8d0b.kms,cache/007c8d0b.kms\r\r\n",
-            cmdl: "assets/kms/us/ibox_amo_nkt.cmdl,us/stage/XXXX/cache/007c8d0b.cmdl,eu/stage/XXXX/cache/007c8d0b.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource PSG1TAmmoLabel = new Resource("psgt_amo_label",
-            kms: "assets/kms/us/psgt_amo_label_stage_a03b.kms,us/stage/XXXX/cache/001dfe6e.kms,cache/001dfe6e.kms\r\r\n",
-            cmdl: "assets/kms/us/psgt_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/001dfe6e.cmdl,eu/stage/XXXX/cache/001dfe6e.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource PSG1TWeaponLabel = new Resource("psg_t_label",
-            kms: "assets/kms/us/psg_t_label_stage_a03b.kms,us/stage/XXXX/cache/00bc2c9f.kms,cache/00bc2c9f.kms\r\r\n",
-            cmdl: "assets/kms/us/psg_t_label_stage_a03b.cmdl,us/stage/XXXX/cache/00bc2c9f.cmdl,eu/stage/XXXX/cache/00bc2c9f.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RGB6AmmoLabel = new Resource("rgb_amo_label",
-            kms: "assets/kms/us/rgb_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003deea5.kms,cache/003deea5.kms\r\r\n",
-            cmdl: "assets/kms/us/rgb_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003deea5.cmdl,eu/stage/XXXX/cache/003deea5.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RGB6WeaponLabel = new Resource("rgb_label",
-            kms: "assets/kms/us/rgb_label_stage_a03b.kms,us/stage/XXXX/cache/00676651.kms,cache/00676651.kms\r\r\n",
-            cmdl: "assets/kms/us/rgb_label_stage_a03b.cmdl,us/stage/XXXX/cache/00676651.cmdl,eu/stage/XXXX/cache/00676651.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource StingerAmmoLabel = new Resource("stg_amo_label",
-            kms: "assets/kms/us/stg_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003e0539.kms,cache/003e0539.kms\r\r\n",
-            cmdl: "assets/kms/us/stg_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003e0539.cmdl,eu/stage/XXXX/cache/003e0539.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource StingerWeaponLabel = new Resource("stg_label",
-            kms: "assets/kms/us/stg_label_stage_a03b.kms,us/stage/XXXX/cache/0068cf91.kms,cache/0068cf91.kms\r\r\n",
-            cmdl: "assets/kms/us/stg_label_stage_a03b.cmdl,us/stage/XXXX/cache/0068cf91.cmdl,eu/stage/XXXX/cache/0068cf91.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource BodyArmorLabel = new Resource("bam_label",
-            kms: "assets/kms/us/bam_label_stage_a03b.kms,us/stage/XXXX/cache/00573911.kms,cache/00573911.kms\r\r\n",
-            cmdl: "assets/kms/us/bam_label_stage_a03b.cmdl,us/stage/XXXX/cache/00573911.cmdl,eu/stage/XXXX/cache/00573911.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource DigitalCameraIbox = new Resource("digital_camera_ibox",
-            kms: "assets/kms/us/digital_camera_ibox_stage_a03b.kms,us/stage/XXXX/cache/001cd720.kms,cache/001cd720.kms\r\r\n",
-            cmdl: "assets/kms/us/digital_camera_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/001cd720.cmdl,eu/stage/XXXX/cache/001cd720.cmdl\r\r\n",
-            ctxr: "textures/flatlist/degital_camera.bmp.ctxr,stage/XXXX/cache/degital_camera.bmp.ctxr,eu/stage/XXXX/cache/00883186/00fb2060.ctxr\r\r\n",
-            tri: "");
-        public static Resource DigitalCameraLabel = new Resource("digital_camera_label",
-            kms: "assets/kms/us/digital_camera_label_stage_a03b.kms,us/stage/XXXX/cache/00ca2e0f.kms,cache/00ca2e0f.kms\r\r\n",
-            cmdl: "assets/kms/us/digital_camera_label_stage_a03b.cmdl,us/stage/XXXX/cache/00ca2e0f.cmdl,eu/stage/XXXX/cache/00ca2e0f.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource DigitalCameraSh = new Resource("digital_camera_sh",
-            kms: "assets/kms/us/digital_camera_sh_stage_a03b.kms,us/stage/XXXX/cache/00320878.kms,cache/00320878.kms\r\r\n",
-            cmdl: "assets/kms/us/digital_camera_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00320878.cmdl,eu/stage/XXXX/cache/00320878.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource PentazeminLabel = new Resource("dzp2_label",
-            kms: "assets/kms/us/dzp2_label_stage_a03b.kms,us/stage/XXXX/cache/00efa25d.kms,cache/00efa25d.kms\r\r\n",
-            cmdl: "assets/kms/us/dzp2_label_stage_a03b.cmdl,us/stage/XXXX/cache/00efa25d.cmdl,eu/stage/XXXX/cache/00efa25d.cmdl\r\r\n",
-            ctxr: "textures/flatlist/dzp2_tx_alp.bmp.ctxr,stage/XXXX/cache/dzp2_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0062bc3f.ctxr\r\r\n",
-            tri: "");
-        public static Resource SensorBLabel = new Resource("bsn_b_label",
-            kms: "assets/kms/us/bsn_b_label_stage_a03b.kms,us/stage/XXXX/cache/00c327e7.kms,cache/00c327e7.kms\r\r\n",
-            cmdl: "assets/kms/us/bsn_b_label_stage_a03b.cmdl,us/stage/XXXX/cache/00c327e7.cmdl,eu/stage/XXXX/cache/00c327e7.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource SocomSuppressorLabel = new Resource("scm_sp_label",
-            kms: "assets/kms/us/scm_sp_label_stage_a03b.kms,us/stage/XXXX/cache/00f504ea.kms,cache/00f504ea.kms\r\r\n",
-            cmdl: "assets/kms/us/scm_sp_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f504ea.cmdl,eu/stage/XXXX/cache/00f504ea.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource MineDetectorLabel = new Resource("mnd_label",
-            kms: "assets/kms/us/mnd_label_stage_a03b.kms,us/stage/XXXX/cache/00629ed1.kms,cache/00629ed1.kms\r\r\n",
-            cmdl: "assets/kms/us/mnd_label_stage_a03b.cmdl,us/stage/XXXX/cache/00629ed1.cmdl,eu/stage/XXXX/cache/00629ed1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource NVGLabel = new Resource("ngl_label",
-            kms: "assets/kms/us/ngl_label_stage_a03b.kms,us/stage/XXXX/cache/006368d1.kms,cache/006368d1.kms\r\r\n",
-            cmdl: "assets/kms/us/ngl_label_stage_a03b.cmdl,us/stage/XXXX/cache/006368d1.cmdl,eu/stage/XXXX/cache/006368d1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RifleAmmoIbox = new Resource("rifle_amo_ibox",
-            kms: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/0012ff3a.kms,cache/0012ff3a.kms\r\r\n",
-            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/0012ff3a.cmdl,eu/stage/XXXX/cache/0012ff3a.cmdl\r\r\n",
-            ctxr: "", tri: ""); //TODO: there are at least 3 of these referenced in w22a. what is going on with this
-        public static Resource RifleAmmoSh = new Resource("handgun_amo_ibox",
-            kms: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/009e9447.kms,cache/009e9447.kms\r\r\n",
-            cmdl: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/009e9447.cmdl,eu/stage/XXXX/cache/009e9447.cmdl\r\r\n",
-            ctxr: "", tri: ""); //This is NOT a mistake on my part, this is Konami/Bluepoint's doing. This is correct to the game files
-        public static Resource RifleIbox = new Resource("rifle_ibox_stage",
-            kms: "assets/kms/us/rifle_ibox_stage_a03b.kms,us/stage/XXXX/cache/00d26236.kms,cache/00d26236.kms\r\r\n",
-            cmdl: "assets/kms/us/rifle_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00d26236.cmdl,eu/stage/XXXX/cache/00d26236.cmdl\r\r\n",
-            ctxr: "textures/flatlist/rifle_ibox.bmp_94bca08db682d231ae1d48d2b6385598.ctxr,stage/XXXX/cache/rifle_ibox.bmp_94bca08db682d231ae1d48d2b6385598.ctxr,eu/stage/XXXX/cache/00883186/00d26236.ctxr\r\r\n",
-            tri: "");
-        public static Resource RifleSh = new Resource("rifle_ibox_sh",
-            kms: "assets/kms/us/rifle_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/001cf3f9.kms,cache/001cf3f9.kms\r\r\n",
-            cmdl: "assets/kms/us/rifle_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/001cf3f9.cmdl,eu/stage/XXXX/cache/001cf3f9.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource LauncherAmmoIbox = new Resource("launcher_amo_ibox_stage",
-            kms: "assets/kms/us/launcher_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/00eb0f44.kms,cache/00eb0f44.kms\r\r\n",
-            cmdl: "assets/kms/us/launcher_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00eb0f44.cmdl,eu/stage/XXXX/cache/00eb0f44.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource LauncherAmmoSh = new Resource("launcher_amo_ibox_sh",
-            kms: "assets/kms/us/launcher_amo_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00a4004f.kms,cache/00a4004f.kms\r\r\n",
-            cmdl: "assets/kms/us/launcher_amo_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00a4004f.cmdl,eu/stage/XXXX/cache/00a4004f.cmdl\r\r\n",
-            ctxr: "textures/flatlist/launcher_ammo_side.bmp.ctxr,stage/XXXX/cache/launcher_ammo_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/00ca4e21.ctxr\r\r\n", tri: "");
-        public static Resource LauncherIbox = new Resource("launcher_ibox_stage",
-            kms: "assets/kms/us/launcher_ibox_stage_a03b.kms,us/stage/XXXX/cache/005362e4.kms,cache/005362e4.kms\r\r\n",
-            cmdl: "assets/kms/us/launcher_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/005362e4.cmdl,eu/stage/XXXX/cache/005362e4.cmdl\r\r\n",
-            ctxr: "textures/flatlist/launcher_ibox.bmp.ctxr,stage/XXXX/cache/launcher_ibox.bmp.ctxr,eu/stage/XXXX/cache/00883186/005362e4.ctxr\r\r\n",
-            tri: "");
-        public static Resource LauncherSh = new Resource("launcher_ibox_sh",
-            kms: "assets/kms/us/launcher_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0073b479.kms,cache/0073b479.kms\r\r\n",
-            cmdl: "assets/kms/us/launcher_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0073b479.cmdl,eu/stage/XXXX/cache/0073b479.cmdl\r\r\n",
-            ctxr: ""/*"textures/flatlist/launch_box_top.bmp.ctxr,stage/XXXX/cache/launch_box_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/005abbfb.ctxr\r\r\n"*/, tri: "");
-        public static Resource Box2Ibox = new Resource("box2_ibox",
-            kms: "assets/kms/us/box2_ibox_stage_a03b.kms,us/stage/XXXX/cache/008bacc2.kms,cache/008bacc2.kms\r\r\n",
-            cmdl: "assets/kms/us/box2_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/008bacc2.cmdl,eu/stage/XXXX/cache/008bacc2.cmdl\r\r\n",
-            ctxr: "textures/flatlist/ibox2_tx_all_alp.bmp.ctxr,stage/XXXX/cache/ibox2_tx_all_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0051c0fb.ctxr\r\r\n",
-            tri: "");
-        public static Resource Box2Sh = new Resource("box2_ibox_sh",
-            kms: "assets/kms/us/box2_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0062d09e.kms,cache/0062d09e.kms\r\r\n",
-            cmdl: "assets/kms/us/box2_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0062d09e.cmdl,eu/stage/XXXX/cache/0062d09e.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource CbxLabel = new Resource("cbx_label",
-            kms: "assets/kms/us/cbx_label_stage_a03b.kms,us/stage/XXXX/cache/005843d1.kms,cache/005843d1.kms\r\r\n",
-            cmdl: "assets/kms/us/cbx_label_stage_a03b.cmdl,us/stage/XXXX/cache/005843d1.cmdl,eu/stage/XXXX/cache/005843d1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource DetectorIbox = new Resource("detector_ibox_stage",
-            kms: "assets/kms/us/detector_ibox_stage_a03b.kms,us/stage/XXXX/cache/0033475f.kms,cache/0033475f.kms\r\r\n",
-            cmdl: "assets/kms/us/detector_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/0033475f.cmdl,eu/stage/XXXX/cache/0033475f.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource DetectorSh = new Resource("detector_ibox_sh",
-            kms: "assets/kms/us/detector_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00b1246b.kms,cache/00b1246b.kms\r\r\n",
-            cmdl: "assets/kms/us/detector_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00b1246b.cmdl,eu/stage/XXXX/cache/00b1246b.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource DmicIbox = new Resource("box_ibox_stage",
-            kms: "assets/kms/us/box_ibox_stage_a03b.kms,us/stage/XXXX/cache/0029430e.kms,cache/0029430e.kms\r\r\n",
-            cmdl: "assets/kms/us/box_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/0029430e.cmdl,eu/stage/XXXX/cache/0029430e.cmdl\r\r\n",
-            ctxr: "textures/flatlist/dmp_ibx_label_alp.bmp.ctxr,stage/XXXX/cache/dmp_ibx_label_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00055db2.ctxr\r\r\n",
-            tri: "");
-        public static Resource DmicSh = new Resource("box_ibox_sh",
-            kms: "assets/kms/us/box_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00889f69.kms,cache/00889f69.kms\r\r\n",
-            cmdl: "assets/kms/us/box_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00889f69.cmdl,eu/stage/XXXX/cache/00889f69.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RationIbox = new Resource("ration_ibox_stage",
-            kms: "assets/kms/us/ration_ibox_stage_a03b.kms,us/stage/XXXX/cache/00bd7cce.kms,cache/00bd7cce.kms\r\r\n",
-            cmdl: "assets/kms/us/ration_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00bd7cce.cmdl,eu/stage/XXXX/cache/00bd7cce.cmdl\r\r\n",
-            ctxr: "textures/flatlist/ration_box.bmp.ctxr,stage/XXXX/cache/ration_box.bmp.ctxr,eu/stage/XXXX/cache/00883186/00b5d18b.ctxr\r\r\n", tri: "");
-        public static Resource M9AmmoLabel = new Resource("m92_amo_label",
-            kms: "assets/kms/us/m92_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003d86e5.kms,cache/003d86e5.kms\r\r\n",
-            cmdl: "assets/kms/us/m92_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003d86e5.cmdl,eu/stage/XXXX/cache/003d86e5.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource M9WeaponLabel = new Resource("m92_label",
-            kms: "assets/kms/us/m92_label_stage_a03b.kms,us/stage/XXXX/cache/0060ea51.kms,cache/0060ea51.kms\r\r\n",
-            cmdl: "assets/kms/us/m92_label_stage_a03b.cmdl,us/stage/XXXX/cache/0060ea51.cmdl,eu/stage/XXXX/cache/0060ea51.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource StunLabel = new Resource("sgr_label",
-            kms: "assets/kms/us/sgr_label_stage_a03b.kms,us/stage/XXXX/cache/00686a51.kms,cache/00686a51.kms\r\r\n",
-            cmdl: "assets/kms/us/sgr_label_stage_a03b.cmdl,us/stage/XXXX/cache/00686a51.cmdl,eu/stage/XXXX/cache/00686a51.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource BandageLabel = new Resource("sbs_label",
-            kms: "assets/kms/us/sbs_label_stage_a03b.kms,us/stage/XXXX/cache/00684291.kms,cache/00684291.kms\r\r\n",
-            cmdl: "assets/kms/us/sbs_label_stage_a03b.cmdl,us/stage/XXXX/cache/00684291.cmdl,eu/stage/XXXX/cache/00684291.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource ShaverLabel = new Resource("shv_label",
-            kms: "assets/kms/us/shv_label_stage_a03b.kms,us/stage/XXXX/cache/00687351.kms,cache/00687351.kms\r\r\n",
-            cmdl: "assets/kms/us/shv_label_stage_a03b.cmdl,us/stage/XXXX/cache/00687351.cmdl,eu/stage/XXXX/cache/00687351.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource MedicineIbox = new Resource("medicine_ibox_stage",
-            kms: "assets/kms/us/medicine_ibox_stage_a03b.kms,us/stage/XXXX/cache/00b37ec5.kms,cache/00b37ec5.kms\r\r\n",
-            cmdl: "assets/kms/us/medicine_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00b37ec5.cmdl,eu/stage/XXXX/cache/00b37ec5.cmdl\r\r\n",
-            ctxr: "textures/flatlist/medicine_box.bmp.ctxr,stage/XXXX/cache/medicine_box.bmp.ctxr,eu/stage/XXXX/cache/00883186/006d819b.ctxr\r\r\n", tri: "");
-        public static Resource MedicineSh = new Resource("medicine_ibox_sh",
-            kms: "assets/kms/us/medicine_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00646487.kms,cache/00646487.kms\r\r\n",
-            cmdl: "assets/kms/us/medicine_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00646487.cmdl,eu/stage/XXXX/cache/00646487.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource HandgunIbox = new Resource("handgun_ibox_stage",
-            kms: "assets/kms/us/handgun_ibox_stage_a03b.kms,us/stage/XXXX/cache/004da20c.kms,cache/004da20c.kms\r\r\n",
-            cmdl: "assets/kms/us/handgun_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/004da20c.cmdl,eu/stage/XXXX/cache/004da20c.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource HandgunSh = new Resource("handgun_ibox_sh",
-            kms: "assets/kms/us/handgun_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0007b199.kms,cache/0007b199.kms\r\r\n",
-            cmdl: "assets/kms/us/handgun_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0007b199.cmdl,eu/stage/XXXX/cache/0007b199.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource ChaffLabel = new Resource("cgr_label",
-            kms: "assets/kms/us/cgr_label_stage_a03b.kms,us/stage/XXXX/cache/00586a51.kms,cache/00586a51.kms\r\r\n",
-            cmdl: "assets/kms/us/cgr_label_stage_a03b.cmdl,us/stage/XXXX/cache/00586a51.cmdl,eu/stage/XXXX/cache/00586a51.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource SocomAmmoLabel = new Resource("scm_amo_label",
-            kms: "assets/kms/us/scm_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003dfcd1.kms,cache/003dfcd1.kms\r\r\n",
-            cmdl: "assets/kms/us/scm_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003dfcd1.cmdl,eu/stage/XXXX/cache/003dfcd1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource GrenadeIbox = new Resource("grenade_ibox_stage",
-            kms: "assets/kms/us/grenade_ibox_stage_a03b.kms,us/stage/XXXX/cache/00376d7d.kms,cache/00376d7d.kms\r\r\n",
-            cmdl: "assets/kms/us/grenade_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00376d7d.cmdl,eu/stage/XXXX/cache/00376d7d.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource GrenadeSh = new Resource("grenade_ibox_sh",
-            kms: "assets/kms/us/grenade_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00c0267e.kms,cache/00c0267e.kms\r\r\n",
-            cmdl: "assets/kms/us/grenade_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00c0267e.cmdl,eu/stage/XXXX/cache/00c0267e.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource HandgunAmmoIbox = new Resource("rifle_amo_ibox_stage",
-            kms: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/006ab337.kms,cache/006ab337.kms\r\r\n",
-            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/006ab337.cmdl,eu/stage/XXXX/cache/006ab337.cmdl\r\r\n",
-            ctxr: "", tri: ""); //again, this is not a mistake on our part. This was done by Konami/Bluepoint
-        public static Resource HandgunAmmoSh = new Resource("handgun_amo_ibox_sh",
-            kms: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/009d4021.kms,cache/009d4021.kms\r\r\n",
-            cmdl: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/009d4021.cmdl,eu/stage/XXXX/cache/009d4021.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RationSh = new Resource("ration_ibox_sh",
-            kms: "assets/kms/us/ration_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0068e986.kms,cache/0068e986.kms\r\r\n",
-            cmdl: "assets/kms/us/ration_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0068e986.cmdl,eu/stage/XXXX/cache/0068e986.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource RationLabel = new Resource("rtn_label",
-            kms: "assets/kms/us/rtn_label_stage_a03b.kms,us/stage/XXXX/cache/0067d151.kms,cache/0067d151.kms\r\r\n",
-            cmdl: "assets/kms/us/rtn_label_stage_a03b.cmdl,us/stage/XXXX/cache/0067d151.cmdl,eu/stage/XXXX/cache/0067d151.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource AKSuppressorLabel = new Resource("ak_sp_label",
-            kms: "assets/kms/us/ak_sp_label_stage_a03b.kms,us/stage/XXXX/cache/00b4cb62.kms,cache/00b4cb62.kms\r\r\n",
-            cmdl: "assets/kms/us/ak_sp_label_stage_a03b.cmdl,us/stage/XXXX/cache/00b4cb62.cmdl,eu/stage/XXXX/cache/00b4cb62.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource CoolantSprayLabel = new Resource("cls_label",
-            kms: "assets/kms/us/cls_label.kms,us/stage/XXXX/cache/00589291.kms,cache/00589291.kms\r\r\n",
-            cmdl: "assets/kms/us/cls_label.cmdl,us/stage/XXXX/cache/00589291.cmdl,eu/stage/XXXX/cache/00589291.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource UspLabel = new Resource("usp_label",
-            kms: "assets/kms/us/usp_label_stage_a03b.kms,us/stage/XXXX/cache/006ac9d1.kms,cache/006ac9d1.kms\r\r\n",
-            cmdl: "assets/kms/us/usp_label_stage_a03b.cmdl,us/stage/XXXX/cache/006ac9d1.cmdl,eu/stage/XXXX/cache/006ac9d1.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource SocomLabel = new Resource("scm_label",
-            kms: "assets/kms/us/scm_label.kms,us/stage/XXXX/cache/00684911.kms,cache/00684911.kms\r\r\n",
-            cmdl: "assets/kms/us/scm_label.cmdl,us/stage/XXXX/cache/00684911.cmdl,eu/stage/XXXX/cache/00684911.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource CigarettesLabel = new Resource("cigarette_label",
-            kms: "assets/kms/us/cigarette_label.kms,us/stage/XXXX/cache/00a2717f.kms,cache/00a2717f.kms\r\r\n",
-            cmdl: "assets/kms/us/cigarette_label.cmdl,us/stage/XXXX/cache/00a2717f.cmdl,eu/stage/XXXX/cache/00a2717f.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource CigarettesIbox = new Resource("cigarette_ibox",
-            kms: "assets/kms/us/cigarette_ibox.kms,us/stage/XXXX/cache/009b993b.kms,cache/009b993b.kms\r\r\n",
-            cmdl: "assets/kms/us/cigarette_ibox.cmdl,us/stage/XXXX/cache/009b993b.cmdl,eu/stage/XXXX/cache/009b993b.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource CigarettesIboxSh = new Resource("cigarette_sh",
-            kms: "assets/kms/us/cigarette_sh.kms,us/stage/XXXX/cache/00b8e828.kms,cache/00b8e828.kms\r\r\n",
-            cmdl: "assets/kms/us/cigarette_sh.cmdl,us/stage/XXXX/cache/00b8e828.cmdl,eu/stage/XXXX/cache/00b8e828.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource SensorALabel = new Resource("bsn_a_label",
-            kms: "assets/kms/us/bsn_a_label.kms,us/stage/XXXX/cache/00c327a7.kms,cache/00c327a7.kms\r\r\n",
-            cmdl: "assets/kms/us/bsn_a_label.cmdl,us/stage/XXXX/cache/00c327a7.cmdl,eu/stage/XXXX/cache/00c327a7.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource APSensorIbox = new Resource("a_p_sensor_ibox.",
-            kms: "assets/kms/us/a_p_sensor_ibox.kms,us/stage/XXXX/cache/003cfc74.kms,cache/003cfc74.kms\r\r\n",
-            cmdl: "assets/kms/us/a_p_sensor_ibox.cmdl,us/stage/XXXX/cache/003cfc74.cmdl,eu/stage/XXXX/cache/003cfc74.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource APSensorLabel = new Resource("a_p_sensor_ibox_label",
-            kms: "assets/kms/us/a_p_sensor_ibox_label.kms,us/stage/XXXX/cache/003132e0.kms,cache/003132e0.kms\r\r\n",
-            cmdl: "assets/kms/us/a_p_sensor_ibox_label.cmdl,us/stage/XXXX/cache/003132e0.cmdl,eu/stage/XXXX/cache/003132e0.cmdl\r\r\n",
-            ctxr: "", tri: "");
-        public static Resource ScopeCustomBox = new Resource("sougan",
-            kms: "assets/kms/us/sougan.kms,us/stage/XXXX/cache/002c297b.kms,cache/002c297b.kms\r\r\n",
-            cmdl: "assets/kms/us/sougan.cmdl,us/stage/XXXX/cache/002c297b.cmdl,eu/stage/XXXX/cache/002c297b.cmdl\r\r\n",
-            ctxr: "", tri: "");
+        //TODO: convert the BasicResources that are textures to be CtxrResource
+        public static BasicResource ItemBox = new BasicResource("itembox", "assets/tri/us/itembox.tri,us/stage/XXXX/cache/00883186.tri,cache/00883186.tri\r\r\n");
+        public static BasicResource ItemBox2 = new BasicResource("ibox_all2", "textures/flatlist/ibox_all2.bmp.ctxr,stage/XXXX/cache/ibox_all2.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a68.ctxr\r\r\n");
+        public static KmsResource ColdMedsLabel = new KmsResource("cold_medicine_label", "assets/kms/us/cold_medicine_label_stage_a03b.kms,us/stage/XXXX/cache/00f971fb.kms,cache/00f971fb.kms\r\r\n","assets/kms/us/cold_medicine_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f971fb.cmdl,eu/stage/XXXX/cache/00f971fb.cmdl\r\r\n");
+        public static BasicResource ColdMedsLabelTexture = new BasicResource("coldmedicine_tx_alp.bmp", "textures/flatlist/coldmedicine_tx_alp.bmp.ctxr,stage/XXXX/cache/coldmedicine_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00ed17f6.ctxr\r\r\n");
+        public static KmsResource ThermalGogglesLabel = new KmsResource("tgl_label", "assets/kms/us/tgl_label_stage_a03b.kms,us/stage/XXXX/cache/006968d1.kms,cache/006968d1.kms\r\r\n", "assets/kms/us/tgl_label_stage_a03b.cmdl,us/stage/XXXX/cache/006968d1.cmdl,eu/stage/XXXX/cache/006968d1.cmdl\r\r\n");
+        public static KmsResource GoggleIbox = new KmsResource("goggle_ibox_stage",
+            path: "assets/kms/us/goggle_ibox_stage_a00c.kms,us/stage/XXXX/cache/00706bd2.kms,cache/00706bd2.kms\r\r\n",
+            cmdl: "assets/kms/us/goggle_ibox_stage_a00c.cmdl,us/stage/XXXX/cache/00706bd2.cmdl,eu/stage/XXXX/cache/00706bd2.cmdl\r\r\n");
+        public static BasicResource GoggleIboxTexture = new BasicResource("ibox_all4.bmp.ctxr", "textures/flatlist/ibox_all4.bmp.ctxr,stage/XXXX/cache/ibox_all4.bmp.ctxr,eu/stage/XXXX/cache/00706bd2/008e6a6a.ctxr\r\r\n");
+        public static BasicResource GoggleIboxTri = new BasicResource("goggle_ibox.tri", "assets/tri/us/goggle_ibox.tri,us/stage/XXXX/cache/00706bd2.tri,cache/00706bd2.tri\r\r\n");
+        public static KmsResource GoggleSh = new KmsResource("goggle_ibox_sh",
+            path: "assets/kms/us/goggle_ibox_sh_stage_a00c.kms,us/stage/XXXX/cache/00eac2fd.kms,cache/00eac2fd.kms\r\r\n",
+            cmdl: "assets/kms/us/goggle_ibox_sh_stage_a00c.cmdl,us/stage/XXXX/cache/00eac2fd.cmdl,eu/stage/XXXX/cache/00eac2fd.cmdl\r\r\n");
+        public static KmsResource AKAmmoLabel = new KmsResource("aks_amo_label",
+            path: "assets/kms/us/aks_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003ce0e9.kms,cache/003ce0e9.kms\r\r\n",
+            cmdl: "assets/kms/us/aks_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003ce0e9.cmdl,eu/stage/XXXX/cache/003ce0e9.cmdl\r\r\n");
+        public static KmsResource AKWeaponLabel = new KmsResource("ak_label",
+            path: "assets/kms/us/ak_label_stage_a03b.kms,us/stage/XXXX/cache/00f53890.kms,cache/00f53890.kms\r\r\n",
+            cmdl: "assets/kms/us/ak_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f53890.cmdl,eu/stage/XXXX/cache/00f53890.cmdl\r\r\n");
+        public static KmsResource MagazineIbox = new KmsResource("magazine_ibox",
+            path: "assets/kms/us/magazine_ibox_stage_a03b.kms,us/stage/XXXX/cache/00ca7cd0.kms,cache/00ca7cd0.kms\r\r\n",
+            cmdl: "assets/kms/us/magazine_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00ca7cd0.cmdl,eu/stage/XXXX/cache/00ca7cd0.cmdl\r\r\n");
+        public static KmsResource MagazineLabel = new KmsResource("magazine_label",
+            path: "assets/kms/us/magazine_label_stage_a03b.kms,us/stage/XXXX/cache/007ee425.kms,cache/007ee425.kms\r\r\n",
+            cmdl: "assets/kms/us/magazine_label_stage_a03b.cmdl,us/stage/XXXX/cache/007ee425.cmdl,eu/stage/XXXX/cache/007ee425.cmdl\r\r\n");
+        public static KmsResource MagazineSh = new KmsResource("magazine_sh",
+            path: "assets/kms/us/magazine_sh_stage_a03b.kms,us/stage/XXXX/cache/009e33e1.kms,cache/009e33e1.kms\r\r\n",
+            cmdl: "assets/kms/us/magazine_sh_stage_a03b.cmdl,us/stage/XXXX/cache/009e33e1.cmdl,eu/stage/XXXX/cache/009e33e1.cmdl\r\r\n");
+        public static KmsResource C4Label = new KmsResource("cfr_label",
+            path: "assets/kms/us/cfr_label_stage_a03b.kms,us/stage/XXXX/cache/00586251.kms,cache/00586251.kms\r\r\n",
+            cmdl: "assets/kms/us/cfr_label_stage_a03b.cmdl,us/stage/XXXX/cache/00586251.cmdl,eu/stage/XXXX/cache/00586251.cmdl\r\r\n");
+        public static KmsResource ClaymoreLabel = new KmsResource("clm_label",
+            path: "assets/kms/us/clm_label_stage_a03b.kms,us/stage/XXXX/cache/00589111.kms,cache/00589111.kms\r\r\n",
+            cmdl: "assets/kms/us/clm_label_stage_a03b.cmdl,us/stage/XXXX/cache/00589111.cmdl,eu/stage/XXXX/cache/00589111.cmdl\r\r\n");
+        public static KmsResource DmicLabel = new KmsResource("dmp_label",
+            path: "assets/kms/us/dmp_label_stage_a03b.kms,us/stage/XXXX/cache/005999d1.kms,cache/005999d1.kms\r\r\n",
+            cmdl: "assets/kms/us/dmp_label_stage_a03b.cmdl,us/stage/XXXX/cache/005999d1.cmdl,eu/stage/XXXX/cache/005999d1.cmdl\r\r\n");
+        public static KmsResource GrenadeLabel = new KmsResource("gre_label",
+            path: "assets/kms/us/gre_label_stage_a03b.kms,us/stage/XXXX/cache/005cbf11.kms,cache/005cbf11.kms\r\r\n",
+            cmdl: "assets/kms/us/gre_label_stage_a03b.cmdl,us/stage/XXXX/cache/005cbf11.cmdl,eu/stage/XXXX/cache/005cbf11.cmdl\r\r\n");
+        public static KmsResource M4AmmoLabel = new KmsResource("m4_amo_label",
+            path: "assets/kms/us/m4_amo_label_stage_a03b.kms,us/stage/XXXX/cache/0036d0ed.kms,cache/0036d0ed.kms\r\r\n",
+            cmdl: "assets/kms/us/m4_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/0036d0ed.cmdl,eu/stage/XXXX/cache/0036d0ed.cmdl\r\r\n");
+        public static KmsResource M4WeaponLabel = new KmsResource("m4_label",
+            path: "assets/kms/us/m4_label_stage_a03b.kms,us/stage/XXXX/cache/00f58ad0.kms,cache/00f58ad0.kms\r\r\n",
+            cmdl: "assets/kms/us/m4_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f58ad0.cmdl,eu/stage/XXXX/cache/00f58ad0.cmdl\r\r\n");
+        public static KmsResource NikitaAmmoLabel = new KmsResource("nkt_amo_label",
+            path: "assets/kms/us/nkt_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003db0ed.kms,cache/003db0ed.kms\r\r\n",
+            cmdl: "assets/kms/us/nkt_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003db0ed.cmdl,eu/stage/XXXX/cache/003db0ed.cmdl\r\r\n");
+        public static KmsResource NikitaWeaponLabel = new KmsResource("nkt_label",
+            path: "assets/kms/us/nkt_label_stage_a03b.kms,us/stage/XXXX/cache/00638ad1.kms,cache/00638ad1.kms\r\r\n",
+            cmdl: "assets/kms/us/nkt_label_stage_a03b.cmdl,us/stage/XXXX/cache/00638ad1.cmdl,eu/stage/XXXX/cache/00638ad1.cmdl\r\r\n");
+        public static KmsResource PSG1AmmoLabel = new KmsResource("psg_amo_label",
+            path: "assets/kms/us/psg_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003dd4b9.kms,cache/003dd4b9.kms\r\r\n",
+            cmdl: "assets/kms/us/psg_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003dd4b9.cmdl,eu/stage/XXXX/cache/003dd4b9.cmdl\r\r\n");
+        public static KmsResource PSG1WeaponLabel = new KmsResource("psg_label",
+            path: "assets/kms/us/psg_label_stage_a03b.kms,us/stage/XXXX/cache/0065c791.kms,cache/0065c791.kms\r\r\n",
+            cmdl: "assets/kms/us/psg_label_stage_a03b.cmdl,us/stage/XXXX/cache/0065c791.cmdl,eu/stage/XXXX/cache/0065c791.cmdl\r\r\n");
+        public static KmsResource RifleAmmoIbox1 = new KmsResource("006ab337",
+            path: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/006ab337.kms,cache/006ab337.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/006ab337.cmdl,eu/stage/XXXX/cache/006ab337.cmdl\r\r\n");
+        public static KmsResource RifleAmmoIbox2 = new KmsResource("00130222",
+            path: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/00130222.kms,cache/00130222.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00130222.cmdl,eu/stage/XXXX/cache/00130222.cmdl\r\r\n");
+        public static KmsResource RilfeIbox = new KmsResource("rilfe_ibox",
+            path: "assets/kms/us/rilfe_ibox.kms,us/stage/XXXX/cache/00d290b6.kms,cache/00d290b6.kms\r\r\n",
+            cmdl: "assets/kms/us/rilfe_ibox.cmdl,us/stage/XXXX/cache/00d290b6.cmdl,eu/stage/XXXX/cache/00d290b6.cmdl\r\r\n");
+        public static KmsResource IboxAmoNkt = new KmsResource("ibox_amo_nkt",
+            path: "assets/kms/us/ibox_amo_nkt.kms,us/stage/XXXX/cache/007c8d0b.kms,cache/007c8d0b.kms\r\r\n",
+            cmdl: "assets/kms/us/ibox_amo_nkt.cmdl,us/stage/XXXX/cache/007c8d0b.cmdl,eu/stage/XXXX/cache/007c8d0b.cmdl\r\r\n");
+        public static KmsResource PSG1TAmmoLabel = new KmsResource("psgt_amo_label",
+            path: "assets/kms/us/psgt_amo_label_stage_a03b.kms,us/stage/XXXX/cache/001dfe6e.kms,cache/001dfe6e.kms\r\r\n",
+            cmdl: "assets/kms/us/psgt_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/001dfe6e.cmdl,eu/stage/XXXX/cache/001dfe6e.cmdl\r\r\n");
+        public static KmsResource PSG1TWeaponLabel = new KmsResource("psg_t_label",
+            path: "assets/kms/us/psg_t_label_stage_a03b.kms,us/stage/XXXX/cache/00bc2c9f.kms,cache/00bc2c9f.kms\r\r\n",
+            cmdl: "assets/kms/us/psg_t_label_stage_a03b.cmdl,us/stage/XXXX/cache/00bc2c9f.cmdl,eu/stage/XXXX/cache/00bc2c9f.cmdl\r\r\n");
+        public static KmsResource RGB6AmmoLabel = new KmsResource("rgb_amo_label",
+            path: "assets/kms/us/rgb_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003deea5.kms,cache/003deea5.kms\r\r\n",
+            cmdl: "assets/kms/us/rgb_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003deea5.cmdl,eu/stage/XXXX/cache/003deea5.cmdl\r\r\n");
+        public static KmsResource RGB6WeaponLabel = new KmsResource("rgb_label",
+            path: "assets/kms/us/rgb_label_stage_a03b.kms,us/stage/XXXX/cache/00676651.kms,cache/00676651.kms\r\r\n",
+            cmdl: "assets/kms/us/rgb_label_stage_a03b.cmdl,us/stage/XXXX/cache/00676651.cmdl,eu/stage/XXXX/cache/00676651.cmdl\r\r\n");
+        public static KmsResource StingerAmmoLabel = new KmsResource("stg_amo_label",
+            path: "assets/kms/us/stg_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003e0539.kms,cache/003e0539.kms\r\r\n",
+            cmdl: "assets/kms/us/stg_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003e0539.cmdl,eu/stage/XXXX/cache/003e0539.cmdl\r\r\n");
+        public static KmsResource StingerWeaponLabel = new KmsResource("stg_label",
+            path: "assets/kms/us/stg_label_stage_a03b.kms,us/stage/XXXX/cache/0068cf91.kms,cache/0068cf91.kms\r\r\n",
+            cmdl: "assets/kms/us/stg_label_stage_a03b.cmdl,us/stage/XXXX/cache/0068cf91.cmdl,eu/stage/XXXX/cache/0068cf91.cmdl\r\r\n");
+        public static KmsResource BodyArmorLabel = new KmsResource("bam_label",
+            path: "assets/kms/us/bam_label_stage_a03b.kms,us/stage/XXXX/cache/00573911.kms,cache/00573911.kms\r\r\n",
+            cmdl: "assets/kms/us/bam_label_stage_a03b.cmdl,us/stage/XXXX/cache/00573911.cmdl,eu/stage/XXXX/cache/00573911.cmdl\r\r\n");
+        public static KmsResource DigitalCameraIbox = new KmsResource("digital_camera_ibox",
+            path: "assets/kms/us/digital_camera_ibox_stage_a03b.kms,us/stage/XXXX/cache/001cd720.kms,cache/001cd720.kms\r\r\n",
+            cmdl: "assets/kms/us/digital_camera_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/001cd720.cmdl,eu/stage/XXXX/cache/001cd720.cmdl\r\r\n");
+        public static BasicResource DigitalCameraBoxTexture = new BasicResource("degital_camera","textures/flatlist/degital_camera.bmp.ctxr,stage/XXXX/cache/degital_camera.bmp.ctxr,eu/stage/XXXX/cache/00883186/00fb2060.ctxr\r\r\n");
+        public static KmsResource DigitalCameraLabel = new KmsResource("digital_camera_label",
+            path: "assets/kms/us/digital_camera_label_stage_a03b.kms,us/stage/XXXX/cache/00ca2e0f.kms,cache/00ca2e0f.kms\r\r\n",
+            cmdl: "assets/kms/us/digital_camera_label_stage_a03b.cmdl,us/stage/XXXX/cache/00ca2e0f.cmdl,eu/stage/XXXX/cache/00ca2e0f.cmdl\r\r\n");
+        public static KmsResource DigitalCameraSh = new KmsResource("digital_camera_sh",
+            path: "assets/kms/us/digital_camera_sh_stage_a03b.kms,us/stage/XXXX/cache/00320878.kms,cache/00320878.kms\r\r\n",
+            cmdl: "assets/kms/us/digital_camera_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00320878.cmdl,eu/stage/XXXX/cache/00320878.cmdl\r\r\n");
+        public static KmsResource PentazeminLabel = new KmsResource("dzp2_label",
+            path: "assets/kms/us/dzp2_label_stage_a03b.kms,us/stage/XXXX/cache/00efa25d.kms,cache/00efa25d.kms\r\r\n",
+            cmdl: "assets/kms/us/dzp2_label_stage_a03b.cmdl,us/stage/XXXX/cache/00efa25d.cmdl,eu/stage/XXXX/cache/00efa25d.cmdl\r\r\n");
+        public static BasicResource Dzp2TxAlpTexture = new BasicResource("dzp2_tx_alp","textures/flatlist/dzp2_tx_alp.bmp.ctxr,stage/XXXX/cache/dzp2_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0062bc3f.ctxr\r\r\n");
+        public static KmsResource SensorBLabel = new KmsResource("bsn_b_label",
+            path: "assets/kms/us/bsn_b_label_stage_a03b.kms,us/stage/XXXX/cache/00c327e7.kms,cache/00c327e7.kms\r\r\n",
+            cmdl: "assets/kms/us/bsn_b_label_stage_a03b.cmdl,us/stage/XXXX/cache/00c327e7.cmdl,eu/stage/XXXX/cache/00c327e7.cmdl\r\r\n");
+        public static KmsResource SocomSuppressorLabel = new KmsResource("scm_sp_label",
+            path: "assets/kms/us/scm_sp_label_stage_a03b.kms,us/stage/XXXX/cache/00f504ea.kms,cache/00f504ea.kms\r\r\n",
+            cmdl: "assets/kms/us/scm_sp_label_stage_a03b.cmdl,us/stage/XXXX/cache/00f504ea.cmdl,eu/stage/XXXX/cache/00f504ea.cmdl\r\r\n");
+        public static KmsResource MineDetectorLabel = new KmsResource("mnd_label",
+            path: "assets/kms/us/mnd_label_stage_a03b.kms,us/stage/XXXX/cache/00629ed1.kms,cache/00629ed1.kms\r\r\n",
+            cmdl: "assets/kms/us/mnd_label_stage_a03b.cmdl,us/stage/XXXX/cache/00629ed1.cmdl,eu/stage/XXXX/cache/00629ed1.cmdl\r\r\n");
+        public static KmsResource NVGLabel = new KmsResource("ngl_label",
+            path: "assets/kms/us/ngl_label_stage_a03b.kms,us/stage/XXXX/cache/006368d1.kms,cache/006368d1.kms\r\r\n",
+            cmdl: "assets/kms/us/ngl_label_stage_a03b.cmdl,us/stage/XXXX/cache/006368d1.cmdl,eu/stage/XXXX/cache/006368d1.cmdl\r\r\n");
+        public static KmsResource RifleAmmoIbox = new KmsResource("rifle_amo_ibox",
+            path: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/0012ff3a.kms,cache/0012ff3a.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/0012ff3a.cmdl,eu/stage/XXXX/cache/0012ff3a.cmdl\r\r\n"); //TODO: there are at least 3 of these referenced in w22a. what is going on with this
+        public static KmsResource RifleAmmoSh = new KmsResource("handgun_amo_ibox",
+            path: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/009e9447.kms,cache/009e9447.kms\r\r\n",
+            cmdl: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/009e9447.cmdl,eu/stage/XXXX/cache/009e9447.cmdl\r\r\n"); //This is NOT a mistake on my part, this is Konami/Bluepoint's doing. This is correct to the game files
+        public static KmsResource RifleIbox = new KmsResource("rifle_ibox_stage",
+            path: "assets/kms/us/rifle_ibox_stage_a03b.kms,us/stage/XXXX/cache/00d26236.kms,cache/00d26236.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00d26236.cmdl,eu/stage/XXXX/cache/00d26236.cmdl\r\r\n");
+        public static BasicResource RifleIboxTexture = new BasicResource("rifle_box","textures/flatlist/rifle_ibox.bmp_94bca08db682d231ae1d48d2b6385598.ctxr,stage/XXXX/cache/rifle_ibox.bmp_94bca08db682d231ae1d48d2b6385598.ctxr,eu/stage/XXXX/cache/00883186/00d26236.ctxr\r\r\n");
+        public static KmsResource RifleSh = new KmsResource("rifle_ibox_sh",
+            path: "assets/kms/us/rifle_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/001cf3f9.kms,cache/001cf3f9.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/001cf3f9.cmdl,eu/stage/XXXX/cache/001cf3f9.cmdl\r\r\n");
+        public static KmsResource LauncherAmmoIbox = new KmsResource("launcher_amo_ibox_stage",
+            path: "assets/kms/us/launcher_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/00eb0f44.kms,cache/00eb0f44.kms\r\r\n",
+            cmdl: "assets/kms/us/launcher_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00eb0f44.cmdl,eu/stage/XXXX/cache/00eb0f44.cmdl\r\r\n");
+        public static KmsResource LauncherAmmoSh = new KmsResource("launcher_amo_ibox_sh",
+            path: "assets/kms/us/launcher_amo_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00a4004f.kms,cache/00a4004f.kms\r\r\n",
+            cmdl: "assets/kms/us/launcher_amo_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00a4004f.cmdl,eu/stage/XXXX/cache/00a4004f.cmdl\r\r\n");
+        public static BasicResource LauncherAmmoSideTexture = new BasicResource("launcher_ammo_side","textures/flatlist/launcher_ammo_side.bmp.ctxr,stage/XXXX/cache/launcher_ammo_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/00ca4e21.ctxr\r\r\n");
+        public static KmsResource LauncherIbox = new KmsResource("launcher_ibox_stage",
+            path: "assets/kms/us/launcher_ibox_stage_a03b.kms,us/stage/XXXX/cache/005362e4.kms,cache/005362e4.kms\r\r\n",
+            cmdl: "assets/kms/us/launcher_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/005362e4.cmdl,eu/stage/XXXX/cache/005362e4.cmdl\r\r\n");
+        public static BasicResource LauncherIboxTexture = new BasicResource("launcher_ibox","textures/flatlist/launcher_ibox.bmp.ctxr,stage/XXXX/cache/launcher_ibox.bmp.ctxr,eu/stage/XXXX/cache/00883186/005362e4.ctxr\r\r\n");
+        public static KmsResource LauncherSh = new KmsResource("launcher_ibox_sh",
+            path: "assets/kms/us/launcher_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0073b479.kms,cache/0073b479.kms\r\r\n",
+            cmdl: "assets/kms/us/launcher_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0073b479.cmdl,eu/stage/XXXX/cache/0073b479.cmdl\r\r\n");
+        public static KmsResource Box2Ibox = new KmsResource("box2_ibox",
+            path: "assets/kms/us/box2_ibox_stage_a03b.kms,us/stage/XXXX/cache/008bacc2.kms,cache/008bacc2.kms\r\r\n",
+            cmdl: "assets/kms/us/box2_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/008bacc2.cmdl,eu/stage/XXXX/cache/008bacc2.cmdl\r\r\n");
+        public static BasicResource Ibox2TxAllTexture = new BasicResource("ibox2_tx_all_alp.bmp","textures/flatlist/ibox2_tx_all_alp.bmp.ctxr,stage/XXXX/cache/ibox2_tx_all_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0051c0fb.ctxr\r\r\n");
+        public static KmsResource Box2Sh = new KmsResource("box2_ibox_sh",
+            path: "assets/kms/us/box2_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0062d09e.kms,cache/0062d09e.kms\r\r\n",
+            cmdl: "assets/kms/us/box2_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0062d09e.cmdl,eu/stage/XXXX/cache/0062d09e.cmdl\r\r\n");
+        public static KmsResource CbxLabel = new KmsResource("cbx_label",
+            path: "assets/kms/us/cbx_label_stage_a03b.kms,us/stage/XXXX/cache/005843d1.kms,cache/005843d1.kms\r\r\n",
+            cmdl: "assets/kms/us/cbx_label_stage_a03b.cmdl,us/stage/XXXX/cache/005843d1.cmdl,eu/stage/XXXX/cache/005843d1.cmdl\r\r\n");
+        public static KmsResource DetectorIbox = new KmsResource("detector_ibox_stage",
+            path: "assets/kms/us/detector_ibox_stage_a03b.kms,us/stage/XXXX/cache/0033475f.kms,cache/0033475f.kms\r\r\n",
+            cmdl: "assets/kms/us/detector_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/0033475f.cmdl,eu/stage/XXXX/cache/0033475f.cmdl\r\r\n");
+        public static KmsResource DetectorSh = new KmsResource("detector_ibox_sh",
+            path: "assets/kms/us/detector_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00b1246b.kms,cache/00b1246b.kms\r\r\n",
+            cmdl: "assets/kms/us/detector_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00b1246b.cmdl,eu/stage/XXXX/cache/00b1246b.cmdl\r\r\n");
+        public static KmsResource DmicIbox = new KmsResource("box_ibox_stage",
+            path: "assets/kms/us/box_ibox_stage_a03b.kms,us/stage/XXXX/cache/0029430e.kms,cache/0029430e.kms\r\r\n",
+            cmdl: "assets/kms/us/box_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/0029430e.cmdl,eu/stage/XXXX/cache/0029430e.cmdl\r\r\n");
+        public static BasicResource DMicLabelTexture = new BasicResource("dmp_ibx_label_alp.bmp","textures/flatlist/dmp_ibx_label_alp.bmp.ctxr,stage/XXXX/cache/dmp_ibx_label_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00055db2.ctxr\r\r\n");
+        public static KmsResource DmicSh = new KmsResource("box_ibox_sh",
+            path: "assets/kms/us/box_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00889f69.kms,cache/00889f69.kms\r\r\n",
+            cmdl: "assets/kms/us/box_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00889f69.cmdl,eu/stage/XXXX/cache/00889f69.cmdl\r\r\n");
+        public static KmsResource RationIbox = new KmsResource("ration_ibox_stage",
+            path: "assets/kms/us/ration_ibox_stage_a03b.kms,us/stage/XXXX/cache/00bd7cce.kms,cache/00bd7cce.kms\r\r\n",
+            cmdl: "assets/kms/us/ration_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00bd7cce.cmdl,eu/stage/XXXX/cache/00bd7cce.cmdl\r\r\n");
+            
+        public static BasicResource RationTexture = new BasicResource("ration_box.bmp","textures/flatlist/ration_box.bmp.ctxr,stage/XXXX/cache/ration_box.bmp.ctxr,eu/stage/XXXX/cache/00883186/00b5d18b.ctxr\r\r\n");
+        public static KmsResource M9AmmoLabel = new KmsResource("m92_amo_label",
+            path: "assets/kms/us/m92_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003d86e5.kms,cache/003d86e5.kms\r\r\n",
+            cmdl: "assets/kms/us/m92_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003d86e5.cmdl,eu/stage/XXXX/cache/003d86e5.cmdl\r\r\n");
+        public static KmsResource M9WeaponLabel = new KmsResource("m92_label",
+            path: "assets/kms/us/m92_label_stage_a03b.kms,us/stage/XXXX/cache/0060ea51.kms,cache/0060ea51.kms\r\r\n",
+            cmdl: "assets/kms/us/m92_label_stage_a03b.cmdl,us/stage/XXXX/cache/0060ea51.cmdl,eu/stage/XXXX/cache/0060ea51.cmdl\r\r\n");
+        public static KmsResource StunLabel = new KmsResource("sgr_label",
+            path: "assets/kms/us/sgr_label_stage_a03b.kms,us/stage/XXXX/cache/00686a51.kms,cache/00686a51.kms\r\r\n",
+            cmdl: "assets/kms/us/sgr_label_stage_a03b.cmdl,us/stage/XXXX/cache/00686a51.cmdl,eu/stage/XXXX/cache/00686a51.cmdl\r\r\n");
+        public static KmsResource BandageLabel = new KmsResource("sbs_label",
+            path: "assets/kms/us/sbs_label_stage_a03b.kms,us/stage/XXXX/cache/00684291.kms,cache/00684291.kms\r\r\n",
+            cmdl: "assets/kms/us/sbs_label_stage_a03b.cmdl,us/stage/XXXX/cache/00684291.cmdl,eu/stage/XXXX/cache/00684291.cmdl\r\r\n");
+        public static KmsResource ShaverLabel = new KmsResource("shv_label",
+            path: "assets/kms/us/shv_label_stage_a03b.kms,us/stage/XXXX/cache/00687351.kms,cache/00687351.kms\r\r\n",
+            cmdl: "assets/kms/us/shv_label_stage_a03b.cmdl,us/stage/XXXX/cache/00687351.cmdl,eu/stage/XXXX/cache/00687351.cmdl\r\r\n");
+        public static KmsResource MedicineIbox = new KmsResource("medicine_ibox_stage",
+            path: "assets/kms/us/medicine_ibox_stage_a03b.kms,us/stage/XXXX/cache/00b37ec5.kms,cache/00b37ec5.kms\r\r\n",
+            cmdl: "assets/kms/us/medicine_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00b37ec5.cmdl,eu/stage/XXXX/cache/00b37ec5.cmdl\r\r\n");
+        public static BasicResource MedicineBoxTexture = new BasicResource("medicine_box","textures/flatlist/medicine_box.bmp.ctxr,stage/XXXX/cache/medicine_box.bmp.ctxr,eu/stage/XXXX/cache/00883186/006d819b.ctxr\r\r\n");
+        public static KmsResource MedicineSh = new KmsResource("medicine_ibox_sh",
+            path: "assets/kms/us/medicine_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00646487.kms,cache/00646487.kms\r\r\n",
+            cmdl: "assets/kms/us/medicine_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00646487.cmdl,eu/stage/XXXX/cache/00646487.cmdl\r\r\n");
+        public static KmsResource HandgunIbox = new KmsResource("handgun_ibox_stage",
+            path: "assets/kms/us/handgun_ibox_stage_a03b.kms,us/stage/XXXX/cache/004da20c.kms,cache/004da20c.kms\r\r\n",
+            cmdl: "assets/kms/us/handgun_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/004da20c.cmdl,eu/stage/XXXX/cache/004da20c.cmdl\r\r\n");
+        public static KmsResource HandgunSh = new KmsResource("handgun_ibox_sh",
+            path: "assets/kms/us/handgun_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0007b199.kms,cache/0007b199.kms\r\r\n",
+            cmdl: "assets/kms/us/handgun_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0007b199.cmdl,eu/stage/XXXX/cache/0007b199.cmdl\r\r\n");
+        public static KmsResource ChaffLabel = new KmsResource("cgr_label",
+            path: "assets/kms/us/cgr_label_stage_a03b.kms,us/stage/XXXX/cache/00586a51.kms,cache/00586a51.kms\r\r\n",
+            cmdl: "assets/kms/us/cgr_label_stage_a03b.cmdl,us/stage/XXXX/cache/00586a51.cmdl,eu/stage/XXXX/cache/00586a51.cmdl\r\r\n");
+        public static KmsResource SocomAmmoLabel = new KmsResource("scm_amo_label",
+            path: "assets/kms/us/scm_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003dfcd1.kms,cache/003dfcd1.kms\r\r\n",
+            cmdl: "assets/kms/us/scm_amo_label_stage_a03b.cmdl,us/stage/XXXX/cache/003dfcd1.cmdl,eu/stage/XXXX/cache/003dfcd1.cmdl\r\r\n");
+        public static KmsResource GrenadeIbox = new KmsResource("grenade_ibox_stage",
+            path: "assets/kms/us/grenade_ibox_stage_a03b.kms,us/stage/XXXX/cache/00376d7d.kms,cache/00376d7d.kms\r\r\n",
+            cmdl: "assets/kms/us/grenade_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00376d7d.cmdl,eu/stage/XXXX/cache/00376d7d.cmdl\r\r\n");
+        public static KmsResource GrenadeSh = new KmsResource("grenade_ibox_sh",
+            path: "assets/kms/us/grenade_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/00c0267e.kms,cache/00c0267e.kms\r\r\n",
+            cmdl: "assets/kms/us/grenade_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/00c0267e.cmdl,eu/stage/XXXX/cache/00c0267e.cmdl\r\r\n");
+        public static KmsResource HandgunAmmoIbox = new KmsResource("rifle_amo_ibox_stage",
+            path: "assets/kms/us/rifle_amo_ibox_stage_a03b.kms,us/stage/XXXX/cache/006ab337.kms,cache/006ab337.kms\r\r\n",
+            cmdl: "assets/kms/us/rifle_amo_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/006ab337.cmdl,eu/stage/XXXX/cache/006ab337.cmdl\r\r\n"); //again, this is not a mistake on our part. This was done by Konami/Bluepoint
+        public static KmsResource HandgunAmmoSh = new KmsResource("handgun_amo_ibox_sh",
+            path: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/009d4021.kms,cache/009d4021.kms\r\r\n",
+            cmdl: "assets/kms/us/handgun_amo_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/009d4021.cmdl,eu/stage/XXXX/cache/009d4021.cmdl\r\r\n");
+        public static KmsResource RationSh = new KmsResource("ration_ibox_sh",
+            path: "assets/kms/us/ration_ibox_sh_stage_a03b.kms,us/stage/XXXX/cache/0068e986.kms,cache/0068e986.kms\r\r\n",
+            cmdl: "assets/kms/us/ration_ibox_sh_stage_a03b.cmdl,us/stage/XXXX/cache/0068e986.cmdl,eu/stage/XXXX/cache/0068e986.cmdl\r\r\n");
+        public static KmsResource RationLabel = new KmsResource("rtn_label",
+            path: "assets/kms/us/rtn_label_stage_a03b.kms,us/stage/XXXX/cache/0067d151.kms,cache/0067d151.kms\r\r\n",
+            cmdl: "assets/kms/us/rtn_label_stage_a03b.cmdl,us/stage/XXXX/cache/0067d151.cmdl,eu/stage/XXXX/cache/0067d151.cmdl\r\r\n");
+        public static KmsResource AKSuppressorLabel = new KmsResource("ak_sp_label",
+            path: "assets/kms/us/ak_sp_label_stage_a03b.kms,us/stage/XXXX/cache/00b4cb62.kms,cache/00b4cb62.kms\r\r\n",
+            cmdl: "assets/kms/us/ak_sp_label_stage_a03b.cmdl,us/stage/XXXX/cache/00b4cb62.cmdl,eu/stage/XXXX/cache/00b4cb62.cmdl\r\r\n");
+        public static KmsResource CoolantSprayLabel = new KmsResource("cls_label",
+            path: "assets/kms/us/cls_label.kms,us/stage/XXXX/cache/00589291.kms,cache/00589291.kms\r\r\n",
+            cmdl: "assets/kms/us/cls_label.cmdl,us/stage/XXXX/cache/00589291.cmdl,eu/stage/XXXX/cache/00589291.cmdl\r\r\n");
+        public static KmsResource UspLabel = new KmsResource("usp_label",
+            path: "assets/kms/us/usp_label_stage_a03b.kms,us/stage/XXXX/cache/006ac9d1.kms,cache/006ac9d1.kms\r\r\n",
+            cmdl: "assets/kms/us/usp_label_stage_a03b.cmdl,us/stage/XXXX/cache/006ac9d1.cmdl,eu/stage/XXXX/cache/006ac9d1.cmdl\r\r\n");
+        public static KmsResource SocomLabel = new KmsResource("scm_label",
+            path: "assets/kms/us/scm_label.kms,us/stage/XXXX/cache/00684911.kms,cache/00684911.kms\r\r\n",
+            cmdl: "assets/kms/us/scm_label.cmdl,us/stage/XXXX/cache/00684911.cmdl,eu/stage/XXXX/cache/00684911.cmdl\r\r\n");
+        public static KmsResource CigarettesLabel = new KmsResource("cigarette_label",
+            path: "assets/kms/us/cigarette_label.kms,us/stage/XXXX/cache/00a2717f.kms,cache/00a2717f.kms\r\r\n",
+            cmdl: "assets/kms/us/cigarette_label.cmdl,us/stage/XXXX/cache/00a2717f.cmdl,eu/stage/XXXX/cache/00a2717f.cmdl\r\r\n");
+        public static KmsResource CigarettesIbox = new KmsResource("cigarette_ibox",
+            path: "assets/kms/us/cigarette_ibox.kms,us/stage/XXXX/cache/009b993b.kms,cache/009b993b.kms\r\r\n",
+            cmdl: "assets/kms/us/cigarette_ibox.cmdl,us/stage/XXXX/cache/009b993b.cmdl,eu/stage/XXXX/cache/009b993b.cmdl\r\r\n");
+        public static KmsResource CigarettesIboxSh = new KmsResource("cigarette_sh",
+            path: "assets/kms/us/cigarette_sh.kms,us/stage/XXXX/cache/00b8e828.kms,cache/00b8e828.kms\r\r\n",
+            cmdl: "assets/kms/us/cigarette_sh.cmdl,us/stage/XXXX/cache/00b8e828.cmdl,eu/stage/XXXX/cache/00b8e828.cmdl\r\r\n");
+        public static KmsResource SensorALabel = new KmsResource("bsn_a_label",
+            path: "assets/kms/us/bsn_a_label.kms,us/stage/XXXX/cache/00c327a7.kms,cache/00c327a7.kms\r\r\n",
+            cmdl: "assets/kms/us/bsn_a_label.cmdl,us/stage/XXXX/cache/00c327a7.cmdl,eu/stage/XXXX/cache/00c327a7.cmdl\r\r\n");
+        public static KmsResource APSensorIbox = new KmsResource("a_p_sensor_ibox.",
+            path: "assets/kms/us/a_p_sensor_ibox.kms,us/stage/XXXX/cache/003cfc74.kms,cache/003cfc74.kms\r\r\n",
+            cmdl: "assets/kms/us/a_p_sensor_ibox.cmdl,us/stage/XXXX/cache/003cfc74.cmdl,eu/stage/XXXX/cache/003cfc74.cmdl\r\r\n");
+        public static KmsResource APSensorLabel = new KmsResource("a_p_sensor_ibox_label",
+            path: "assets/kms/us/a_p_sensor_ibox_label.kms,us/stage/XXXX/cache/003132e0.kms,cache/003132e0.kms\r\r\n",
+            cmdl: "assets/kms/us/a_p_sensor_ibox_label.cmdl,us/stage/XXXX/cache/003132e0.cmdl,eu/stage/XXXX/cache/003132e0.cmdl\r\r\n");
+        public static KmsResource ScopeCustomBox = new KmsResource("sougan",
+            path: "assets/kms/us/sougan.kms,us/stage/XXXX/cache/002c297b.kms,cache/002c297b.kms\r\r\n",
+            cmdl: "assets/kms/us/sougan.cmdl,us/stage/XXXX/cache/002c297b.cmdl,eu/stage/XXXX/cache/002c297b.cmdl\r\r\n");
         //80 total
+    }
+    
+    public class BasicResource
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+        
+        public BasicResource(string name, string path)
+        {
+            Name = name;
+            Path = path;
+        }
+    }
+    
+    public class CxtrResource : BasicResource
+    {
+        public string Tri{ get; set; }
+        public CtxrResource(string name, string path, string tri) : base(name, path)
+        {
+            Name = name;
+            Path = path;
+            Tri = tri;
+        }
+    }
+    
+    public class KmsResource : BasicResource
+    {
+        public string Cmdl { get; set; }
+        
+        public KmsResource(string name, string path, string cmdl) : base(name, path)
+        {
+            Name = name;
+            Cmdl = cmdl;
+            Path = path;
+        }
     }
 
     public class Resource
     {
-        public static List<Resource> ResourceList = new List<Resource>
+        public static List<BasicResource> ResourceList = new List<BasicResource>
         {
             MGS2Resource.ColdMedsLabel, MGS2Resource.ThermalGogglesLabel, MGS2Resource.GoggleIbox, MGS2Resource.GoggleSh, MGS2Resource.AKAmmoLabel,
             MGS2Resource.AKWeaponLabel, MGS2Resource.MagazineIbox, MGS2Resource.MagazineLabel, MGS2Resource.MagazineSh, MGS2Resource.C4Label,
@@ -412,9 +364,9 @@ namespace MGS2_Randomizer
             Tri = tri;
         }
 
-        public static Resource LookupResource(string name)
+        public static BasicResource LookupResource(string name)
         {
-            return ResourceList.Find(x => x.CommonName == name.ToLower());
+            return ResourceList.Find(x => x.Name == name.ToLower());
         }
     }
 }
