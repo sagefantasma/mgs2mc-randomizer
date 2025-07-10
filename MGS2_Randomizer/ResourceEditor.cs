@@ -22,7 +22,7 @@ namespace MGS2_Randomizer
             public string Name { get; set; }
             public string Text { get; set; }
             public FileType FileType { get; set; }
-            public Resource Resource { get; set; }
+            public BasicResource Resource { get; set; }
         }
 
         private class LevelResources
@@ -32,7 +32,7 @@ namespace MGS2_Randomizer
                 switch (resource.FileType)
                 {
                     case FileType.Kms:
-                        if (Manifest.KmsFiles.Any(kms => kms.Contains(resource.Resource.CommonName)))
+                        if (Manifest.KmsFiles.Any(kms => kms.Contains(resource.Resource.Name)))
                             return false;
                         break;
                     case FileType.Ctxr:
@@ -40,7 +40,7 @@ namespace MGS2_Randomizer
                             return false;
                         break;
                     case FileType.Cmdl:
-                        if (BpAssets.KmsFiles.Any(cmdl => cmdl.Contains(resource.Resource.CommonName)))
+                        if (BpAssets.KmsFiles.Any(cmdl => cmdl.Contains(resource.Resource.Name)))
                             return false;
                         break;
                     case FileType.Tri:
@@ -48,11 +48,11 @@ namespace MGS2_Randomizer
                             return false;
                         break;
                     case FileType.Sar:
-                        if (Manifest.SarFiles.Any(sar => sar.Contains(resource.Resource.CommonName)))
+                        if (Manifest.SarFiles.Any(sar => sar.Contains(resource.Resource.Name)))
                             return false;
                         break;
                     case FileType.Mar:
-                        if (Manifest.MarFiles.Any(mar => mar.Contains(resource.Resource.CommonName)))
+                        if (Manifest.MarFiles.Any(mar => mar.Contains(resource.Resource.Name)))
                             return false;
                         break;
                 }
@@ -426,40 +426,37 @@ namespace MGS2_Randomizer
 
             BasicResource resource = Resource.LookupResource(resourceToAdd);
 
-            MGS2ResourceData kmsFile = new MGS2ResourceData();
-
-            kmsFile.Text = resource.Kms;
-            kmsFile.FileType = FileType.Kms;
-            kmsFile.Resource = resource;
-            resourceData.Add(kmsFile);
-
-            if (resource.Ctxr != "")
+            if (resource is KmsResource)
             {
-                MGS2ResourceData ctxrFile = new MGS2ResourceData();
+                MGS2ResourceData kmsData = new MGS2ResourceData();
+                kmsData.Text = (resource as KmsResource).Path;
+                kmsData.FileType = FileType.Kms;
+                kmsData.Resource = resource;
 
-                ctxrFile.Text = resource.Ctxr;
-                ctxrFile.FileType = FileType.Ctxr;
-                ctxrFile.Resource = resource;
-                resourceData.Add(ctxrFile);
+                MGS2ResourceData cmdlData = new MGS2ResourceData();
+                cmdlData.Text = (resource as KmsResource).Cmdl;
+                cmdlData.FileType = FileType.Cmdl;
+                cmdlData.Resource = resource;
+
+                resourceData.Add(kmsData);
+                resourceData.Add(cmdlData);
             }
-
-            MGS2ResourceData cmdlFile = new MGS2ResourceData();
-
-            cmdlFile.Text = resource.Cmdl;
-            cmdlFile.FileType = FileType.Cmdl;
-            cmdlFile.Resource = resource;
-            resourceData.Add(cmdlFile);
-
-            if (resource.Tri != "")
+            else
             {
-                MGS2ResourceData triFile = new MGS2ResourceData();
+                MGS2ResourceData mgs2ResourceData = new MGS2ResourceData();
+                mgs2ResourceData.Text = resource.Path;
+                mgs2ResourceData.Resource = resource;
+                if (resource.Path.Contains(".ctxr"))
+                    mgs2ResourceData.FileType = FileType.Ctxr;
+                else if (resource.Path.Contains(".sar"))
+                    mgs2ResourceData.FileType = FileType.Sar;
+                else if (resource.Path.Contains(".mar"))
+                    mgs2ResourceData.FileType = FileType.Mar;
+                else if (resource.Path.Contains(".tri"))
+                    mgs2ResourceData.FileType = FileType.Tri;
 
-                triFile.Text = resource.Tri;
-                triFile.FileType = FileType.Tri;
-                triFile.Resource = resource;
-                resourceData.Add(triFile);
+                resourceData.Add(mgs2ResourceData);
             }
-
             return resourceData;
         }
 

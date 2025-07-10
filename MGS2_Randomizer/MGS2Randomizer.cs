@@ -3223,9 +3223,9 @@ namespace MGS2_Randomizer
         {
             RandomizationForm._logger.Debug("Adding all resources to resource files...");
             List<string> strings = new List<string>();
-            foreach (Resource value in Resource.ResourceList)
+            foreach (BasicResource value in Resource.ResourceList)
             {
-                strings.Add(value.CommonName);
+                strings.Add(value.Name);
             }
             List<string> stages = new List<string> { "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
             "w02a", "w03a", "w03b", "w04a", "w04b", "w04c", "w11a", "w11b", "w11c", "w12a", "w12b", "w12c", "w13a", "w13b",
