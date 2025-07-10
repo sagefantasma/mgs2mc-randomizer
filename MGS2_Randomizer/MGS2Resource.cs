@@ -8,6 +8,7 @@ namespace MGS2_Randomizer
 {
     public struct MGS2Resource
     {
+        //Item assets
         //TODO: convert the BasicResources that are textures to be CtxrResource
         public static BasicResource ItemBox = new BasicResource("itembox", "assets/tri/us/itembox.tri,us/stage/XXXX/cache/00883186.tri,cache/00883186.tri\r\r\n");
         public static BasicResource ItemBox2 = new BasicResource("ibox_all2", "textures/flatlist/ibox_all2.bmp.ctxr,stage/XXXX/cache/ibox_all2.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a68.ctxr\r\r\n");
@@ -179,7 +180,6 @@ namespace MGS2_Randomizer
         public static KmsResource RationIbox = new KmsResource("ration_ibox_stage",
             path: "assets/kms/us/ration_ibox_stage_a03b.kms,us/stage/XXXX/cache/00bd7cce.kms,cache/00bd7cce.kms\r\r\n",
             cmdl: "assets/kms/us/ration_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/00bd7cce.cmdl,eu/stage/XXXX/cache/00bd7cce.cmdl\r\r\n");
-            
         public static BasicResource RationTexture = new BasicResource("ration_box.bmp","textures/flatlist/ration_box.bmp.ctxr,stage/XXXX/cache/ration_box.bmp.ctxr,eu/stage/XXXX/cache/00883186/00b5d18b.ctxr\r\r\n");
         public static KmsResource M9AmmoLabel = new KmsResource("m92_amo_label",
             path: "assets/kms/us/m92_amo_label_stage_a03b.kms,us/stage/XXXX/cache/003d86e5.kms,cache/003d86e5.kms\r\r\n",
@@ -266,7 +266,156 @@ namespace MGS2_Randomizer
         public static KmsResource ScopeCustomBox = new KmsResource("sougan",
             path: "assets/kms/us/sougan.kms,us/stage/XXXX/cache/002c297b.kms,cache/002c297b.kms\r\r\n",
             cmdl: "assets/kms/us/sougan.cmdl,us/stage/XXXX/cache/002c297b.cmdl,eu/stage/XXXX/cache/002c297b.cmdl\r\r\n");
-        //80 total
+
+        //Shield guard assets
+        public static KmsResource ShlLit2 = new KmsResource("shl_lit2",
+            path: "assets/kms/us/shl_lit2.kms,us/stage/XXXX/cache/002b6590.kms,cache/002b6590.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_lit2.cmdl,us/stage/XXXX/cache/002b6590.cmdl,eu/stage/XXXX/cache/002b6590.cmdl\r\r\n");
+        public static KmsResource ShlLit1 = new KmsResource("shl_lit1",
+            path: "assets/kms/us/shl_lit1.kms,us/stage/XXXX/cache/002b658f.kms,cache/002b658f.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_lit1.cmdl,us/stage/XXXX/cache/002b658f.cmdl,eu/stage/XXXX/cache/002b658f.cmdl\r\r\n");
+        public static KmsResource ShlFrg1 = new KmsResource("shl_frg1",
+            path: "assets/kms/us/shl_frg1.kms,us/stage/XXXX/cache/002887ef.kms,cache/002887ef.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_frg1.cmdl,us/stage/XXXX/cache/002887ef.cmdl,eu/stage/XXXX/cache/002887ef.cmdl\r\r\n");
+        public static KmsResource ShlChi5 = new KmsResource("shl_chi5",
+            path: "assets/kms/us/shl_chi5.kms,us/stage/XXXX/cache/0026e033.kms,cache/0026e033.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_chi5.cmdl,us/stage/XXXX/cache/0026e033.cmdl,eu/stage/XXXX/cache/0026e033.cmdl\r\r\n");
+        public static KmsResource ShlChi4 = new KmsResource("shl_chi4",
+            path: "assets/kms/us/shl_chi4.kms,us/stage/XXXX/cache/0026e032.kms,cache/0026e032.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_chi4.cmdl,us/stage/XXXX/cache/0026e032.cmdl,eu/stage/XXXX/cache/0026e032.cmdl\r\r\n");
+        public static KmsResource ShlChi3 = new KmsResource("shl_chi3",
+            path: "assets/kms/us/shl_chi3.kms,us/stage/XXXX/cache/0026e031.kms,cache/0026e031.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_chi3.cmdl,us/stage/XXXX/cache/0026e031.cmdl,eu/stage/XXXX/cache/0026e031.cmdl\r\r\n");
+        public static KmsResource ShlChi2 = new KmsResource("shl_chi2",
+            path: "assets/kms/us/shl_chi2.kms,us/stage/XXXX/cache/0026e030.kms,cache/0026e030.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_chi2.cmdl,us/stage/XXXX/cache/0026e030.cmdl,eu/stage/XXXX/cache/0026e030.cmdl\r\r\n");
+        public static KmsResource ShlChi1 = new KmsResource("shl_chi1",
+            path: "assets/kms/us/shl_chi1.kms,us/stage/XXXX/cache/0026e02f.kms,cache/0026e02f.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_chi1.cmdl,us/stage/XXXX/cache/0026e02f.cmdl,eu/stage/XXXX/cache/0026e02f.cmdl\r\r\n");
+        public static KmsResource ShlBul6 = new KmsResource("shl_bul6",
+            path: "assets/kms/us/shl_bul6.kms,us/stage/XXXX/cache/00269494.kms,cache/00269494.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bul6.cmdl,us/stage/XXXX/cache/00269494.cmdl,eu/stage/XXXX/cache/00269494.cmdl\r\r\n");
+        public static KmsResource ShlBul5 = new KmsResource("shl_bul5",
+            path: "assets/kms/us/shl_bul5.kms,us/stage/XXXX/cache/00269493.kms,cache/00269493.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bul5.cmdl,us/stage/XXXX/cache/00269493.cmdl,eu/stage/XXXX/cache/00269493.cmdl\r\r\n");
+        public static KmsResource ShlBul4 = new KmsResource("shl_bul4",
+            path: "assets/kms/us/shl_bul4.kms,us/stage/XXXX/cache/00269492.kms,cache/00269492.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bul4.cmdl,us/stage/XXXX/cache/00269492.cmdl,eu/stage/XXXX/cache/00269492.cmdl\r\r\n");
+        public static KmsResource ShlBul3 = new KmsResource("shl_bul3",
+            path: "assets/kms/us/shl_bul3.kms,us/stage/XXXX/cache/00269491.kms,cache/00269491.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bul3.cmdl,us/stage/XXXX/cache/00269491.cmdl,eu/stage/XXXX/cache/00269491.cmdl\r\r\n");
+        public static KmsResource ShlBul2 = new KmsResource("shl_bul2",
+            path: "assets/kms/us/shl_bul2.kms,us/stage/XXXX/cache/00269490.kms,cache/00269490.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bul2.cmdl,us/stage/XXXX/cache/00269490.cmdl,eu/stage/XXXX/cache/00269490.cmdl\r\r\n");
+        public static KmsResource ShlBul1 = new KmsResource("shl_bul1",
+            path: "assets/kms/us/shl_bul1.kms,us/stage/XXXX/cache/0026948f.kms,cache/0026948f.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bul1.cmdl,us/stage/XXXX/cache/0026948f.cmdl,eu/stage/XXXX/cache/0026948f.cmdl\r\r\n");
+        public static KmsResource ShlBlu3 = new KmsResource("shl_blu3",
+            path: "assets/kms/us/shl_blu3.kms,us/stage/XXXX/cache/002671b1.kms,cache/002671b1.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_blu3.cmdl,us/stage/XXXX/cache/002671b1.cmdl,eu/stage/XXXX/cache/002671b1.cmdl\r\r\n");
+        public static KmsResource ShlBlu2 = new KmsResource("shl_blu2",
+            path: "assets/kms/us/shl_blu2.kms,us/stage/XXXX/cache/002671b0.kms,cache/002671b0.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_blu2.cmdl,us/stage/XXXX/cache/002671b0.cmdl,eu/stage/XXXX/cache/002671b0.cmdl\r\r\n");
+        public static KmsResource ShlBlu1 = new KmsResource("shl_blu1",
+            path: "assets/kms/us/shl_blu1.kms,us/stage/XXXX/cache/002671af.kms,cache/002671af.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_blu1.cmdl,us/stage/XXXX/cache/002671af.cmdl,eu/stage/XXXX/cache/002671af.cmdl\r\r\n");
+        public static KmsResource ShlBlr3 = new KmsResource("shl_blr3",
+            path: "assets/kms/us/shl_blr3.kms,us/stage/XXXX/cache/00267151.kms,cache/00267151.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_blr3.cmdl,us/stage/XXXX/cache/00267151.cmdl,eu/stage/XXXX/cache/00267151.cmdl\r\r\n");
+        public static KmsResource ShlBlr2 = new KmsResource("shl_blr2",
+            path: "assets/kms/us/shl_blr2.kms,us/stage/XXXX/cache/00267150.kms,cache/00267150.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_blr2.cmdl,us/stage/XXXX/cache/00267150.cmdl,eu/stage/XXXX/cache/00267150.cmdl\r\r\n");
+        public static KmsResource ShlBlr1 = new KmsResource("shl_blr1",
+            path: "assets/kms/us/shl_blr1.kms,us/stage/XXXX/cache/0026714f.kms,cache/0026714f.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_blr1.cmdl,us/stage/XXXX/cache/0026714f.cmdl,eu/stage/XXXX/cache/0026714f.cmdl\r\r\n");
+        public static KmsResource ShlBll3 = new KmsResource("shl_bll3",
+            path: "assets/kms/us/shl_bll3.kms,us/stage/XXXX/cache/00267091.kms,cache/00267091.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bll3.cmdl,us/stage/XXXX/cache/00267091.cmdl,eu/stage/XXXX/cache/00267091.cmdl\r\r\n");
+        public static KmsResource ShlBll2 = new KmsResource("shl_bll2",
+            path: "assets/kms/us/shl_bll2.kms,us/stage/XXXX/cache/00267090.kms,cache/00267090.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bll2.cmdl,us/stage/XXXX/cache/00267090.cmdl,eu/stage/XXXX/cache/00267090.cmdl\r\r\n");
+        public static KmsResource ShlBll1 = new KmsResource("shl_bll1",
+            path: "assets/kms/us/shl_bll1.kms,us/stage/XXXX/cache/0026708f.kms,cache/0026708f.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bll1.cmdl,us/stage/XXXX/cache/0026708f.cmdl,eu/stage/XXXX/cache/0026708f.cmdl\r\r\n");
+        public static KmsResource ShlBld3 = new KmsResource("shl_bld3",
+            path: "assets/kms/us/shl_bld3.kms,us/stage/XXXX/cache/00266f91.kms,cache/00266f91.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bld3.cmdl,us/stage/XXXX/cache/00266f91.cmdl,eu/stage/XXXX/cache/00266f91.cmdl\r\r\n");
+        public static KmsResource ShlBld2 = new KmsResource("shl_bld2",
+            path: "assets/kms/us/shl_bld2.kms,us/stage/XXXX/cache/00266f90.kms,cache/00266f90.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bld2.cmdl,us/stage/XXXX/cache/00266f90.cmdl,eu/stage/XXXX/cache/00266f90.cmdl\r\r\n");
+        public static KmsResource ShlBld1 = new KmsResource("shl_bld1",
+            path: "assets/kms/us/shl_bld1.kms,us/stage/XXXX/cache/00266f8f.kms,cache/00266f8f.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_bld1.cmdl,us/stage/XXXX/cache/00266f8f.cmdl,eu/stage/XXXX/cache/00266f8f.cmdl\r\r\n");
+        public static KmsResource ShlAcr = new KmsResource("shl_acr",
+            path: "assets/kms/us/shl_acr.kms,us/stage/XXXX/cache/00f12e68.kms,cache/00f12e68.kms\r\r\n",
+            cmdl: "assets/kms/us/shl_acr.cmdl,us/stage/XXXX/cache/00f12e68.cmdl,eu/stage/XXXX/cache/00f12e68.cmdl\r\r\n");
+        public static KmsResource Shl = new KmsResource("shl",
+            path: "assets/kms/us/shl.kms,us/stage/XXXX/cache/0001d96c.kms,cache/0001d96c.kms\r\r\n",
+            cmdl: "assets/kms/us/shl.cmdl,us/stage/XXXX/cache/0001d96c.cmdl,eu/stage/XXXX/cache/0001d96c.cmdl\r\r\n");
+        public static BasicResource SpecialGuardMar = new BasicResource("gbsstage_stage_a02a", 
+            "assets/mar/us/gbsstage_stage_a02a.mar,us/stage/XXXX/cache/006ee2b2.mar,cache/006ee2b2.mar\r\r\n");
+        public static BasicResource SpecialGuardSar = new BasicResource("gbs_w02a",
+            "assets/sar/us/gbs_w02a.sar,us/stage/XXXX/cache/002fa38d.sar,cache/002fa38d.sar\r\r\n");
+        public static BasicResource ShlBul1Texture = new BasicResource("shl_bul1_add",
+            "textures/flatlist/shl_bul1_add.bmp.ctxr,stage/XXXX/cache/shl_bul1_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00237a2d.ctxr\r\r\n");
+        public static BasicResource ShlBul2Texture = new BasicResource("shl_bul2_add",
+            "textures/flatlist/shl_bul2_add.bmp.ctxr,stage/XXXX/cache/shl_bul2_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00337a2d.ctxr\r\r\n");
+        public static BasicResource ShlBul3Texture = new BasicResource("shl_bul3_add",
+            "textures/flatlist/shl_bul3_add.bmp.ctxr,stage/XXXX/cache/shl_bul3_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00437a2d.ctxr\r\r\n");
+        public static BasicResource ShlBul4Texture = new BasicResource("shl_bul4_add",
+            "textures/flatlist/shl_bul4_add.bmp.ctxr,stage/XXXX/cache/shl_bul4_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00537a2d.ctxr\r\r\n");
+        public static BasicResource ShlBul5Texture = new BasicResource("shl_bul5_add",
+            "textures/flatlist/shl_bul5_add.bmp.ctxr,stage/XXXX/cache/shl_bul5_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00637a2d.ctxr\r\r\n");
+        public static BasicResource ShlBul6Texture = new BasicResource("shl_bul6_add",
+            "textures/flatlist/shl_bul6_add.bmp.ctxr,stage/XXXX/cache/shl_bul6_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00737a2d.ctxr\r\r\n");
+        public static BasicResource ShlChi1Texture = new BasicResource("shl_chi1_sub",
+            "textures/flatlist/shl_chi1_sub.bmp.ctxr,stage/XXXX/cache/shl_chi1_sub.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0023c905.ctxr\r\r\n");
+        public static BasicResource ShlChi2Texture = new BasicResource("shl_chi2_sub",
+            "textures/flatlist/shl_chi2_sub.bmp.ctxr,stage/XXXX/cache/shl_chi2_sub.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0033c905.ctxr\r\r\n");
+        public static BasicResource ShlChi3Texture = new BasicResource("shl_chi3_sub",
+            "textures/flatlist/shl_chi3_sub.bmp.ctxr,stage/XXXX/cache/shl_chi3_sub.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0043c905.ctxr\r\r\n");
+        public static BasicResource ShlChi4Texture = new BasicResource("shl_chi4_sub",
+            "textures/flatlist/shl_chi4_sub.bmp.ctxr,stage/XXXX/cache/shl_chi4_sub.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0053c905.ctxr\r\r\n");
+        public static BasicResource ShlChi5Texture = new BasicResource("shl_chi5_sub",
+            "textures/flatlist/shl_chi5_sub.bmp.ctxr,stage/XXXX/cache/shl_chi5_sub.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0063c905.ctxr\r\r\n");
+        public static BasicResource ShlF1Texture = new BasicResource("shl_f1_add",
+            "textures/flatlist/shl_f1_add.bmp.ctxr,stage/XXXX/cache/shl_f1_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/000c8982.ctxr\r\r\n");
+        public static BasicResource ShlF2Texture = new BasicResource("shl_f2_add",
+            "textures/flatlist/shl_f2_add.bmp.ctxr,stage/XXXX/cache/shl_f2_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/001c8982.ctxr\r\r\n");
+        public static BasicResource ShlF3Texture = new BasicResource("shl_f3_add",
+            "textures/flatlist/shl_f3_add.bmp.ctxr,stage/XXXX/cache/shl_f3_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/002c8982.ctxr\r\r\n");
+        public static BasicResource ShlFrgTexture = new BasicResource("shl_frg_add_ovl",
+            "textures/flatlist/shl_frg_add_ovl.bmp.ctxr,stage/XXXX/cache/shl_frg_add_ovl.bmp.ctxr,eu/stage/XXXX/cache/00349b50/00b24d7e.ctxr\r\r\n");
+        public static BasicResource ShlLitWireTexture = new BasicResource("shl_lit_wire",
+            "textures/flatlist/shl_lit_wire.bmp.ctxr,stage/XXXX/cache/shl_lit_wire.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/000fe901.ctxr\r\r\n");
+        public static BasicResource ShlLit1BTexture = new BasicResource("shl_lit1_b",
+            "textures/flatlist/shl_lit1_b.bmp.ctxr,stage/XXXX/cache/shl_lit1_b.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/009648ef.ctxr\r\r\n");
+        public static BasicResource ShlLit1FTexture = new BasicResource("shl_lit1_f",
+            "textures/flatlist/shl_lit1_f.bmp.ctxr,stage/XXXX/cache/shl_lit1_f.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/009648f3.ctxr\r\r\n");
+        public static BasicResource ShlLit1FMskDecalTexture = new BasicResource("shl_lit1_f_msk_decal",
+            "textures/flatlist/shl_lit1_f_msk_decal.bmp.ctxr,stage/XXXX/cache/shl_lit1_f_msk_decal.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/001defeb.ctxr\r\r\n");
+        public static BasicResource ShlLit1F2Texture = new BasicResource("shl_lit1_f2",
+            "textures/flatlist/shl_lit1_f2.bmp.ctxr,stage/XXXX/cache/shl_lit1_f2.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00c91ea4.ctxr\r\r\n");
+        public static BasicResource ShlSAlpTexture = new BasicResource("shl_s_alp",
+            "textures/flatlist/shl_s_alp.bmp.ctxr,stage/XXXX/cache/shl_s_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00d76db5.ctxr\r\r\n");
+        public static BasicResource ComdlCacheStageA02a = new BasicResource("comdlcache_stage_a02a",
+            "assets/tri/us/comdlcache_stage_a02a.tri,us/stage/XXXX/cache/00349b50.tri,cache/00349b50.tri\r\r\n");
+
+        //Shotgun guard assets
+        public static KmsResource SpsStageA12b = new KmsResource("sps_stage_a12b",
+            path: "assets/kms/us/sps_stage_a12b.kms,us/stage/XXXX/cache/0001da73.kms,cache/0001da73.kms\r\r\n",
+            cmdl: "assets/kms/us/sps_stage_a12b.cmdl,us/stage/XXXX/cache/0001da73.cmdl,eu/stage/XXXX/cache/0001da73.cmdl\r\r\n");
+        public static KmsResource SpsEmbStageA12b = new KmsResource("sps_emb_stage_a12b",
+            path: "assets/kms/us/sps_emb_stage_a12b.kms,us/stage/XXXX/cache/00613fa9.kms,cache/00613fa9.kms\r\r\n",
+            cmdl: "assets/kms/us/sps_emb_stage_a12b.cmdl,us/stage/XXXX/cache/00613fa9.cmdl,eu/stage/XXXX/cache/00613fa9.cmdl\r\r\n");
+        public static KmsResource SpsAmoStageA12b = new KmsResource("sps_amo_stage_a12b",
+            path: "assets/kms/us/sps_amo_stage_a12b.kms,us/stage/XXXX/cache/00612fb6.kms,cache/00612fb6.kms\r\r\n",
+            cmdl: "assets/kms/us/sps_amo_stage_a12b.cmdl,us/stage/XXXX/cache/00612fb6.cmdl,eu/stage/XXXX/cache/00612fb6.cmdl\r\r\n");
+        public static BasicResource SpsAll2MskTexture = new BasicResource("sps_all2_msk",
+            "textures/flatlist/sps_all2_msk.bmp.ctxr,stage/XXXX/cache/sps_all2_msk.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/0013a1f5.ctxr\r\r\n");
+        public static BasicResource SpsEmbTexture = new BasicResource("sps_emb.bmp",
+            "textures/flatlist/sps_emb.bmp.ctxr,stage/XXXX/cache/sps_emb.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00613fa9.ctxr\r\r\n");
+        //TODO: do we need to include a specific transcache.tri or the gbss.tri?
     }
     
     public class BasicResource
@@ -281,9 +430,9 @@ namespace MGS2_Randomizer
         }
     }
     
-    public class CxtrResource : BasicResource
+    public class CtxrResource : BasicResource
     {
-        public string Tri{ get; set; }
+        public string Tri { get; set; }
         public CtxrResource(string name, string path, string tri) : base(name, path)
         {
             Name = name;
@@ -324,6 +473,20 @@ namespace MGS2_Randomizer
             MGS2Resource.HandgunAmmoSh, MGS2Resource.RationSh, MGS2Resource.RationLabel, MGS2Resource.CoolantSprayLabel, MGS2Resource.SocomLabel,
             MGS2Resource.UspLabel, MGS2Resource.ScopeCustomBox, MGS2Resource.ItemBox, MGS2Resource.CigarettesIbox, MGS2Resource.CigarettesIboxSh,
             MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2,
+            MGS2Resource.ColdMedsLabelTexture, MGS2Resource.GoggleIboxTexture, MGS2Resource.GoggleIboxTri, MGS2Resource.DigitalCameraBoxTexture, MGS2Resource.Dzp2TxAlpTexture,
+            MGS2Resource.RifleIboxTexture, MGS2Resource.LauncherAmmoSideTexture, MGS2Resource.LauncherIboxTexture, MGS2Resource.Ibox2TxAllTexture, MGS2Resource. DMicLabelTexture,
+            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture, MGS2Resource.ShlLit2, MGS2Resource.ShlLit1, MGS2Resource.ShlFrg1,
+            MGS2Resource.ShlChi5, MGS2Resource.ShlChi4, MGS2Resource.ShlChi3, MGS2Resource.ShlChi2, MGS2Resource.ShlChi1,
+            MGS2Resource.ShlBul6, MGS2Resource.ShlBul5, MGS2Resource.ShlBul4, MGS2Resource.ShlBul3, MGS2Resource.ShlBul2,
+            MGS2Resource.ShlBul1, MGS2Resource.ShlBlu3, MGS2Resource.ShlBlu2, MGS2Resource.ShlBlu1, MGS2Resource.ShlBlr3,
+            MGS2Resource.ShlBlr2, MGS2Resource.ShlBlr1, MGS2Resource.ShlBll3, MGS2Resource.ShlBll2, MGS2Resource.ShlBll1,
+            MGS2Resource.ShlBld3, MGS2Resource.ShlBld2, MGS2Resource.ShlBld1, MGS2Resource.ShlAcr, MGS2Resource.Shl,
+            MGS2Resource.SpecialGuardMar, MGS2Resource.SpecialGuardSar, MGS2Resource.ShlBul1Texture, MGS2Resource.ShlBul2Texture, MGS2Resource.ShlBul3Texture,
+            MGS2Resource.ShlBul4Texture, MGS2Resource.ShlBul5Texture, MGS2Resource.ShlBul6Texture, MGS2Resource.ShlChi1Texture, MGS2Resource.ShlChi2Texture,
+            MGS2Resource.ShlChi3Texture, MGS2Resource.ShlChi4Texture, MGS2Resource.ShlChi5Texture, MGS2Resource.ShlF1Texture, MGS2Resource.ShlF2Texture,
+            MGS2Resource.ShlF3Texture, MGS2Resource.ShlFrgTexture, MGS2Resource.ShlLitWireTexture, MGS2Resource.ShlLit1BTexture, MGS2Resource.ShlLit1FTexture,
+            MGS2Resource.ShlLit1FMskDecalTexture, MGS2Resource.ShlLit1F2Texture, MGS2Resource.ShlSAlpTexture, MGS2Resource.ComdlCacheStageA02a, MGS2Resource.SpsStageA12b,
+            MGS2Resource.SpsEmbStageA12b, MGS2Resource.SpsAmoStageA12b, MGS2Resource.SpsAll2MskTexture, MGS2Resource.SpsEmbTexture
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 
