@@ -352,9 +352,17 @@ namespace MGS2_Randomizer
         public static KmsResource Shl = new KmsResource("shl",
             path: "assets/kms/us/shl.kms,us/stage/XXXX/cache/0001d96c.kms,cache/0001d96c.kms\r\r\n",
             cmdl: "assets/kms/us/shl.cmdl,us/stage/XXXX/cache/0001d96c.cmdl,eu/stage/XXXX/cache/0001d96c.cmdl\r\r\n");
-        public static BasicResource SpecialGuardMar = new BasicResource("gbsstage_stage_a02a", 
-            "assets/mar/us/gbsstage_stage_a02a.mar,us/stage/XXXX/cache/006ee2b2.mar,cache/006ee2b2.mar\r\r\n");
-        public static BasicResource SpecialGuardSar = new BasicResource("gbs_w02a",
+        public static BasicResource SpecialGuardMar1 = new BasicResource("gbsstage_stage_a02a", 
+            "assets/mar/us/gbsstage_stage_a02a.mar,us/stage/XXXX/cache/006ee2b2.mar,cache/006ee2b2.mar\r\r\n", true);
+        /*public static BasicResource SpecialGuardSar1 = new BasicResource("gbsstage_stage_a02a",
+            "assets/mar/us/gbsstage_stage_a02a.sar,us/stage/XXXX/cache/006ee2b2.mar,cache/006ee2b2.mar\r\r\n");*/
+        public static BasicResource SpecialGuardMar2 = new BasicResource("gbs_stage_a02a.mar",
+            "assets/mar/us/gbs_stage_a02a.mar,us/stage/XXXX/cache/0001a8b3.mar,cache/0001a8b3.mar\r\r\n", true);
+        public static BasicResource SpecialGuardSar2 = new BasicResource("gbs_stage_a02a.sar",
+            "assets/sar/us/gbs_stage_a02a.sar,us/stage/XXXX/cache/0001a8b3.sar,cache/0001a8b3.sar\r\r\n");
+        public static BasicResource SpecialGuardTransCacheTri = new BasicResource("transcache_stage_a24a",
+            "assets/tri/us/transcache_stage_a24a.tri,us/stage/XXXX/cache/00573de0.tri,cache/00573de0.tri\r\r\n");
+        public static BasicResource SpecialGuardSar3 = new BasicResource("gbs_w02a",
             "assets/sar/us/gbs_w02a.sar,us/stage/XXXX/cache/002fa38d.sar,cache/002fa38d.sar\r\r\n");
         public static BasicResource ShlBul1Texture = new BasicResource("shl_bul1_add",
             "textures/flatlist/shl_bul1_add.bmp.ctxr,stage/XXXX/cache/shl_bul1_add.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00237a2d.ctxr\r\r\n");
@@ -398,8 +406,8 @@ namespace MGS2_Randomizer
             "textures/flatlist/shl_lit1_f2.bmp.ctxr,stage/XXXX/cache/shl_lit1_f2.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00c91ea4.ctxr\r\r\n");
         public static BasicResource ShlSAlpTexture = new BasicResource("shl_s_alp",
             "textures/flatlist/shl_s_alp.bmp.ctxr,stage/XXXX/cache/shl_s_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00d76db5.ctxr\r\r\n");
-        public static BasicResource ComdlCacheStageA02a = new BasicResource("comdlcache_stage_a02a",
-            "assets/tri/us/comdlcache_stage_a02a.tri,us/stage/XXXX/cache/00349b50.tri,cache/00349b50.tri\r\r\n");
+        public static BasicResource ComdlCacheStageA02aTri = new BasicResource("comdlcache_stage_a02a",
+            "assets/tri/us/comdlcache_stage_w25a.tri,us/stage/XXXX/cache/00349b50.tri,cache/00349b50.tri\r\r\n");
 
         //Shotgun guard assets
         public static KmsResource SpsStageA12b = new KmsResource("sps_stage_a12b",
@@ -415,29 +423,36 @@ namespace MGS2_Randomizer
             "textures/flatlist/sps_all2_msk.bmp.ctxr,stage/XXXX/cache/sps_all2_msk.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/0013a1f5.ctxr\r\r\n");
         public static BasicResource SpsEmbTexture = new BasicResource("sps_emb.bmp",
             "textures/flatlist/sps_emb.bmp.ctxr,stage/XXXX/cache/sps_emb.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00613fa9.ctxr\r\r\n");
-        //TODO: do we need to include a specific transcache.tri or the gbss.tri?
+        public static BasicResource ShotgunGuardTri = new BasicResource("gbs_gba_def_nm_stage_a24a",
+            "assets/tri/us/gbs_gba_def_nm_stage_a24d.tri,us/stage/XXXX/cache/009e05c5.tri,cache/009e05c5.tri\r\r\n");
     }
     
     public class BasicResource
     {
         public string Name { get; set; }
         public string Path { get; set; }
-        
-        public BasicResource(string name, string path)
+        public string Id { get; set; }
+        public bool ReplaceExistingId { get; set; }
+
+        public BasicResource(string name, string path, bool replaceExistingId = false)
         {
             Name = name;
             Path = path;
+            Id = path.Substring(path.LastIndexOf('/') + 1, 8);
+            ReplaceExistingId = replaceExistingId;
         }
     }
     
     public class CtxrResource : BasicResource
     {
         public string Tri { get; set; }
-        public CtxrResource(string name, string path, string tri) : base(name, path)
+        public CtxrResource(string name, string path, string tri, bool replaceExistingId = false) : base(name, path)
         {
             Name = name;
             Path = path;
             Tri = tri;
+            Id = path.Substring(path.LastIndexOf('/') + 1, 8);
+            ReplaceExistingId = replaceExistingId;
         }
     }
     
@@ -445,11 +460,13 @@ namespace MGS2_Randomizer
     {
         public string Cmdl { get; set; }
         
-        public KmsResource(string name, string path, string cmdl) : base(name, path)
+        public KmsResource(string name, string path, string cmdl, bool replaceExistingId = false) : base(name, path)
         {
             Name = name;
             Cmdl = cmdl;
             Path = path;
+            Id = path.Substring(path.LastIndexOf('/') + 1, 8);
+            ReplaceExistingId = replaceExistingId;
         }
     }
 
@@ -481,12 +498,13 @@ namespace MGS2_Randomizer
             MGS2Resource.ShlBul1, MGS2Resource.ShlBlu3, MGS2Resource.ShlBlu2, MGS2Resource.ShlBlu1, MGS2Resource.ShlBlr3,
             MGS2Resource.ShlBlr2, MGS2Resource.ShlBlr1, MGS2Resource.ShlBll3, MGS2Resource.ShlBll2, MGS2Resource.ShlBll1,
             MGS2Resource.ShlBld3, MGS2Resource.ShlBld2, MGS2Resource.ShlBld1, MGS2Resource.ShlAcr, MGS2Resource.Shl,
-            MGS2Resource.SpecialGuardMar, MGS2Resource.SpecialGuardSar, MGS2Resource.ShlBul1Texture, MGS2Resource.ShlBul2Texture, MGS2Resource.ShlBul3Texture,
+            MGS2Resource.SpecialGuardMar2, MGS2Resource.SpecialGuardSar3, MGS2Resource.ShlBul1Texture, MGS2Resource.ShlBul2Texture, MGS2Resource.ShlBul3Texture,
             MGS2Resource.ShlBul4Texture, MGS2Resource.ShlBul5Texture, MGS2Resource.ShlBul6Texture, MGS2Resource.ShlChi1Texture, MGS2Resource.ShlChi2Texture,
             MGS2Resource.ShlChi3Texture, MGS2Resource.ShlChi4Texture, MGS2Resource.ShlChi5Texture, MGS2Resource.ShlF1Texture, MGS2Resource.ShlF2Texture,
             MGS2Resource.ShlF3Texture, MGS2Resource.ShlFrgTexture, MGS2Resource.ShlLitWireTexture, MGS2Resource.ShlLit1BTexture, MGS2Resource.ShlLit1FTexture,
-            MGS2Resource.ShlLit1FMskDecalTexture, MGS2Resource.ShlLit1F2Texture, MGS2Resource.ShlSAlpTexture, MGS2Resource.ComdlCacheStageA02a, MGS2Resource.SpsStageA12b,
-            MGS2Resource.SpsEmbStageA12b, MGS2Resource.SpsAmoStageA12b, MGS2Resource.SpsAll2MskTexture, MGS2Resource.SpsEmbTexture
+            MGS2Resource.ShlLit1FMskDecalTexture, MGS2Resource.ShlLit1F2Texture, MGS2Resource.ShlSAlpTexture, MGS2Resource.ComdlCacheStageA02aTri, MGS2Resource.SpsStageA12b,
+            MGS2Resource.SpsEmbStageA12b, MGS2Resource.SpsAmoStageA12b, MGS2Resource.SpsAll2MskTexture, MGS2Resource.SpsEmbTexture, MGS2Resource.SpecialGuardMar1,
+            MGS2Resource.SpecialGuardSar2, MGS2Resource.SpecialGuardTransCacheTri, MGS2Resource.ShotgunGuardTri
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 

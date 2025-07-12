@@ -27,6 +27,45 @@ namespace MGS2_Randomizer
 
         private class LevelResources
         {
+            public void ReplaceAnyIdCollision(MGS2ResourceData resourceToCheck)
+            {
+                int indexToReplace;
+                switch (resourceToCheck.FileType)
+                {
+                    case FileType.Kms:
+                        indexToReplace = Manifest.KmsFiles.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            Manifest.KmsFiles.RemoveAt(indexToReplace);
+                        break;
+                    case FileType.Ctxr:
+                        indexToReplace = BpAssets.CtxrFiles.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            BpAssets.CtxrFiles.RemoveAt(indexToReplace);
+                        break;
+                    case FileType.Cmdl:
+                        //TODO: this WILL cause problems in the future if evm resources are ever part of this.
+                        indexToReplace = BpAssets.KmsFiles.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            BpAssets.KmsFiles.RemoveAt(indexToReplace);
+                        break;
+                    case FileType.Tri:
+                        indexToReplace = Manifest.TriFiles.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            Manifest.TriFiles.RemoveAt(indexToReplace);
+                        break;
+                    case FileType.Sar:
+                        indexToReplace = Manifest.SarFiles.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            Manifest.SarFiles.RemoveAt(indexToReplace);
+                        break;
+                    case FileType.Mar:
+                        indexToReplace = Manifest.MarFiles.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            Manifest.MarFiles.RemoveAt(indexToReplace);
+                        break;
+                }
+            }
+
             public bool CheckForDuplicates(MGS2ResourceData resource)
             {
                 switch (resource.FileType)
@@ -345,9 +384,16 @@ namespace MGS2_Randomizer
 
                 foreach (MGS2ResourceData dataToAdd in missingData)
                 {
-                    if (!levelResources.CheckForDuplicates(dataToAdd))
+                    if (!dataToAdd.Resource.ReplaceExistingId)
                     {
-                        continue;
+                        if (!levelResources.CheckForDuplicates(dataToAdd))
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        levelResources.ReplaceAnyIdCollision(dataToAdd);
                     }
 
                     switch (dataToAdd.FileType)
