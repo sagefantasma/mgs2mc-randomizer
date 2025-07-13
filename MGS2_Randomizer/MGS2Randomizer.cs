@@ -193,7 +193,9 @@ namespace MGS2_Randomizer
             public bool RandomizeCards { get; set; }
             public bool KeepVanillaCardAccess { get; set; }
             public bool RandomizeGuardValues { get; set; }
+            public float GuardRandomizationBounds { get; set; }
             public bool KeepGuardValuesConsistentAcrossLevels { get; set; }
+            public bool RandomizeReinforcementGuardTypes { get; set; }
 
             public override string ToString()
             {
@@ -210,6 +212,8 @@ namespace MGS2_Randomizer
                     $"RandomizeClaymores = {RandomizeClaymores};\n" +
                     $"RandomizeGuardValues = {RandomizeGuardValues};\n" +
                     $"KeepGuardValuesConsistent = {KeepGuardValuesConsistentAcrossLevels};\n" +
+                    $"GuardRandomizationBounds = {GuardRandomizationBounds};\n"+
+                    $"RandomizeReinforcementGuardTypes = {RandomizeReinforcementGuardTypes};\n" +
                     $"RandomizeTankerControlUnits = {RandomizeTankerControlUnits};\n\n\n\n\n\n";
             }
         }
@@ -1133,16 +1137,17 @@ namespace MGS2_Randomizer
             //Value consistency will decide whether values will be all relatively similar, or completely random (i.e., guards could have drastically different hearing and vision values if false)
             //Insanity scalar will be used to "rein in" the randomization - .25f is right around the normal range for the game)
 
+            byte scaledByteMax = (byte)((0xFF - 0xC1) * insanityScalar + 0xC1);
             short normalVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short alertVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short evasionVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short hearingRange = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short lValue = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
-            byte hitsToStun = (byte)(Randomizer.Next(0xC1, 0xFE) * insanityScalar);
+            byte hitsToStun = (byte)Randomizer.Next(0xC1, scaledByteMax);
             short sleepDuration = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short stunDuration = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
-            byte unknown1 = (byte)(Randomizer.Next(0xC1, 0xFE) * insanityScalar);
-            byte unknown2 = (byte)(Randomizer.Next(0xC1, 0xFE) * insanityScalar);
+            byte unknown1 = (byte)Randomizer.Next(0xC1, scaledByteMax);
+            byte unknown2 = (byte)Randomizer.Next(0xC1, scaledByteMax);
 
             if (valueConsistency)
             {
@@ -1162,6 +1167,80 @@ namespace MGS2_Randomizer
                 Unknown1 = unknown1,
                 Unknown2 = unknown2
             };
+        }
+
+        private void RandomizeReinforcementGuardTypes()
+        {
+            byte[] subfunctionCallBytes = new byte[] { 0x7D, 0x11, 0xBA, 0xB4, 0xA0 };
+            byte[] explicitCallBytes3ByteId = new byte[] { 0xA7, 0x92, 0x65, 0x08, 0x06, 0x07, 0x9A, 0xCC };
+            byte[] explicitCallBytes4ByteId = new byte[] { 0xA7, 0x92, 0x65, 0x09, 0x06, 0x07, 0x9A, 0xCC };
+            byte[] paramEDesignationBytes = new byte[] { 0x52, 0x65 }; //52 65 C? is the determination of guard type inside an explicit call
+
+            List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
+            byte[] gcxContents;
+            bool edited = false;
+
+            foreach (string gcxFile in gcxFilesToEdit)
+            {
+                if (gcxFile.Contains("w11a") || gcxFile.Contains("w25d")) //the normal guards in w11a are considered attackers, and w25d has no param e for attackers. Skip these file.
+                    continue;
+                gcxContents = File.ReadAllBytes(gcxFile);
+                List<int> subFunctionCalls = GcxEditor.FindAllSubArray(gcxContents, subfunctionCallBytes);
+                if (subFunctionCalls != null)
+                {
+                    //subfunction calls are always formatted the same way(param E is always the 4th param), so we can handle these simply
+                    foreach (int subFunctionCall in subFunctionCalls)
+                    {
+                        gcxContents[subFunctionCall + 0x11] = (byte)Randomizer.Next(0xC1,0xC6);
+                    }
+                    edited = true;
+                }
+                else
+                {
+                    //explicit calls are more complicated. Param e is designated in different places, based on call construction.
+                    //Some reinforcements are called with an ID of only 3 bytes, others with 4 byte ID
+                    //We always want the first param E after the explicit call, and it should be safe to look for the first [52 65] after to find it
+                    List<int> explicit3ByteIdCalls = GcxEditor.FindAllSubArray(gcxContents, explicitCallBytes3ByteId);
+                    List<int> explicit4ByteIdCalls = GcxEditor.FindAllSubArray(gcxContents, explicitCallBytes4ByteId);
+                    List<int> paramEDesignationCalls = GcxEditor.FindAllSubArray(gcxContents, paramEDesignationBytes);
+
+                    if (explicit3ByteIdCalls != null)
+                    {
+                        foreach (int explicit3ByteIdCall in explicit3ByteIdCalls)
+                        {
+                            int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit3ByteIdCall);
+                            gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
+                        }
+                        edited = true;
+                    }
+                    if (explicit4ByteIdCalls != null)
+                    {
+                        foreach (int explicit4ByteIdCall in explicit4ByteIdCalls)
+                        {
+                            int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit4ByteIdCall);
+                            gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
+                        }
+                        edited = true;
+                    }
+                }
+                if(edited)
+                    File.WriteAllBytes(gcxFile, gcxContents);
+                edited = false;
+            }
+        }
+
+        private int FindClosestGreaterValue(List<int> list, int target)
+        {
+            foreach (int value in list)
+            {
+                if(value <= target)
+                {
+                    continue;
+                }
+                if (value > target)
+                    return value;
+            }
+            return -1;
         }
 
         private void RandomizeGuardValues(bool levelConsistency = true, bool valueConsistency = false, float insanityScalar = .25f)
@@ -2053,7 +2132,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        public int RandomizeItemSpawns(RandomizationOptions options)
+        public int RandomizeMGS2(RandomizationOptions options)
         {
             BuildVanillaItemSet();
             Derandomize(); //return to a "base" state to make our lives easier.
@@ -2590,7 +2669,12 @@ namespace MGS2_Randomizer
 
             if (options.RandomizeGuardValues)
             {
-                RandomizeGuardValues(options.KeepGuardValuesConsistentAcrossLevels, false, 1); //TODO: implement support for other two options
+                RandomizeGuardValues(options.KeepGuardValuesConsistentAcrossLevels, false, options.GuardRandomizationBounds); //TODO: implement support for value consistency
+            }
+
+            if (options.RandomizeReinforcementGuardTypes)
+            {
+                RandomizeReinforcementGuardTypes();
             }
 
             return Seed;
@@ -3223,9 +3307,9 @@ namespace MGS2_Randomizer
         {
             RandomizationForm._logger.Debug("Adding all resources to resource files...");
             List<string> strings = new List<string>();
-            foreach (Resource value in Resource.ResourceList)
+            foreach (BasicResource value in Resource.ResourceList)
             {
-                strings.Add(value.CommonName);
+                strings.Add(value.Name);
             }
             List<string> stages = new List<string> { "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
             "w02a", "w03a", "w03b", "w04a", "w04b", "w04c", "w11a", "w11b", "w11c", "w12a", "w12b", "w12c", "w13a", "w13b",
