@@ -1137,16 +1137,17 @@ namespace MGS2_Randomizer
             //Value consistency will decide whether values will be all relatively similar, or completely random (i.e., guards could have drastically different hearing and vision values if false)
             //Insanity scalar will be used to "rein in" the randomization - .25f is right around the normal range for the game)
 
+            byte scaledByteMax = (byte)((0xFF - 0xC1) * insanityScalar + 0xC1);
             short normalVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short alertVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short evasionVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short hearingRange = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short lValue = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
-            byte hitsToStun = (byte)(Randomizer.Next(0xC1, 0xFE) * insanityScalar);
+            byte hitsToStun = (byte)Randomizer.Next(0xC1, scaledByteMax);
             short sleepDuration = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short stunDuration = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
-            byte unknown1 = (byte)(Randomizer.Next(0xC1, 0xFE) * insanityScalar);
-            byte unknown2 = (byte)(Randomizer.Next(0xC1, 0xFE) * insanityScalar);
+            byte unknown1 = (byte)Randomizer.Next(0xC1, scaledByteMax);
+            byte unknown2 = (byte)Randomizer.Next(0xC1, scaledByteMax);
 
             if (valueConsistency)
             {
@@ -1177,6 +1178,7 @@ namespace MGS2_Randomizer
 
             List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
             byte[] gcxContents;
+            bool edited = false;
 
             foreach (string gcxFile in gcxFilesToEdit)
             {
@@ -1191,6 +1193,7 @@ namespace MGS2_Randomizer
                     {
                         gcxContents[subFunctionCall + 0x11] = (byte)Randomizer.Next(0xC1,0xC6);
                     }
+                    edited = true;
                 }
                 else
                 {
@@ -1208,6 +1211,7 @@ namespace MGS2_Randomizer
                             int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit3ByteIdCall);
                             gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
                         }
+                        edited = true;
                     }
                     if (explicit4ByteIdCalls != null)
                     {
@@ -1216,9 +1220,12 @@ namespace MGS2_Randomizer
                             int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit4ByteIdCall);
                             gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
                         }
+                        edited = true;
                     }
                 }
-                File.WriteAllBytes(gcxFile, gcxContents);
+                if(edited)
+                    File.WriteAllBytes(gcxFile, gcxContents);
+                edited = false;
             }
         }
 
@@ -2662,8 +2669,7 @@ namespace MGS2_Randomizer
 
             if (options.RandomizeGuardValues)
             {
-                //RandomizeGuardValues(options.KeepGuardValuesConsistentAcrossLevels, false, options.GuardRandomizationBounds); //TODO: implement support for value consistency
-                RandomizeGuardValues(options.KeepGuardValuesConsistentAcrossLevels, false, 1);
+                RandomizeGuardValues(options.KeepGuardValuesConsistentAcrossLevels, false, options.GuardRandomizationBounds); //TODO: implement support for value consistency
             }
 
             if (options.RandomizeReinforcementGuardTypes)
