@@ -56,12 +56,11 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed an issue causing cards to sometimes spawn in invalid positions.\r\n"+
-                $" - Fixed an issue where card 4 could cause a soft-lock with the Nikita option unset.\r\n\r\n"+
-                $"Changes in v1.1.2.0:\r\n\r\n" +
-                $" - Added unique names to each card that can be collected during randomization.\r\n" +
-                $" - Fixed some issues with card randomization.\r\n" +
-                $" - Fixed several items/weapons that can respawn erroneously during a randomized game.";
+                $" - Added \"Randomize Reinforcement Guard Types\" option.\r\n" +
+                $" - Fixed an issue where the guard randomization bounds weren't working as expected.\r\n\r\n" +
+                $"Changes in v1.1.2.1:\r\n\r\n" +
+                $" - Fixed an issue causing cards to sometimes spawn in invalid positions.\r\n" +
+                $" - Fixed an issue where card 4 could cause a soft-lock with the Nikita option unset.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
@@ -133,6 +132,9 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetShowHelp(this.keepGuardValuesConsistentAcrossLevelsCheckbox, true);
             this.helpProvider1.SetHelpString(this.keepGuardValuesConsistentAcrossLevelsCheckbox, "If guard values are randomized, keep them consistent across all levels instead of differing with each level.");
 
+            this.helpProvider1.SetShowHelp(this.randomizeReinforcementGuardTypesCheckBox, true);
+            this.helpProvider1.SetHelpString(this.randomizeReinforcementGuardTypesCheckBox, "Randomize what types of guards are spawned when reinforcements are called for. Can be normal, shield, shield with light, shotgun, or hi-tech guards on both chapters.");
+
             this.helpProvider1.SetShowHelp(this.restoreBaseGameButton, true);
             this.helpProvider1.SetHelpString(this.restoreBaseGameButton, "Restores the game's files to their 'vanilla' state. If this does not work properly, use Steam to 'Verify integrity of game files' to accomplish the same result.");
         }
@@ -161,7 +163,9 @@ namespace MGS2_Randomizer
                 addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
                 keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
                 randomizeGuardValuesCheckBox.Checked = config.LastOptionsSelected.RandomizeGuardValues;
+                insanityScalarTrackBar.Value = (int) (config.LastOptionsSelected.GuardRandomizationBounds * 100);
                 keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
+                randomizeReinforcementGuardTypesCheckBox.Checked = config.LastOptionsSelected.RandomizeReinforcementGuardTypes;
 
                 if (!randomizeAutomaticRewardsCheckbox.Checked)
                 {
@@ -213,7 +217,9 @@ namespace MGS2_Randomizer
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
                         RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
                         RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
-                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked
+                        GuardRandomizationBounds = insanityScalarTrackBar.Value / 100f,
+                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
+                        RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked
                     }
                 };
 
@@ -248,6 +254,7 @@ namespace MGS2_Randomizer
                 randomizeEFConnectingBridgeClaymores.Enabled = enable;
                 randomizeTankerControlUnitLocations.Enabled = enable;
                 randomizeGuardValuesCheckBox.Enabled = enable;
+                randomizeReinforcementGuardTypesCheckBox.Enabled = enable;
                 if (randomizeGuardValuesCheckBox.Checked)
                 {
                     insanityScalarLabel.Enabled = enable;
@@ -412,11 +419,13 @@ namespace MGS2_Randomizer
         {
             try
             {
+                UpdateConfig();
                 _logger.Information("Randomizing game files...");
                 MessageBox.Show("Randomizing MGS2's game files to your specifications, this may take some time...", "Heads up!");
                 ToggleControls(false);
                 Application.DoEvents();
                 waitingMusic.PlayLooping();
+                float insanityScalarValue = insanityScalarTrackBar.Value;
                 await Task.Run(() =>
                 {
                     MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation, (int)seedUpDown.Value);
@@ -435,7 +444,9 @@ namespace MGS2_Randomizer
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
                         RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
                         RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
-                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked
+                        GuardRandomizationBounds = insanityScalarValue / 100,
+                        KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
+                        RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked
                     };
                     _logger.Debug($"Calling randomize item spawns with randomization options: {randomizationOptions}");
                     int seed = 0;
@@ -445,7 +456,7 @@ namespace MGS2_Randomizer
                     {
                         try
                         {
-                            seed = randomizer.RandomizeItemSpawns(randomizationOptions);
+                            seed = randomizer.RandomizeMGS2(randomizationOptions);
                             _logger.Debug("Items randomized successfully, now saving to disk");
                             randomizer.SaveRandomizationToDisk(true, false);
                             _logger.Debug("Randomization saved to disk successfully!");
@@ -559,6 +570,11 @@ namespace MGS2_Randomizer
         private void changelogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowChangelog();
+        }
+
+        private void randomizeReinforcementGuardTypesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
         }
     }
 }
