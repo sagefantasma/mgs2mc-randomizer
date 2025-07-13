@@ -425,6 +425,184 @@ namespace MGS2_Randomizer
             "textures/flatlist/sps_emb.bmp.ctxr,stage/XXXX/cache/sps_emb.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00613fa9.ctxr\r\r\n");
         public static BasicResource ShotgunGuardTri = new BasicResource("gbs_gba_def_nm_stage_a24a",
             "assets/tri/us/gbs_gba_def_nm_stage_a24d.tri,us/stage/XXXX/cache/009e05c5.tri,cache/009e05c5.tri\r\r\n");
+
+        //Hi-tech guard assets
+        //There are probably more resources here than are really required, but I don't know for certain. This seems to work as is, so I'm happy with that.
+        public static BasicResource HtcArmUc0033ac05 = new BasicResource("htc_arm_uc_0033ac05",
+            "textures/flatlist/htc_arm_uc.bmp.ctxr,stage/XXXX/cache/htc_arm_uc.bmp.ctxr,eu/stage/XXXX/cache/0033ac05/00cf3b99.ctxr\r\r\n");
+        public static BasicResource HtcArmUc00fbbaaf = new BasicResource("htc_arm_uc_00fbbaaf",
+            "textures/flatlist/htc_arm_uc.bmp.ctxr,stage/XXXX/cache/htc_arm_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00cf3b99.ctxr\r\r\n");
+        public static BasicResource HtcBeltN2 = new BasicResource("htc_belt_n2",
+            "textures/flatlist/htc_belt_n2.bmp.ctxr,stage/XXXX/cache/htc_belt_n2.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00e19cf1.ctxr\r\r\n");
+        public static BasicResource HtcBeltUc = new BasicResource("htc_belt_uc",
+            "textures/flatlist/htc_belt_uc.bmp.ctxr,stage/XXXX/cache/htc_belt_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00e19e02.ctxr\r\r\n");
+        public static BasicResource HtcBloodAlpOvl = new BasicResource("htc_blood_alp_ovl",
+            "textures/flatlist/htc_blood_alp_ovl.bmp.ctxr,stage/XXXX/cache/htc_blood_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00fd1fce.ctxr\r\r\n");
+        public static BasicResource HtcBodyBUc = new BasicResource("htc_body_b_uc",
+            "textures/flatlist/htc_body_b_uc.bmp.ctxr,stage/XXXX/cache/htc_body_b_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/006ed893.ctxr\r\r\n");
+        public static BasicResource HtcBodyUc = new BasicResource("htc_body_uc",
+            "textures/flatlist/htc_body_uc.bmp.ctxr,stage/XXXX/cache/htc_body_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00641e16.ctxr\r\r\n");
+        public static BasicResource HtcEye2OvlHlf = new BasicResource("htc_eye2_ovl_hlf",
+            "textures/flatlist/htc_eye2_ovl_hlf.bmp.ctxr,stage/XXXX/cache/htc_eye2_ovl_hlf.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00926a67.ctxr\r\r\n");
+        public static BasicResource HtcEye2OvlSubAlp = new BasicResource("htc_eye2_ovl_sub_alp",
+            "textures/flatlist/htc_eye2_ovl_sub_alp.bmp.ctxr,stage/XXXX/cache/htc_eye2_ovl_sub_alp.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/006a3b68.ctxr\r\r\n");
+        public static BasicResource HtcFaceUc = new BasicResource("htc_face_uc",
+            "textures/flatlist/htc_face_uc.bmp.ctxr,stage/XXXX/cache/htc_face_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/004a1efa.ctxr\r\r\n");
+        public static BasicResource HtcGunFro = new BasicResource("htc_gun_fro",
+            "textures/flatlist/htc_gun_fro.bmp.ctxr,stage/XXXX/cache/htc_gun_fro.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00f73b0e.ctxr\r\r\n");
+        public static BasicResource HtcGunSide = new BasicResource("htc_gun_side",
+            "textures/flatlist/htc_gun_side.bmp.ctxr,stage/XXXX/cache/htc_gun_side.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00edbce3.ctxr\r\r\n");
+        public static BasicResource HtcGunTop = new BasicResource("htc_gun_top",
+            "textures/flatlist/htc_gun_top.bmp.ctxr,stage/XXXX/cache/htc_gun_top.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00f772af.ctxr\r\r\n");
+        public static BasicResource HtcHandIUc0033ac05 = new BasicResource("htc_hand_i_uc_0033ac05",
+            "textures/flatlist/htc_hand_i_uc.bmp.ctxr,stage/XXXX/cache/htc_hand_i_uc.bmp.ctxr,eu/stage/XXXX/cache/0033ac05/0077eae9.ctxr\r\r\n");
+        public static BasicResource HtcHandIUc00fbbaaf = new BasicResource("htc_hand_i_uc_00fbbaaf",
+            "textures/flatlist/htc_hand_i_uc.bmp.ctxr,stage/XXXX/cache/htc_hand_i_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/0077eae9.ctxr\r\r\n");
+        public static BasicResource HtcHandOUc0033ac05 = new BasicResource("htc_hand_o_uc_0033ac05",
+            "textures/flatlist/htc_hand_o_uc.bmp.ctxr,stage/XXXX/cache/htc_hand_o_uc.bmp.ctxr,eu/stage/XXXX/cache/0033ac05/007aeae9.ctxr\r\r\n");
+        public static BasicResource HtcHandOUc00fbbaaf = new BasicResource("htc_hand_o_uc_00fbbaaf",
+            "textures/flatlist/htc_hand_o_uc.bmp.ctxr,stage/XXXX/cache/htc_hand_o_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/007aeae9.ctxr\r\r\n");
+        public static BasicResource HtcHelmetBUc = new BasicResource("htc_helmet_b_uc",
+            "textures/flatlist/htc_helmet_b_uc.bmp.ctxr,stage/XXXX/cache/htc_helmet_b_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00206e79.ctxr\r\r\n");
+        public static BasicResource HtcHelmetBUcOvlAlpSub = new BasicResource("htc_helmet_b_uc_ovl_alp_sub",
+            "textures/flatlist/htc_helmet_b_uc_ovl_alp_sub.bmp.ctxr,stage/XXXX/cache/htc_helmet_b_uc_ovl_alp_sub.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00482f73.ctxr\r\r\n");
+        public static BasicResource HtcHelmetIUc = new BasicResource("htc_helmet_i_uc",
+            "textures/flatlist/htc_helmet_i_uc.bmp.ctxr,stage/XXXX/cache/htc_helmet_i_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/0023ee79.ctxr\r\r\n");
+        public static BasicResource HtcHelmetUc = new BasicResource("htc_helmet_uc",
+            "textures/flatlist/htc_helmet_uc.bmp.ctxr,stage/XXXX/cache/htc_helmet_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00dd8a7b.ctxr\r\r\n");
+        public static BasicResource HtcHelmetUcOvlAlpSub = new BasicResource("htc_helmet_uc_ovl_alp_sub",
+            "textures/flatlist/htc_helmet_uc_ovl_alp_sub.bmp.ctxr,stage/XXXX/cache/htc_helmet_uc_ovl_alp_sub.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00085b45.ctxr\r\r\n");
+        public static BasicResource HtcLegUc = new BasicResource("htc_leg_uc",
+            "textures/flatlist/htc_leg_uc.bmp.ctxr,stage/XXXX/cache/htc_leg_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00fc3bae.ctxr\r\r\n");
+        public static BasicResource HtcLightUc = new BasicResource("htc_light_uc",
+            "textures/flatlist/htc_light_uc.bmp.ctxr,stage/XXXX/cache/htc_light_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/007e3bf4.ctxr\r\r\n");
+        public static BasicResource HtcLightUcOvlSubAlp = new BasicResource("htc_light_uc_ovl_sub_alp",
+            "textures/flatlist/htc_light_uc_ovl_sub_alp.bmp.ctxr,stage/XXXX/cache/htc_light_uc_ovl_sub_alp.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/003fa0cf.ctxr\r\r\n");
+        public static BasicResource HtcNeckIUc = new BasicResource("htc_neck_i_uc",
+            "textures/flatlist/htc_neck_i_uc.bmp.ctxr,stage/XXXX/cache/htc_neck_i_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/007e0837.ctxr\r\r\n");
+        public static BasicResource HtcNeckOUc = new BasicResource("htc_neck_o_uc",
+            "textures/flatlist/htc_neck_o_uc.bmp.ctxr,stage/XXXX/cache/htc_neck_o_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00810837.ctxr\r\r\n");
+        public static BasicResource HtcPorchUc = new BasicResource("htc_porch_uc",
+            "textures/flatlist/htc_porch_uc.bmp.ctxr,stage/XXXX/cache/htc_porch_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00285d8a.ctxr\r\r\n");
+        public static BasicResource HtcShoesUc = new BasicResource("htc_shoes_uc",
+            "textures/flatlist/htc_shoes_uc.bmp.ctxr,stage/XXXX/cache/htc_shoes_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/004df3c4.ctxr\r\r\n");
+        public static BasicResource HtcShoulderUc = new BasicResource("htc_shoulder_uc",
+            "textures/flatlist/htc_shoulder_uc.bmp.ctxr,stage/XXXX/cache/htc_shoulder_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00ebb045.ctxr\r\r\n");
+        public static BasicResource HtcShoulderUcOvlSubAlp = new BasicResource("htc_shoulder_uc_ovl_sub_alp",
+            "textures/flatlist/htc_shoulder_uc_ovl_sub_alp.bmp.ctxr,stage/XXXX/cache/htc_shoulder_uc_ovl_sub_alp.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/0084b7a6.ctxr\r\r\n");
+        public static BasicResource HtcUcOvlMod1120AlpEmap = new BasicResource("htc_uc_ovl_mod1120_alp_emap",
+            "textures/flatlist/htc_uc_ovl_mod1120_alp_emap.bmp.ctxr,stage/XXXX/cache/htc_uc_ovl_mod1120_alp_emap.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/008f2b58.ctxr\r\r\n");
+        public static BasicResource HtcUnderPadUc = new BasicResource("htc_under_pad_uc",
+            "textures/flatlist/htc_under_pad_uc.bmp.ctxr,stage/XXXX/cache/htc_under_pad_uc.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00f8634b.ctxr\r\r\n");
+        public static BasicResource HtcdtOvlMod1120AlpEmap = new BasicResource("htcdt_ovl_mod1120_alp_emap",
+            "textures/flatlist/htcdt_ovl_mod1120_alp_emap.bmp.ctxr,stage/XXXX/cache/htcdt_ovl_mod1120_alp_emap.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/00a96be9.ctxr\r\r\n");
+        public static BasicResource SnaM9Glip = new BasicResource("sna_m9_glip",
+            "textures/flatlist/sna_m9_glip.bmp.ctxr,stage/XXXX/cache/sna_m9_glip.bmp.ctxr,eu/stage/XXXX/cache/00fbbaaf/000b52f7.ctxr\r\r\n");
+        public static KmsResource HtcBloodFace = new KmsResource("htc_blood_face",
+            path: "assets/kms/us/htc_blood_face.kms,us/stage/XXXX/cache/00ab985c.kms,cache/00ab985c.kms\r\r\n",
+            cmdl: "assets/kms/us/htc_blood_face.cmdl,us/stage/XXXX/cache/00ab985c.cmdl,eu/stage/XXXX/cache/00ab985c.cmdl\r\r\n");
+        public static KmsResource HtcDefMt = new KmsResource("htc_def_mt",
+            path: "assets/kms/us/htc_def_mt.kms,us/stage/XXXX/cache/00fbbaaf.kms,cache/00fbbaaf.kms\r\r\n",
+            cmdl: "assets/kms/us/htc_def_mt.cmdl,us/stage/XXXX/cache/00fbbaaf.cmdl,eu/stage/XXXX/cache/00fbbaaf.cmdl\r\r\n");
+        public static KmsResource HtcHandDef = new KmsResource("htc_hand_def",
+            path: "assets/kms/us/htc_hand_def.kms,us/stage/XXXX/cache/0033ac05.kms,cache/0033ac05.kms\r\r\n",
+            cmdl: "assets/kms/us/htc_hand_def.cmdl,us/stage/XXXX/cache/0033ac05.cmdl,eu/stage/XXXX/cache/0033ac05.cmdl\r\r\n");
+        public static KmsResource M4GrnHtc = new KmsResource("m4_grn_htc",
+            path: "assets/kms/us/m4_grn_htc.kms,us/stage/XXXX/cache/00e8419b.kms,cache/00e8419b.kms\r\r\n",
+            cmdl: "assets/kms/us/m4_grn_htc.cmdl,us/stage/XXXX/cache/00e8419b.cmdl,eu/stage/XXXX/cache/00e8419b.cmdl\r\r\n");
+        public static KmsResource M4aGrnAmoHtc = new KmsResource("m4a_grn_amo_htc",
+            path: "assets/kms/us/m4a_grn_amo_htc.kms,us/stage/XXXX/cache/0080814a.kms,cache/0080814a.kms\r\r\n",
+            cmdl: "assets/kms/us/m4a_grn_amo_htc.cmdl,us/stage/XXXX/cache/0080814a.cmdl,eu/stage/XXXX/cache/0080814a.cmdl\r\r\n");
+        public static BasicResource HtcHandDefTri = new BasicResource("htc_hand_def.tri",
+            "assets/tri/us/htc_hand_def.tri,us/stage/XXXX/cache/0033ac05.tri,cache/0033ac05.tri\r\r\n");
+        public static BasicResource HtcDefMtTri = new BasicResource("htc_def_mt.tri",
+            "assets/tri/us/htc_def_mt.tri,us/stage/XXXX/cache/00fbbaaf.tri,cache/00fbbaaf.tri\r\r\n");
+        public static BasicResource HtcHandDefCv2 = new BasicResource("htc_hand_def.cv2",
+            "assets/cv2/us/htc_hand_def.cv2,us/stage/XXXX/cache/0033ac05.cv2,cache/0033ac05.cv2\r\r\n");
+        public static BasicResource HtcHand5 = new BasicResource("htc_hand_5",
+            "assets/cv2/us/htc_hand_5.cv2,us/stage/XXXX/cache/00bfccb8.cv2,cache/00bfccb8.cv2\r\r\n");
+        public static BasicResource HtcHand4 = new BasicResource("htc_hand_4",
+            "assets/cv2/us/htc_hand_4.cv2,us/stage/XXXX/cache/00bfccb7.cv2,cache/00bfccb7.cv2\r\r\n");
+        public static BasicResource HtcHand3 = new BasicResource("htc_hand_3",
+            "assets/cv2/us/htc_hand_3.cv2,us/stage/XXXX/cache/00bfccb6.cv2,cache/00bfccb6.cv2\r\r\n");
+        public static BasicResource HtcHand2 = new BasicResource("htc_hand_2",
+            "assets/cv2/us/htc_hand_2.cv2,us/stage/XXXX/cache/00bfccb5.cv2,cache/00bfccb5.cv2\r\r\n");
+        public static BasicResource HtcHand1 = new BasicResource("htc_hand_1",
+            "assets/cv2/us/htc_hand_1.cv2,us/stage/XXXX/cache/00bfccb4.cv2,cache/00bfccb4.cv2\r\r\n");
+        public static BasicResource HtcDefMtCv2 = new BasicResource("htc_def_mt.cv2",
+            "assets/cv2/us/htc_def_mt.cv2,us/stage/XXXX/cache/00fbbaaf.cv2,cache/00fbbaaf.cv2\r\r\n");
+        /*public static BasicResource HiTechGuardTri = new BasicResource("",
+            "assets/tri/us/gbs_gba_def_nm_stage_a12b.tri,us/stage/XXXX/cache/009e05c5.tri,cache/009e05c5.tri\r\r\n");*/
+        public static BasicResource M4Alp = new BasicResource("m4_alp",
+            "textures/flatlist/m4_alp.bmp.ctxr,stage/XXXX/cache/m4_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/007112cd.ctxr\r\r\n");
+        public static BasicResource M4aAll = new BasicResource("m4a_all",
+            "textures/flatlist/m4a_all.bmp.ctxr,stage/XXXX/cache/m4a_all.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00412d9a.ctxr\r\r\n");
+        public static BasicResource M4aGlUnit = new BasicResource("m4a_gl_unit",
+            "textures/flatlist/m4a_gl_unit.bmp.ctxr,stage/XXXX/cache/m4a_gl_unit.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/001059ed.ctxr\r\r\n");
+        public static BasicResource M4aSbS1 = new BasicResource("m4a_sb_s1",
+            "textures/flatlist/m4a_sb_s1.bmp.ctxr,stage/XXXX/cache/m4a_sb_s1.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00d14396.ctxr\r\r\n");
+        public static BasicResource M4grnBulHigh = new BasicResource("m4grn_bul_high",
+            "textures/flatlist/m4grn_bul_high.bmp.ctxr,stage/XXXX/cache/m4grn_bul_high.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/002554bd.ctxr\r\r\n");
+        public static BasicResource M4GrnEmb = new BasicResource("m4grn_emb",
+            "textures/flatlist/m4grn_emb.bmp.ctxr,stage/XXXX/cache/m4grn_emb.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/007fdcad.ctxr\r\r\n");
+        public static BasicResource M92Jyuukou = new BasicResource("m92_jyuukou",
+            "textures/flatlist/m92_jyuukou.bmp.ctxr,stage/XXXX/cache/m92_jyuukou.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00e14f89.ctxr\r\r\n");
+        public static BasicResource MkrvAll = new BasicResource("mkrv_all",
+            "textures/flatlist/mkrv_all.bmp.ctxr,stage/XXXX/cache/mkrv_all.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00949597.ctxr\r\r\n");
+        public static BasicResource RadMusen1002f5aa1 = new BasicResource("rad_musen1002f5aa1",
+            "textures/flatlist/rad_musen1.bmp.ctxr,stage/XXXX/cache/rad_musen1.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/002f5aa1.ctxr\r\r\n");
+        public static BasicResource RadMusen100a142a1 = new BasicResource("rad_musen100a142a1",
+            "textures/flatlist/rad_musen1.bmp.ctxr,stage/XXXX/cache/rad_musen1.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00a142a1.ctxr\r\r\n");
+        public static BasicResource RadMusen2 = new BasicResource("rad_musen2",
+            "textures/flatlist/rad_musen2.bmp.ctxr,stage/XXXX/cache/rad_musen2.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/002f5aa2.ctxr\r\r\n");
+        public static BasicResource RadMusen3 = new BasicResource("rad_musen3",
+            "textures/flatlist/rad_musen3.bmp.ctxr,stage/XXXX/cache/rad_musen3.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/002f5aa3.ctxr\r\r\n");
+        public static BasicResource RadMusen4 = new BasicResource("rad_musen4",
+            "textures/flatlist/rad_musen4.bmp.ctxr,stage/XXXX/cache/rad_musen4.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/002f5aa4.ctxr\r\r\n");
+        public static BasicResource RadMusen5 = new BasicResource("rad_musen5",
+            "textures/flatlist/rad_musen5.bmp.ctxr,stage/XXXX/cache/rad_musen5.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/002f5aa5.ctxr\r\r\n");
+        public static BasicResource SelSling1AlpOvl = new BasicResource("sel_sling1_alp_ovl",
+            "textures/flatlist/sel_sling1_alp_ovl.bmp.ctxr,stage/XXXX/cache/sel_sling1_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00011b09.ctxr\r\r\n");
+        public static BasicResource SelSling2AlpOvl = new BasicResource("sel_sling2_alp_ovl",
+            "textures/flatlist/sel_sling2_alp_ovl.bmp.ctxr,stage/XXXX/cache/sel_sling2_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00021b09.ctxr\r\r\n");
+        public static BasicResource SelSling3 = new BasicResource("sel_sling3",
+            "textures/flatlist/sel_sling3.bmp.ctxr,stage/XXXX/cache/sel_sling3.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00bebdce.ctxr\r\r\n");
+        public static BasicResource UspAll = new BasicResource("usp_all",
+            "textures/flatlist/usp_all.bmp.ctxr,stage/XXXX/cache/usp_all.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00313019.ctxr\r\r\n");
+        public static BasicResource UspEmb = new BasicResource("usp_emb",
+            "textures/flatlist/usp_emb.bmp.ctxr,stage/XXXX/cache/usp_emb.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/0031402f.ctxr\r\r\n");
+        public static BasicResource Brack010101 = new BasicResource("brack_01_01_01",
+            "textures/flatlist/brack_01_01_01.bmp.ctxr,stage/XXXX/cache/brack_01_01_01.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00a5e14c.ctxr\r\r\n");
+        public static BasicResource DogtagChainBlackMsk = new BasicResource("dogtag_chain_black_msk",
+            "textures/flatlist/dogtag_chain_black_msk.bmp.ctxr,stage/XXXX/cache/dogtag_chain_black_msk.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/001a5b53.ctxr\r\r\n");
+        public static BasicResource GradationAlpOvl = new BasicResource("gradation_alp_ovl",
+            "textures/flatlist/gradation_alp_ovl.bmp.ctxr,stage/XXXX/cache/gradation_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/009112a6.ctxr\r\r\n");
+        public static BasicResource GrsBlack = new BasicResource("grs_black",
+            "textures/flatlist/grs_black.bmp.ctxr,stage/XXXX/cache/grs_black.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00c23e4f.ctxr\r\r\n");
+        public static BasicResource Gry090 = new BasicResource("gry090",
+            "textures/flatlist/gry090.bmp.ctxr,stage/XXXX/cache/gry090.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/005d4825.ctxr\r\r\n");
+        public static BasicResource GunLightF = new BasicResource("gun_light_f",
+            "textures/flatlist/gun_light_f.bmp.ctxr,stage/XXXX/cache/gun_light_f.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00b6f1c9.ctxr\r\r\n");
+        public static BasicResource GunLightS = new BasicResource("gun_light_s",
+            "textures/flatlist/gun_light_s.bmp.ctxr,stage/XXXX/cache/gun_light_s.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/00b6f1d6.ctxr\r\r\n");
+        public static BasicResource ItemGlass = new BasicResource("item_glass",
+            "textures/flatlist/item_glass.bmp.ctxr,stage/XXXX/cache/item_glass.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/003ed6e5.ctxr\r\r\n");
+        public static BasicResource ItemGrass2 = new BasicResource("item_grass2",
+            "textures/flatlist/item_grass2.bmp.ctxr,stage/XXXX/cache/item_grass2.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/003adcda.ctxr\r\r\n");
+        public static BasicResource ItemGrass3 = new BasicResource("item_grass3",
+            "textures/flatlist/item_grass3.bmp.ctxr,stage/XXXX/cache/item_grass3.bmp.ctxr,eu/stage/XXXX/cache/009e05c5/003adcdb.ctxr\r\r\n");
+        public static KmsResource DemoM4GrnBul = new KmsResource("demo_m4_grn_bul",
+            path: "assets/kms/us/demo_m4_grn_bul.kms,us/stage/XXXX/cache/00b932da.kms,cache/00b932da.kms\r\r\n",
+            cmdl: "assets/kms/us/demo_m4_grn_bul.cmdl,us/stage/XXXX/cache/00b932da.cmdl,eu/stage/XXXX/cache/00b932da.cmdl\r\r\n");
+        public static KmsResource DemoM4GrnEmb = new KmsResource("demo_m4_grn_emb",
+            path: "assets/kms/us/demo_m4_grn_emb.kms,us/stage/XXXX/cache/00b93dd0.kms,cache/00b93dd0.kms\r\r\n",
+            cmdl: "assets/kms/us/demo_m4_grn_emb.cmdl,us/stage/XXXX/cache/00b93dd0.cmdl,eu/stage/XXXX/cache/00b93dd0.cmdl\r\r\n");
+        public static KmsResource SelSling1 = new KmsResource("sel_sling1",
+            path: "assets/kms/us/sel_sling1.kms,us/stage/XXXX/cache/00bebdcc.kms,cache/00bebdcc.kms\r\r\n",
+            cmdl: "assets/kms/us/sel_sling1.cmdl,us/stage/XXXX/cache/00bebdcc.cmdl,eu/stage/XXXX/cache/00bebdcc.cmdl\r\r\n");
+        public static KmsResource SelSling2 = new KmsResource("sel_sling2",
+            path: "assets/kms/us/sel_sling2.kms,us/stage/XXXX/cache/00bebdcd.kms,cache/00bebdcd.kms\r\r\n",
+            cmdl: "assets/kms/us/sel_sling2.cmdl,us/stage/XXXX/cache/00bebdcd.cmdl,eu/stage/XXXX/cache/00bebdcd.cmdl\r\r\n");
     }
     
     public class BasicResource
@@ -504,7 +682,23 @@ namespace MGS2_Randomizer
             MGS2Resource.ShlF3Texture, MGS2Resource.ShlFrgTexture, MGS2Resource.ShlLitWireTexture, MGS2Resource.ShlLit1BTexture, MGS2Resource.ShlLit1FTexture,
             MGS2Resource.ShlLit1FMskDecalTexture, MGS2Resource.ShlLit1F2Texture, MGS2Resource.ShlSAlpTexture, MGS2Resource.ComdlCacheStageA02aTri, MGS2Resource.SpsStageA12b,
             MGS2Resource.SpsEmbStageA12b, MGS2Resource.SpsAmoStageA12b, MGS2Resource.SpsAll2MskTexture, MGS2Resource.SpsEmbTexture, MGS2Resource.SpecialGuardMar1,
-            MGS2Resource.SpecialGuardSar2, MGS2Resource.SpecialGuardTransCacheTri, MGS2Resource.ShotgunGuardTri
+            MGS2Resource.SpecialGuardSar2, MGS2Resource.SpecialGuardTransCacheTri, MGS2Resource.ShotgunGuardTri, MGS2Resource.HtcArmUc0033ac05, MGS2Resource.HtcArmUc00fbbaaf,
+            MGS2Resource.HtcBeltN2, MGS2Resource.HtcBeltUc, MGS2Resource.HtcBloodAlpOvl, MGS2Resource.HtcBodyBUc, MGS2Resource.HtcBodyUc,
+            MGS2Resource.HtcEye2OvlHlf, MGS2Resource.HtcEye2OvlSubAlp, MGS2Resource.HtcFaceUc, MGS2Resource.HtcGunFro, MGS2Resource.HtcGunSide,
+            MGS2Resource.HtcGunTop, MGS2Resource.HtcHandIUc0033ac05, MGS2Resource.HtcHandIUc00fbbaaf, MGS2Resource.HtcHandOUc0033ac05, MGS2Resource.HtcHandOUc00fbbaaf,
+            MGS2Resource.HtcHelmetBUc, MGS2Resource.HtcHelmetBUcOvlAlpSub, MGS2Resource.HtcHelmetIUc, MGS2Resource.HtcHelmetUc, MGS2Resource.HtcHelmetUcOvlAlpSub,
+            MGS2Resource.HtcLegUc, MGS2Resource.HtcLightUc, MGS2Resource.HtcLightUcOvlSubAlp, MGS2Resource.HtcNeckIUc, MGS2Resource.HtcNeckOUc,
+            MGS2Resource.HtcPorchUc, MGS2Resource.HtcShoesUc, MGS2Resource.HtcShoulderUc, MGS2Resource.HtcShoulderUcOvlSubAlp, MGS2Resource.HtcUcOvlMod1120AlpEmap,
+            MGS2Resource.HtcUnderPadUc, MGS2Resource.HtcdtOvlMod1120AlpEmap, MGS2Resource.SnaM9Glip, MGS2Resource.HtcBloodFace, MGS2Resource.HtcDefMt,
+            MGS2Resource.HtcHandDef, MGS2Resource.M4GrnHtc, MGS2Resource.M4aGrnAmoHtc, MGS2Resource.HtcHandDefTri, MGS2Resource.HtcDefMtTri,
+            MGS2Resource.HtcHandDefCv2, MGS2Resource.HtcHand5, MGS2Resource.HtcHand4, MGS2Resource.HtcHand3, MGS2Resource.HtcHand2,
+            MGS2Resource.HtcHand1, MGS2Resource.HtcDefMtCv2, MGS2Resource.M4Alp, MGS2Resource.M4aAll, MGS2Resource.M4aGlUnit,
+            MGS2Resource.M4aSbS1, MGS2Resource.M4grnBulHigh, MGS2Resource.M4GrnEmb, MGS2Resource.M92Jyuukou, MGS2Resource.MkrvAll,
+            MGS2Resource.RadMusen1002f5aa1, MGS2Resource.RadMusen100a142a1, MGS2Resource.RadMusen2, MGS2Resource.RadMusen3, MGS2Resource.RadMusen4,
+            MGS2Resource.RadMusen5, MGS2Resource.SelSling1AlpOvl, MGS2Resource.SelSling2AlpOvl, MGS2Resource.SelSling3, MGS2Resource.UspAll,
+            MGS2Resource.UspEmb, MGS2Resource.Brack010101, MGS2Resource.DogtagChainBlackMsk, MGS2Resource.GradationAlpOvl, MGS2Resource.GrsBlack,
+            MGS2Resource.Gry090, MGS2Resource.GunLightF, MGS2Resource.GunLightS, MGS2Resource.ItemGlass, MGS2Resource.ItemGrass2,
+            MGS2Resource.ItemGrass3, MGS2Resource.DemoM4GrnBul, MGS2Resource.DemoM4GrnEmb, MGS2Resource.SelSling1, MGS2Resource.SelSling2
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 

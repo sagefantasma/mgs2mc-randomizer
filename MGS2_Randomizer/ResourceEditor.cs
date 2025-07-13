@@ -63,6 +63,11 @@ namespace MGS2_Randomizer
                         if (indexToReplace > 0)
                             Manifest.MarFiles.RemoveAt(indexToReplace);
                         break;
+                    case FileType.Cv2:
+                        indexToReplace = Manifest.Cv2Files.FindIndex(resource => resource.Contains($"/{resourceToCheck.Resource.Id}."));
+                        if (indexToReplace > 0)
+                            Manifest.Cv2Files.RemoveAt(indexToReplace);
+                        break;
                 }
             }
 
@@ -92,6 +97,10 @@ namespace MGS2_Randomizer
                         break;
                     case FileType.Mar:
                         if (Manifest.MarFiles.Any(mar => mar.Contains(resource.Resource.Name)))
+                            return false;
+                        break;
+                    case FileType.Cv2:
+                        if (Manifest.Cv2Files.Any(mar => mar.Contains(resource.Resource.Name)))
                             return false;
                         break;
                 }
@@ -261,7 +270,8 @@ namespace MGS2_Randomizer
             Ctxr,
             Tri,
             Sar,
-            Mar
+            Mar,
+            Cv2
         }
 
         private static LevelResources CollectExistingResources()
@@ -422,6 +432,10 @@ namespace MGS2_Randomizer
                             modifiedManifest = true;
                             levelResources.Manifest.MarFiles.Add(dataToAdd.Text);
                             break;
+                        case FileType.Cv2:
+                            modifiedManifest = true;
+                            levelResources.Manifest.Cv2Files.Add(dataToAdd.Text);
+                            break;
                     }
                 }
 
@@ -500,8 +514,10 @@ namespace MGS2_Randomizer
                     mgs2ResourceData.FileType = FileType.Mar;
                 else if (resource.Path.Contains(".tri"))
                     mgs2ResourceData.FileType = FileType.Tri;
+                else if (resource.Path.Contains(".cv2"))
+                    mgs2ResourceData.FileType = FileType.Cv2;
 
-                resourceData.Add(mgs2ResourceData);
+                    resourceData.Add(mgs2ResourceData);
             }
             return resourceData;
         }
