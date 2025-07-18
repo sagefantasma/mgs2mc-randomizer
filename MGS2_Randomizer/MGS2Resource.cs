@@ -650,27 +650,9 @@ namespace MGS2_Randomizer
 
     public class Resource
     {
-        public static List<BasicResource> ResourceList = new List<BasicResource>
+        public static List<BasicResource> GuardResourceList = new List<BasicResource> 
         {
-            MGS2Resource.ColdMedsLabel, MGS2Resource.ThermalGogglesLabel, MGS2Resource.GoggleIbox, MGS2Resource.GoggleSh, MGS2Resource.AKAmmoLabel,
-            MGS2Resource.AKWeaponLabel, MGS2Resource.MagazineIbox, MGS2Resource.MagazineLabel, MGS2Resource.MagazineSh, MGS2Resource.C4Label,
-            MGS2Resource.ClaymoreLabel, MGS2Resource.DmicLabel, MGS2Resource.GrenadeLabel, MGS2Resource.M4AmmoLabel, MGS2Resource.M4WeaponLabel,
-            MGS2Resource.NikitaAmmoLabel, MGS2Resource.NikitaWeaponLabel, MGS2Resource.PSG1AmmoLabel, MGS2Resource.PSG1WeaponLabel, MGS2Resource.PSG1TAmmoLabel,
-            MGS2Resource.PSG1TWeaponLabel, MGS2Resource.RGB6AmmoLabel, MGS2Resource.RGB6WeaponLabel, MGS2Resource.BodyArmorLabel, MGS2Resource.DigitalCameraIbox,
-            MGS2Resource.DigitalCameraLabel, MGS2Resource.DigitalCameraSh, MGS2Resource.StingerAmmoLabel, MGS2Resource.StingerWeaponLabel, MGS2Resource.AKSuppressorLabel,
-            MGS2Resource.PentazeminLabel, MGS2Resource.SensorBLabel, MGS2Resource.SocomSuppressorLabel, MGS2Resource.MineDetectorLabel, MGS2Resource.NVGLabel,
-            MGS2Resource.RifleAmmoIbox, MGS2Resource.RifleAmmoSh, MGS2Resource.RifleIbox, MGS2Resource.RifleSh, MGS2Resource.LauncherAmmoIbox,
-            MGS2Resource.LauncherAmmoSh, MGS2Resource.LauncherIbox, MGS2Resource.LauncherSh, MGS2Resource.Box2Ibox, MGS2Resource.Box2Sh,
-            MGS2Resource.CbxLabel, MGS2Resource.DetectorIbox, MGS2Resource.DetectorSh, MGS2Resource.DmicIbox, MGS2Resource.DmicSh,
-            MGS2Resource.RationIbox, MGS2Resource.M9AmmoLabel, MGS2Resource.M9WeaponLabel, MGS2Resource.StunLabel, MGS2Resource.BandageLabel,
-            MGS2Resource.ShaverLabel, MGS2Resource.MedicineIbox, MGS2Resource.MedicineSh, MGS2Resource.HandgunIbox, MGS2Resource.HandgunSh,
-            MGS2Resource.ChaffLabel, MGS2Resource.SocomAmmoLabel, MGS2Resource.GrenadeIbox, MGS2Resource.GrenadeSh, MGS2Resource.HandgunAmmoIbox,
-            MGS2Resource.HandgunAmmoSh, MGS2Resource.RationSh, MGS2Resource.RationLabel, MGS2Resource.CoolantSprayLabel, MGS2Resource.SocomLabel,
-            MGS2Resource.UspLabel, MGS2Resource.ScopeCustomBox, MGS2Resource.ItemBox, MGS2Resource.CigarettesIbox, MGS2Resource.CigarettesIboxSh,
-            MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2,
-            MGS2Resource.ColdMedsLabelTexture, MGS2Resource.GoggleIboxTexture, MGS2Resource.GoggleIboxTri, MGS2Resource.DigitalCameraBoxTexture, MGS2Resource.Dzp2TxAlpTexture,
-            MGS2Resource.RifleIboxTexture, MGS2Resource.LauncherAmmoSideTexture, MGS2Resource.LauncherIboxTexture, MGS2Resource.Ibox2TxAllTexture, MGS2Resource. DMicLabelTexture,
-            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture, MGS2Resource.ShlLit2, MGS2Resource.ShlLit1, MGS2Resource.ShlFrg1,
+            MGS2Resource.ShlLit2, MGS2Resource.ShlLit1, MGS2Resource.ShlFrg1,
             MGS2Resource.ShlChi5, MGS2Resource.ShlChi4, MGS2Resource.ShlChi3, MGS2Resource.ShlChi2, MGS2Resource.ShlChi1,
             MGS2Resource.ShlBul6, MGS2Resource.ShlBul5, MGS2Resource.ShlBul4, MGS2Resource.ShlBul3, MGS2Resource.ShlBul2,
             MGS2Resource.ShlBul1, MGS2Resource.ShlBlu3, MGS2Resource.ShlBlu2, MGS2Resource.ShlBlu1, MGS2Resource.ShlBlr3,
@@ -699,6 +681,29 @@ namespace MGS2_Randomizer
             MGS2Resource.UspEmb, MGS2Resource.Brack010101, MGS2Resource.DogtagChainBlackMsk, MGS2Resource.GradationAlpOvl, MGS2Resource.GrsBlack,
             MGS2Resource.Gry090, MGS2Resource.GunLightF, MGS2Resource.GunLightS, MGS2Resource.ItemGlass, MGS2Resource.ItemGrass2,
             MGS2Resource.ItemGrass3, MGS2Resource.DemoM4GrnBul, MGS2Resource.DemoM4GrnEmb, MGS2Resource.SelSling1, MGS2Resource.SelSling2
+        };
+
+        public static List<BasicResource> ItemResourcesList = new List<BasicResource>
+        {
+            MGS2Resource.ColdMedsLabel, MGS2Resource.ThermalGogglesLabel, MGS2Resource.GoggleIbox, MGS2Resource.GoggleSh, MGS2Resource.AKAmmoLabel,
+            MGS2Resource.AKWeaponLabel, MGS2Resource.MagazineIbox, MGS2Resource.MagazineLabel, MGS2Resource.MagazineSh, MGS2Resource.C4Label,
+            MGS2Resource.ClaymoreLabel, MGS2Resource.DmicLabel, MGS2Resource.GrenadeLabel, MGS2Resource.M4AmmoLabel, MGS2Resource.M4WeaponLabel,
+            MGS2Resource.NikitaAmmoLabel, MGS2Resource.NikitaWeaponLabel, MGS2Resource.PSG1AmmoLabel, MGS2Resource.PSG1WeaponLabel, MGS2Resource.PSG1TAmmoLabel,
+            MGS2Resource.PSG1TWeaponLabel, MGS2Resource.RGB6AmmoLabel, MGS2Resource.RGB6WeaponLabel, MGS2Resource.BodyArmorLabel, MGS2Resource.DigitalCameraIbox,
+            MGS2Resource.DigitalCameraLabel, MGS2Resource.DigitalCameraSh, MGS2Resource.StingerAmmoLabel, MGS2Resource.StingerWeaponLabel, MGS2Resource.AKSuppressorLabel,
+            MGS2Resource.PentazeminLabel, MGS2Resource.SensorBLabel, MGS2Resource.SocomSuppressorLabel, MGS2Resource.MineDetectorLabel, MGS2Resource.NVGLabel,
+            MGS2Resource.RifleAmmoIbox, MGS2Resource.RifleAmmoSh, MGS2Resource.RifleIbox, MGS2Resource.RifleSh, MGS2Resource.LauncherAmmoIbox,
+            MGS2Resource.LauncherAmmoSh, MGS2Resource.LauncherIbox, MGS2Resource.LauncherSh, MGS2Resource.Box2Ibox, MGS2Resource.Box2Sh,
+            MGS2Resource.CbxLabel, MGS2Resource.DetectorIbox, MGS2Resource.DetectorSh, MGS2Resource.DmicIbox, MGS2Resource.DmicSh,
+            MGS2Resource.RationIbox, MGS2Resource.M9AmmoLabel, MGS2Resource.M9WeaponLabel, MGS2Resource.StunLabel, MGS2Resource.BandageLabel,
+            MGS2Resource.ShaverLabel, MGS2Resource.MedicineIbox, MGS2Resource.MedicineSh, MGS2Resource.HandgunIbox, MGS2Resource.HandgunSh,
+            MGS2Resource.ChaffLabel, MGS2Resource.SocomAmmoLabel, MGS2Resource.GrenadeIbox, MGS2Resource.GrenadeSh, MGS2Resource.HandgunAmmoIbox,
+            MGS2Resource.HandgunAmmoSh, MGS2Resource.RationSh, MGS2Resource.RationLabel, MGS2Resource.CoolantSprayLabel, MGS2Resource.SocomLabel,
+            MGS2Resource.UspLabel, MGS2Resource.ScopeCustomBox, MGS2Resource.ItemBox, MGS2Resource.CigarettesIbox, MGS2Resource.CigarettesIboxSh,
+            MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2,
+            MGS2Resource.ColdMedsLabelTexture, MGS2Resource.GoggleIboxTexture, MGS2Resource.GoggleIboxTri, MGS2Resource.DigitalCameraBoxTexture, MGS2Resource.Dzp2TxAlpTexture,
+            MGS2Resource.RifleIboxTexture, MGS2Resource.LauncherAmmoSideTexture, MGS2Resource.LauncherIboxTexture, MGS2Resource.Ibox2TxAllTexture, MGS2Resource. DMicLabelTexture,
+            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 
@@ -741,7 +746,7 @@ namespace MGS2_Randomizer
 
         public static BasicResource LookupResource(string name)
         {
-            return ResourceList.Find(x => x.Name == name.ToLower());
+            return ItemResourcesList.Find(x => x.Name == name.ToLower()) ?? GuardResourceList.Find(x=>x.Name == name.ToLower());
         }
     }
 }

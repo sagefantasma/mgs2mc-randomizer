@@ -3465,19 +3465,38 @@ namespace MGS2_Randomizer
         private void AddAllResources()
         {
             //TODO: something that i am adding to the arsenal levels is breaking the tengu logic. need to figure out what and avoid it
+            //looks like its the SpecialGuardMar2 causing the issue. I think the best solution is to separate these lists out instead of
+            //having it be one big list. It's a smarter way of doing things either way.
             RandomizationForm._logger.Debug("Adding all resources to resource files...");
-            List<string> strings = new List<string>();
-            foreach (BasicResource value in Resource.ResourceList)
+            List<string> itemResources = new List<string>();
+            foreach (BasicResource value in Resource.ItemResourcesList)
             {
-                strings.Add(value.Name);
+                itemResources.Add(value.Name);
             }
-            List<string> stages = new List<string> { "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
+            List<string> allStages = new List<string> { "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
             "w02a", "w03a", "w03b", "w04a", "w04b", "w04c", "w11a", "w11b", "w11c", "w12a", "w12b", "w12c", "w13a", "w13b",
             "w14a", "w15a", "w15b", "w16a", "w16b", "w17a", "w18a", "w19a", "w20a", "w20b", "w20c", "w20d", "w21a", "w21b",
             "w22a", "w23a", "w23b", "w24a", "w24b", "w24c", "w24d", "w24e", "w25a", "w25b", "w25c", "w25d", "w28a", "w31a",
             "w31b", "w31c", "w31d", "w31f", "w32a", "w32b", "w41a", "w42a", "w43a", "w44a", "w45a", "w46a", "w51a", "w61a"};
-            foreach (string stage in stages)
-                ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, strings);
+            foreach (string stage in allStages)
+                ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, itemResources);
+
+            RandomizationForm._logger.Debug("Adding guard resources to applicable files...");
+            List<string> reinforcementResources = new List<string>();
+            foreach (BasicResource value in Resource.GuardResourceList)
+            {
+                reinforcementResources.Add(value.Name);
+            }
+            List<string> stagesWithReinforcements = new List<string>
+            {
+                "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
+                "w02a", "w03a", "w03b", "w04a", "w04b", "w04c", "w11a", "w11b", "w11c", "w12a", "w12b", "w12c", "w13a", "w13b",
+                "w14a", "w15a", "w15b", "w16a", "w16b", "w17a", "w18a", "w19a", "w20a", "w20b", "w20c", "w20d", "w21a", "w21b",
+                "w22a", "w23a", "w23b", "w24a", "w24b", "w24c", "w24d", "w24e", "w25a", "w25b", "w25c", "w25d", "w28a", "w31a",
+                "w31b", "w31c", "w31d", "w31f", "w32a", "w32b"
+            };            
+            foreach (string stage in stagesWithReinforcements)
+                ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, reinforcementResources);
         }
 
         private void AddAllProcs(GcxEditor gcx_Editor)
