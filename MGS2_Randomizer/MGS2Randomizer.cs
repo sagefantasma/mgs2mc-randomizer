@@ -1169,6 +1169,160 @@ namespace MGS2_Randomizer
             };
         }
 
+        private Route SelectRandomRouteFromFile(string file)
+        {
+            GuardStageInfo example = GuardStage.w00c;
+            GuardStageInfo currentStage = GuardStage.GuardStageList.Find(stage => file.Contains(stage.AreaCode));
+            if (currentStage != null)
+            {
+                int validRouteCount = currentStage.ValidRoutes.Count;
+                KeyValuePair<int, int> randomRoute = currentStage.ValidRoutes.ElementAt(Randomizer.Next(0, validRouteCount));
+                return new Route(randomRoute.Key, randomRoute.Value);
+            }
+            return null;
+        }
+
+        private class Route
+        {
+            public int Id;
+            public int Indices;
+
+            public Route(int id, int indices)
+            {
+                Id = id;
+                Indices = indices;
+            }
+        }
+
+        private void RandomizeGuardPatrols()
+        {
+            //Deck B crew quarters had weird results on randomization, i think because topside guard is forced to start at a specific spot for tutorial
+            //w21a guard just fuckin dies at the start if he's far enough on the route xdd
+            //w31d is crashing on randomization - there is a guard here that uses a varbuf to determine his route & index, ugh. lets just skip him for now
+            //Arsenal is being hella weird - tengus are derping hard
+            //A7 92 65 0? 06 77 F7 F7 is the true magic, but we might be able to get away with just 06 77 F7 F7
+            byte[] watcherInitBytes = new byte[] { 0x06, 0x77, 0xF7, 0xF7 };
+            //this will allow us to catch all of the other problematic spawns that aren't tengus
+            byte[] subfunctionCallBytes = new byte[] { 0xDD, 0x6F, 0xE8, 0x0D };
+
+
+            /*byte[] tenguAInitBytes = new byte[] { 0x06, 0x5B, 0x5C, 0xFE };
+            byte[] tenguBInitBytes = new byte[] { 0x06, 0x5C, 0x5C, 0xFE };*/
+            byte[] tenguACallBytes1 = new byte[] { 0x45, 0x6B, 0x8F, 0x0D };
+            byte[] tenguACallBytes2 = new byte[] { 0x88, 0x94, 0x70, 0x0D };
+            byte[] tenguBCallBytes = new byte[] { 0x45, 0x6B, 0x9F, 0x0D };
+            byte[] paramRDesignationBytes = new byte[] { 0x52, 0x72 }; //52 72 ?? is the determination of hzx route 
+            byte[] paramNDesignationBytes = new byte[] { 0x52, 0x6E }; //52 6E ?? is the determination of starting index in route
+
+            List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
+            byte[] gcxContents;
+            bool edited = false;
+
+            //TODO: i need to add logic to handle things a little differently. Overriding args is possible, but results in stacking WAY more often than is acceptable. Totally breaks tengus, too
+            foreach(string gcxFile in gcxFilesToEdit)
+            {
+                if (gcxFile.Contains("w11a")) // 2/3 of the guards here are attackers, which we aren't messing with atm.
+                    continue;
+                gcxContents = File.ReadAllBytes(gcxFile);
+                List<int> paramRDesignations = GcxEditor.FindAllSubArray(gcxContents, paramRDesignationBytes);
+                if (!gcxFile.Contains("w4"))
+                {
+                    GuardStageInfo stageInfo = GuardStage.GuardStageList.Find(x => gcxFile.Contains(x.AreaCode));
+                    if (stageInfo != null)
+                    {
+                        if (stageInfo.RouteDeterminedInSubfunction && stageInfo.IndexDeterminedInSubfunction)
+                        {
+                            //TODO: verify this works, basically only affects a few levels on shell1
+                            List<int> subfunctionCalls = GcxEditor.FindAllSubArray(gcxContents, subfunctionCallBytes);
+
+                            if(subfunctionCalls != null)
+                            {
+                                foreach(int subfunctionCall in subfunctionCalls)
+                                {
+                                    Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    gcxContents[subfunctionCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                    gcxContents[subfunctionCall + 9] = (byte)(0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices));
+                                }
+                                edited = true;
+                            }
+                        }
+                        else
+                        {
+                            List<int> watcherInitCalls = GcxEditor.FindAllSubArray(gcxContents, watcherInitBytes);
+                            List<int> paramNDesignations = GcxEditor.FindAllSubArray(gcxContents, paramNDesignationBytes);
+                            if (watcherInitCalls != null)
+                            {
+                                foreach (int watcherInitCall in watcherInitCalls)
+                                {
+                                    byte[] guardId = new byte[4];
+                                    Array.Copy(gcxContents, watcherInitCall + 5, guardId, 0, 4);
+                                    if (guardId.SequenceEqual(new byte[] { 0xFC, 0x39, 0x65, 0x03 }) && gcxFile.Contains("w31d"))
+                                    {
+                                        //This specific guard is the only watcher that uses a varbuf for route and index assignment
+                                        //As such, it will eventually need to be handled uniquely, but for now I'm just not going to mess with him
+                                        continue;
+                                    }
+                                    int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
+                                    Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    if (randomlySelectedRoute != null)
+                                    {
+                                        gcxContents[paramRDesignation + 2] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                        int paramNDesignation = FindClosestGreaterValue(paramNDesignations, watcherInitCall);
+                                        gcxContents[paramNDesignation + 2] = (byte)(0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices));
+                                    }
+                                }
+                                edited = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //w41a, w42a, w44a, w45a are all tengu levels
+                    List<int> tenguAInit1Calls = GcxEditor.FindAllSubArray(gcxContents, tenguACallBytes1);
+                    List<int> tenguAInit2Calls = GcxEditor.FindAllSubArray(gcxContents, tenguACallBytes2);
+                    List<int> tenguBInitCalls = GcxEditor.FindAllSubArray(gcxContents, tenguBCallBytes);
+
+                    if (tenguAInit1Calls != null)
+                    {
+                        foreach(int tenguAInitCall in tenguAInit1Calls)
+                        {
+                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            if(randomlySelectedRoute != null)
+                                gcxContents[tenguAInitCall+8] = (byte)(0xC1 + (byte)(randomlySelectedRoute.Id));
+                        }
+                        edited = true;
+                    }
+
+                    if(tenguAInit2Calls != null)
+                    {
+                        foreach(int tenguAInitCall in tenguAInit2Calls)
+                        {
+                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            if (randomlySelectedRoute != null)
+                                gcxContents[tenguAInitCall+8] = (byte)(0xC1 + (byte)(randomlySelectedRoute.Id));
+                        }
+                        edited = true;
+                    }
+
+                    if (tenguBInitCalls != null)
+                    {
+                        foreach (int tenguBInitCall in tenguBInitCalls)
+                        {                            
+                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            if (randomlySelectedRoute != null)
+                                gcxContents[tenguBInitCall+8] = (byte)(0xC1 + (byte)(randomlySelectedRoute.Id));
+                        }
+                        edited = true;
+                    }
+                }
+
+                if (edited)
+                    File.WriteAllBytes(gcxFile, gcxContents);
+                edited = false;
+            }
+        }
+
         private void RandomizeReinforcementGuardTypes()
         {
             byte[] subfunctionCallBytes = new byte[] { 0x7D, 0x11, 0xBA, 0xB4, 0xA0 };
@@ -2677,6 +2831,11 @@ namespace MGS2_Randomizer
                 RandomizeReinforcementGuardTypes();
             }
 
+            if (true) //TODO: options this out
+            {
+                RandomizeGuardPatrols();
+            }
+
             return Seed;
         }
 
@@ -3305,6 +3464,7 @@ namespace MGS2_Randomizer
 
         private void AddAllResources()
         {
+            //TODO: something that i am adding to the arsenal levels is breaking the tengu logic. need to figure out what and avoid it
             RandomizationForm._logger.Debug("Adding all resources to resource files...");
             List<string> strings = new List<string>();
             foreach (BasicResource value in Resource.ResourceList)
