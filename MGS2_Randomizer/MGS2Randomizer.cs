@@ -195,6 +195,7 @@ namespace MGS2_Randomizer
             public bool RandomizeGuardValues { get; set; }
             public float GuardRandomizationBounds { get; set; }
             public bool KeepGuardValuesConsistentAcrossLevels { get; set; }
+            public bool RandomizeGuardPatrols { get; set; }
             public bool RandomizeReinforcementGuardTypes { get; set; }
 
             public override string ToString()
@@ -213,6 +214,7 @@ namespace MGS2_Randomizer
                     $"RandomizeGuardValues = {RandomizeGuardValues};\n" +
                     $"KeepGuardValuesConsistent = {KeepGuardValuesConsistentAcrossLevels};\n" +
                     $"GuardRandomizationBounds = {GuardRandomizationBounds};\n"+
+                    $"RandomizeGuardPatrols = { RandomizeGuardPatrols};\n" +
                     $"RandomizeReinforcementGuardTypes = {RandomizeReinforcementGuardTypes};\n" +
                     $"RandomizeTankerControlUnits = {RandomizeTankerControlUnits};\n\n\n\n\n\n";
             }
@@ -1196,18 +1198,13 @@ namespace MGS2_Randomizer
 
         private void RandomizeGuardPatrols()
         {
-            //Deck B crew quarters had weird results on randomization, i think because topside guard is forced to start at a specific spot for tutorial
-            //w21a guard just fuckin dies at the start if he's far enough on the route xdd
-            //w31d is crashing on randomization - there is a guard here that uses a varbuf to determine his route & index, ugh. lets just skip him for now
-            //Arsenal is being hella weird - tengus are derping hard
-            //A7 92 65 0? 06 77 F7 F7 is the true magic, but we might be able to get away with just 06 77 F7 F7
+            //TODO: add logic for randomizing defender and attacker routes, too?
+            //w21a guard just insta dies at the start if he's far enough on the route xdd
+            //A7 92 65 0? 06 77 F7 F7 is the true magic, but we're able to get away with just 06 77 F7 F7
             byte[] watcherInitBytes = new byte[] { 0x06, 0x77, 0xF7, 0xF7 };
             //this will allow us to catch all of the other problematic spawns that aren't tengus
             byte[] subfunctionCallBytes = new byte[] { 0xDD, 0x6F, 0xE8, 0x0D };
 
-
-            /*byte[] tenguAInitBytes = new byte[] { 0x06, 0x5B, 0x5C, 0xFE };
-            byte[] tenguBInitBytes = new byte[] { 0x06, 0x5C, 0x5C, 0xFE };*/
             byte[] tenguACallBytes1 = new byte[] { 0x45, 0x6B, 0x8F, 0x0D };
             byte[] tenguACallBytes2 = new byte[] { 0x88, 0x94, 0x70, 0x0D };
             byte[] tenguBCallBytes = new byte[] { 0x45, 0x6B, 0x9F, 0x0D };
@@ -1218,21 +1215,19 @@ namespace MGS2_Randomizer
             byte[] gcxContents;
             bool edited = false;
 
-            //TODO: i need to add logic to handle things a little differently. Overriding args is possible, but results in stacking WAY more often than is acceptable. Totally breaks tengus, too
             foreach(string gcxFile in gcxFilesToEdit)
             {
                 if (gcxFile.Contains("w11a")) // 2/3 of the guards here are attackers, which we aren't messing with atm.
                     continue;
                 gcxContents = File.ReadAllBytes(gcxFile);
                 List<int> paramRDesignations = GcxEditor.FindAllSubArray(gcxContents, paramRDesignationBytes);
-                if (!gcxFile.Contains("w4"))
+                if (!gcxFile.Contains("w4")) //non-tengu levels
                 {
                     GuardStageInfo stageInfo = GuardStage.GuardStageList.Find(x => gcxFile.Contains(x.AreaCode));
                     if (stageInfo != null)
                     {
                         if (stageInfo.RouteDeterminedInSubfunction && stageInfo.IndexDeterminedInSubfunction)
                         {
-                            //TODO: verify this works, basically only affects a few levels on shell1
                             List<int> subfunctionCalls = GcxEditor.FindAllSubArray(gcxContents, subfunctionCallBytes);
 
                             if(subfunctionCalls != null)
@@ -1262,8 +1257,19 @@ namespace MGS2_Randomizer
                                         //As such, it will eventually need to be handled uniquely, but for now I'm just not going to mess with him
                                         continue;
                                     }
-                                    int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
                                     Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    //Deck B crew quarters had weird results on randomization, i think because topside guard(0x1F7F777) is forced to start at a specific spot for tutorial
+                                    //I *thought* this guard was another one that needed to be handled safely, but I think it's just an issue with a few specific routes on this level.
+                                    /*if (!guardId.SequenceEqual(new byte[] { 0x77, 0xF7, 0xF7, 0x02 }) && stageInfo.AreaCode == "w01b")
+                                    {
+                                        while(!(new int[] { 12, 14 }).Contains(randomlySelectedRoute.Id))
+                                        {
+                                            randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                        }
+                                    }*/
+
+                                    int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
+                                    
                                     if (randomlySelectedRoute != null)
                                     {
                                         gcxContents[paramRDesignation + 2] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
@@ -1288,8 +1294,8 @@ namespace MGS2_Randomizer
                         foreach(int tenguAInitCall in tenguAInit1Calls)
                         {
                             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            if(randomlySelectedRoute != null)
-                                gcxContents[tenguAInitCall+8] = (byte)(0xC1 + (byte)(randomlySelectedRoute.Id));
+                            if (randomlySelectedRoute != null)
+                                gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
                         }
                         edited = true;
                     }
@@ -1300,7 +1306,7 @@ namespace MGS2_Randomizer
                         {
                             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
                             if (randomlySelectedRoute != null)
-                                gcxContents[tenguAInitCall+8] = (byte)(0xC1 + (byte)(randomlySelectedRoute.Id));
+                                gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
                         }
                         edited = true;
                     }
@@ -1311,7 +1317,7 @@ namespace MGS2_Randomizer
                         {                            
                             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
                             if (randomlySelectedRoute != null)
-                                gcxContents[tenguBInitCall+8] = (byte)(0xC1 + (byte)(randomlySelectedRoute.Id));
+                                gcxContents[tenguBInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
                         }
                         edited = true;
                     }
@@ -2831,7 +2837,7 @@ namespace MGS2_Randomizer
                 RandomizeReinforcementGuardTypes();
             }
 
-            if (true) //TODO: options this out
+            if (options.RandomizeGuardPatrols)
             {
                 RandomizeGuardPatrols();
             }
@@ -3464,9 +3470,6 @@ namespace MGS2_Randomizer
 
         private void AddAllResources()
         {
-            //TODO: something that i am adding to the arsenal levels is breaking the tengu logic. need to figure out what and avoid it
-            //looks like its the SpecialGuardMar2 causing the issue. I think the best solution is to separate these lists out instead of
-            //having it be one big list. It's a smarter way of doing things either way.
             RandomizationForm._logger.Debug("Adding all resources to resource files...");
             List<string> itemResources = new List<string>();
             foreach (BasicResource value in Resource.ItemResourcesList)

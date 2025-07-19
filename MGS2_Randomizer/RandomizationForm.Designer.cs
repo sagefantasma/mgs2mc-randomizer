@@ -66,6 +66,7 @@ namespace MGS2_Randomizer
             this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kofiButton = new System.Windows.Forms.Button();
+            this.randomizeGuardPatrolsCheckbox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
             this.gameInstallLayoutPanel.SuspendLayout();
@@ -154,7 +155,7 @@ namespace MGS2_Randomizer
             this.executionFlowLayoutPanel.Controls.Add(this.restoreBaseGameButton);
             this.executionFlowLayoutPanel.Controls.Add(this.randomizeButton);
             this.executionFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 556);
+            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 573);
             this.executionFlowLayoutPanel.Name = "executionFlowLayoutPanel";
             this.executionFlowLayoutPanel.Size = new System.Drawing.Size(354, 71);
             this.executionFlowLayoutPanel.TabIndex = 4;
@@ -217,7 +218,7 @@ namespace MGS2_Randomizer
             this.optionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.optionsGroupBox.Location = new System.Drawing.Point(0, 63);
             this.optionsGroupBox.Name = "optionsGroupBox";
-            this.optionsGroupBox.Size = new System.Drawing.Size(354, 493);
+            this.optionsGroupBox.Size = new System.Drawing.Size(354, 510);
             this.optionsGroupBox.TabIndex = 8;
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
@@ -226,6 +227,7 @@ namespace MGS2_Randomizer
             // 
             this.enemyRandoGroupBox.AutoSize = true;
             this.enemyRandoGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.enemyRandoGroupBox.Controls.Add(this.randomizeGuardPatrolsCheckbox);
             this.enemyRandoGroupBox.Controls.Add(this.randomizeReinforcementGuardTypesCheckBox);
             this.enemyRandoGroupBox.Controls.Add(this.insanityScalarLabel);
             this.enemyRandoGroupBox.Controls.Add(this.randomizeGuardValuesCheckBox);
@@ -234,7 +236,7 @@ namespace MGS2_Randomizer
             this.enemyRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.enemyRandoGroupBox.Location = new System.Drawing.Point(3, 356);
             this.enemyRandoGroupBox.Name = "enemyRandoGroupBox";
-            this.enemyRandoGroupBox.Size = new System.Drawing.Size(348, 123);
+            this.enemyRandoGroupBox.Size = new System.Drawing.Size(348, 146);
             this.enemyRandoGroupBox.TabIndex = 16;
             this.enemyRandoGroupBox.TabStop = false;
             this.enemyRandoGroupBox.Text = "Enemy Randomization (Applies to All Difficulties)";
@@ -242,7 +244,7 @@ namespace MGS2_Randomizer
             // randomizeReinforcementGuardTypesCheckBox
             // 
             this.randomizeReinforcementGuardTypesCheckBox.AutoSize = true;
-            this.randomizeReinforcementGuardTypesCheckBox.Location = new System.Drawing.Point(9, 87);
+            this.randomizeReinforcementGuardTypesCheckBox.Location = new System.Drawing.Point(9, 110);
             this.randomizeReinforcementGuardTypesCheckBox.Name = "randomizeReinforcementGuardTypesCheckBox";
             this.randomizeReinforcementGuardTypesCheckBox.Size = new System.Drawing.Size(215, 17);
             this.randomizeReinforcementGuardTypesCheckBox.TabIndex = 7;
@@ -525,11 +527,22 @@ namespace MGS2_Randomizer
             this.kofiButton.UseVisualStyleBackColor = true;
             this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
             // 
+            // randomizeGuardPatrolsCheckbox
+            // 
+            this.randomizeGuardPatrolsCheckbox.AutoSize = true;
+            this.randomizeGuardPatrolsCheckbox.Location = new System.Drawing.Point(9, 87);
+            this.randomizeGuardPatrolsCheckbox.Name = "randomizeGuardPatrolsCheckbox";
+            this.randomizeGuardPatrolsCheckbox.Size = new System.Drawing.Size(178, 17);
+            this.randomizeGuardPatrolsCheckbox.TabIndex = 8;
+            this.randomizeGuardPatrolsCheckbox.Text = "Randomize Guard Patrol Routes";
+            this.randomizeGuardPatrolsCheckbox.UseVisualStyleBackColor = true;
+            this.randomizeGuardPatrolsCheckbox.CheckedChanged += new System.EventHandler(this.randomizeGuardPatrolsCheckbox_CheckedChanged);
+            // 
             // RandomizationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 627);
+            this.ClientSize = new System.Drawing.Size(354, 644);
             this.Controls.Add(this.kofiButton);
             this.Controls.Add(this.optionsGroupBox);
             this.Controls.Add(this.gameInstallLayoutPanel);
@@ -602,6 +615,7 @@ namespace MGS2_Randomizer
         private System.Windows.Forms.Label insanityScalarLabel;
         private System.Windows.Forms.ToolStripMenuItem changelogToolStripMenuItem;
         private System.Windows.Forms.CheckBox randomizeReinforcementGuardTypesCheckBox;
+        private System.Windows.Forms.CheckBox randomizeGuardPatrolsCheckbox;
     }
 }
 

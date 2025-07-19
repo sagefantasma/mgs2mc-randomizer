@@ -18,6 +18,7 @@ namespace MGS2_Randomizer
 
     public static class GuardStage
     {
+        //TODO: go through these levels and add all the valid routes. There may not be many more, but why not add them if they're there?
         public static readonly GuardStageInfo w00a = new GuardStageInfo
         {
             AreaCode = "w00a",
@@ -85,7 +86,7 @@ namespace MGS2_Randomizer
         };
 
         public static readonly GuardStageInfo w01b = new GuardStageInfo
-        {
+        { //unfinished because I think I am overcooking this and there's a much simpler solution to what I'm looking to do.
             AreaCode = "w01b",
             AreaName = "Deck B, Crew's Quarters, Starboard",
             Guards = new List<IGuard>
@@ -99,8 +100,8 @@ namespace MGS2_Randomizer
                     Id = 0x2F7F777, Route = 13, StartingIndex = 0, SubfunctionCreation = true, CallingBytes = new byte[] { 0x00, 0xF5, 0xDD, 0x0D, 0x77, 0xF7, 0xF7, 0x02 }, RouteOffset = 0x08, StartingIndexOffset = new [] { 0x0, 0x40 }
                 }
             },
-            ValidRoutes = new Dictionary<int, int> { { 7, 2 }, { 12, 1 }, { 13, 2 }, { 14, 1 } }
-        }; //unfinished because I think I am overcooking this and there's a much simpler solution to what I'm looking to do.
+            ValidRoutes = new Dictionary<int, int> { { 4, 13 }, { 5, 14 }, { 6, 1 }, { 8, 1 }, { 9, 5 }, { 10, 3 }, { 11, 3 }, { 12, 1 }, { 14, 1 } }
+        }; //All valid routes found.
 
         public static readonly GuardStageInfo w01c = new GuardStageInfo
         {
