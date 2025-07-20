@@ -3500,6 +3500,22 @@ namespace MGS2_Randomizer
             };            
             foreach (string stage in stagesWithReinforcements)
                 ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, reinforcementResources);
+
+            //Fixing a bug I accidentally created in 1.2.0.0. anyone that used that version will have bugged resources for arsenal tengu. 
+            List<string> tenguStages = new List<string> { "w41a", "w42a", "w44a", "w45a"};
+            foreach(string stage in tenguStages)
+            {
+                //w41a & w42a use a41a. w44a & w45a use a45a
+                string manifestPath = Path.Combine(ResourceSuperDirectory.FullName, stage, "manifest.txt");
+                string resources = File.ReadAllText(manifestPath);
+
+                if (new[] { "w41a", "w42a" }.Contains(stage))
+                    resources = resources.Replace("gbs_stage_a02a", "gbs_stage_a41a");
+                else
+                    resources = resources.Replace("gbs_stage_a02a", "gbs_stage_a45a");
+
+                File.WriteAllText(manifestPath, resources);
+            }
         }
 
         private void AddAllProcs(GcxEditor gcx_Editor)
