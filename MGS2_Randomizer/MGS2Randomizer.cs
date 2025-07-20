@@ -195,6 +195,7 @@ namespace MGS2_Randomizer
             public bool RandomizeGuardValues { get; set; }
             public float GuardRandomizationBounds { get; set; }
             public bool KeepGuardValuesConsistentAcrossLevels { get; set; }
+            public bool RandomizeGuardPatrols { get; set; }
             public bool RandomizeReinforcementGuardTypes { get; set; }
 
             public override string ToString()
@@ -213,6 +214,7 @@ namespace MGS2_Randomizer
                     $"RandomizeGuardValues = {RandomizeGuardValues};\n" +
                     $"KeepGuardValuesConsistent = {KeepGuardValuesConsistentAcrossLevels};\n" +
                     $"GuardRandomizationBounds = {GuardRandomizationBounds};\n"+
+                    $"RandomizeGuardPatrols = { RandomizeGuardPatrols};\n" +
                     $"RandomizeReinforcementGuardTypes = {RandomizeReinforcementGuardTypes};\n" +
                     $"RandomizeTankerControlUnits = {RandomizeTankerControlUnits};\n\n\n\n\n\n";
             }
@@ -1167,6 +1169,164 @@ namespace MGS2_Randomizer
                 Unknown1 = unknown1,
                 Unknown2 = unknown2
             };
+        }
+
+        private Route SelectRandomRouteFromFile(string file)
+        {
+            GuardStageInfo example = GuardStage.w00c;
+            GuardStageInfo currentStage = GuardStage.GuardStageList.Find(stage => file.Contains(stage.AreaCode));
+            if (currentStage != null)
+            {
+                int validRouteCount = currentStage.ValidRoutes.Count;
+                KeyValuePair<int, int> randomRoute = currentStage.ValidRoutes.ElementAt(Randomizer.Next(0, validRouteCount));
+                return new Route(randomRoute.Key, randomRoute.Value);
+            }
+            return null;
+        }
+
+        private class Route
+        {
+            public int Id;
+            public int Indices;
+
+            public Route(int id, int indices)
+            {
+                Id = id;
+                Indices = indices;
+            }
+        }
+
+        private void RandomizeGuardPatrols()
+        {
+            //TODO: add logic for randomizing defender and attacker routes, too?
+            //w21a guard just insta dies at the start if he's far enough on the route xdd
+            //A7 92 65 0? 06 77 F7 F7 is the true magic, but we're able to get away with just 06 77 F7 F7
+            byte[] watcherInitBytes = new byte[] { 0x06, 0x77, 0xF7, 0xF7 };
+            //this will allow us to catch all of the other problematic spawns that aren't tengus
+            byte[] subfunctionCallBytes = new byte[] { 0xDD, 0x6F, 0xE8, 0x0D };
+
+            byte[] tenguACallBytes1 = new byte[] { 0x45, 0x6B, 0x8F, 0x0D };
+            byte[] tenguACallBytes2 = new byte[] { 0x88, 0x94, 0x70, 0x0D };
+            byte[] tenguBCallBytes = new byte[] { 0x45, 0x6B, 0x9F, 0x0D };
+            byte[] paramRDesignationBytes = new byte[] { 0x52, 0x72 }; //52 72 ?? is the determination of hzx route 
+            byte[] paramNDesignationBytes = new byte[] { 0x52, 0x6E }; //52 6E ?? is the determination of starting index in route
+
+            List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
+            byte[] gcxContents;
+            bool edited = false;
+
+            foreach(string gcxFile in gcxFilesToEdit)
+            {
+                if (gcxFile.Contains("w11a")) // 2/3 of the guards here are attackers, which we aren't messing with atm.
+                    continue;
+                gcxContents = File.ReadAllBytes(gcxFile);
+                List<int> paramRDesignations = GcxEditor.FindAllSubArray(gcxContents, paramRDesignationBytes);
+                if (!gcxFile.Contains("w4")) //non-tengu levels
+                {
+                    GuardStageInfo stageInfo = GuardStage.GuardStageList.Find(x => gcxFile.Contains(x.AreaCode));
+                    if (stageInfo != null)
+                    {
+                        if (stageInfo.RouteDeterminedInSubfunction && stageInfo.IndexDeterminedInSubfunction)
+                        {
+                            List<int> subfunctionCalls = GcxEditor.FindAllSubArray(gcxContents, subfunctionCallBytes);
+
+                            if(subfunctionCalls != null)
+                            {
+                                foreach(int subfunctionCall in subfunctionCalls)
+                                {
+                                    Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    gcxContents[subfunctionCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                    gcxContents[subfunctionCall + 9] = (byte)(0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices));
+                                }
+                                edited = true;
+                            }
+                        }
+                        else
+                        {
+                            List<int> watcherInitCalls = GcxEditor.FindAllSubArray(gcxContents, watcherInitBytes);
+                            List<int> paramNDesignations = GcxEditor.FindAllSubArray(gcxContents, paramNDesignationBytes);
+                            if (watcherInitCalls != null)
+                            {
+                                foreach (int watcherInitCall in watcherInitCalls)
+                                {
+                                    byte[] guardId = new byte[4];
+                                    Array.Copy(gcxContents, watcherInitCall + 5, guardId, 0, 4);
+                                    if (guardId.SequenceEqual(new byte[] { 0xFC, 0x39, 0x65, 0x03 }) && gcxFile.Contains("w31d"))
+                                    {
+                                        //This specific guard is the only watcher that uses a varbuf for route and index assignment
+                                        //As such, it will eventually need to be handled uniquely, but for now I'm just not going to mess with him
+                                        continue;
+                                    }
+                                    Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    //Deck B crew quarters had weird results on randomization, i think because topside guard(0x1F7F777) is forced to start at a specific spot for tutorial
+                                    //I *thought* this guard was another one that needed to be handled safely, but I think it's just an issue with a few specific routes on this level.
+                                    /*if (!guardId.SequenceEqual(new byte[] { 0x77, 0xF7, 0xF7, 0x02 }) && stageInfo.AreaCode == "w01b")
+                                    {
+                                        while(!(new int[] { 12, 14 }).Contains(randomlySelectedRoute.Id))
+                                        {
+                                            randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                        }
+                                    }*/
+
+                                    int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
+                                    
+                                    if (randomlySelectedRoute != null)
+                                    {
+                                        gcxContents[paramRDesignation + 2] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                        int paramNDesignation = FindClosestGreaterValue(paramNDesignations, watcherInitCall);
+                                        gcxContents[paramNDesignation + 2] = (byte)(0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices));
+                                    }
+                                }
+                                edited = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //w41a, w42a, w44a, w45a are all tengu levels
+                    List<int> tenguAInit1Calls = GcxEditor.FindAllSubArray(gcxContents, tenguACallBytes1);
+                    List<int> tenguAInit2Calls = GcxEditor.FindAllSubArray(gcxContents, tenguACallBytes2);
+                    List<int> tenguBInitCalls = GcxEditor.FindAllSubArray(gcxContents, tenguBCallBytes);
+
+                    if (tenguAInit1Calls != null)
+                    {
+                        foreach(int tenguAInitCall in tenguAInit1Calls)
+                        {
+                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            if (randomlySelectedRoute != null)
+                                gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                        }
+                        edited = true;
+                    }
+
+                    if(tenguAInit2Calls != null)
+                    {
+                        foreach(int tenguAInitCall in tenguAInit2Calls)
+                        {
+                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            if (randomlySelectedRoute != null)
+                                gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                        }
+                        edited = true;
+                    }
+
+                    if (tenguBInitCalls != null)
+                    {
+                        foreach (int tenguBInitCall in tenguBInitCalls)
+                        {                            
+                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            if (randomlySelectedRoute != null)
+                                gcxContents[tenguBInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                        }
+                        edited = true;
+                    }
+                }
+
+                if (edited)
+                    File.WriteAllBytes(gcxFile, gcxContents);
+                edited = false;
+            }
         }
 
         private void RandomizeReinforcementGuardTypes()
@@ -2677,6 +2837,11 @@ namespace MGS2_Randomizer
                 RandomizeReinforcementGuardTypes();
             }
 
+            if (options.RandomizeGuardPatrols)
+            {
+                RandomizeGuardPatrols();
+            }
+
             return Seed;
         }
 
@@ -3306,18 +3471,51 @@ namespace MGS2_Randomizer
         private void AddAllResources()
         {
             RandomizationForm._logger.Debug("Adding all resources to resource files...");
-            List<string> strings = new List<string>();
-            foreach (BasicResource value in Resource.ResourceList)
+            List<string> itemResources = new List<string>();
+            foreach (BasicResource value in Resource.ItemResourcesList)
             {
-                strings.Add(value.Name);
+                itemResources.Add(value.Name);
             }
-            List<string> stages = new List<string> { "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
+            List<string> allStages = new List<string> { "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
             "w02a", "w03a", "w03b", "w04a", "w04b", "w04c", "w11a", "w11b", "w11c", "w12a", "w12b", "w12c", "w13a", "w13b",
             "w14a", "w15a", "w15b", "w16a", "w16b", "w17a", "w18a", "w19a", "w20a", "w20b", "w20c", "w20d", "w21a", "w21b",
             "w22a", "w23a", "w23b", "w24a", "w24b", "w24c", "w24d", "w24e", "w25a", "w25b", "w25c", "w25d", "w28a", "w31a",
             "w31b", "w31c", "w31d", "w31f", "w32a", "w32b", "w41a", "w42a", "w43a", "w44a", "w45a", "w46a", "w51a", "w61a"};
-            foreach (string stage in stages)
-                ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, strings);
+            foreach (string stage in allStages)
+                ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, itemResources);
+
+            RandomizationForm._logger.Debug("Adding guard resources to applicable files...");
+            List<string> reinforcementResources = new List<string>();
+            foreach (BasicResource value in Resource.GuardResourceList)
+            {
+                reinforcementResources.Add(value.Name);
+            }
+            List<string> stagesWithReinforcements = new List<string>
+            {
+                "w00a", "w00b", "w00c", "w01a", "w01b", "w01c", "w01d", "w01e", "w01f",
+                "w02a", "w03a", "w03b", "w04a", "w04b", "w04c", "w11a", "w11b", "w11c", "w12a", "w12b", "w12c", "w13a", "w13b",
+                "w14a", "w15a", "w15b", "w16a", "w16b", "w17a", "w18a", "w19a", "w20a", "w20b", "w20c", "w20d", "w21a", "w21b",
+                "w22a", "w23a", "w23b", "w24a", "w24b", "w24c", "w24d", "w24e", "w25a", "w25b", "w25c", "w25d", "w28a", "w31a",
+                "w31b", "w31c", "w31d", "w31f", "w32a", "w32b"
+            };            
+            foreach (string stage in stagesWithReinforcements)
+                ResourceEditor.AddResources(stage, ResourceSuperDirectory.FullName, reinforcementResources);
+
+            //Fixing a bug I accidentally created in 1.2.0.0. anyone that used that version will have bugged resources for arsenal tengu. 
+            List<string> tenguStages = new List<string> { "w41a", "w42a", "w44a", "w45a"};
+            foreach(string stage in tenguStages)
+            {
+                //w41a & w42a use a41a. w44a & w45a use a45a
+                string manifestPath = Path.Combine(ResourceSuperDirectory.FullName, stage, "manifest.txt");
+                string resources = File.ReadAllText(manifestPath);
+
+                if (new[] { "w41a", "w42a" }.Contains(stage))
+                    resources = resources.Replace("gbs_stage_a02a", "gbs_stage_a41a");
+                else
+                    resources = resources.Replace("gbs_stage_a02a", "gbs_stage_a45a");
+
+                File.WriteAllText(manifestPath, resources);
+            }
         }
 
         private void AddAllProcs(GcxEditor gcx_Editor)

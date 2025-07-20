@@ -56,11 +56,11 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
+                $" - Added \"Randomize Guard Patrol Routes\" option.\r\n" +
+                $" - Fixed a bug where the Arsenal Tengus were losing some of their animations with randomization.\r\n\r\n" +
+                $"Changes in v1.2.0.0:\r\n\r\n" +
                 $" - Added \"Randomize Reinforcement Guard Types\" option.\r\n" +
-                $" - Fixed an issue where the guard randomization bounds weren't working as expected.\r\n\r\n" +
-                $"Changes in v1.1.2.1:\r\n\r\n" +
-                $" - Fixed an issue causing cards to sometimes spawn in invalid positions.\r\n" +
-                $" - Fixed an issue where card 4 could cause a soft-lock with the Nikita option unset.";
+                $" - Fixed an issue where the guard randomization bounds weren't working as expected.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
@@ -132,6 +132,9 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetShowHelp(this.keepGuardValuesConsistentAcrossLevelsCheckbox, true);
             this.helpProvider1.SetHelpString(this.keepGuardValuesConsistentAcrossLevelsCheckbox, "If guard values are randomized, keep them consistent across all levels instead of differing with each level.");
 
+            this.helpProvider1.SetShowHelp(this.randomizeGuardPatrolsCheckbox, true);
+            this.helpProvider1.SetHelpString(this.randomizeGuardPatrolsCheckbox, "Randomize what patrol each guard follows, as well as what point in the patrol the guard starts at.");
+
             this.helpProvider1.SetShowHelp(this.randomizeReinforcementGuardTypesCheckBox, true);
             this.helpProvider1.SetHelpString(this.randomizeReinforcementGuardTypesCheckBox, "Randomize what types of guards are spawned when reinforcements are called for. Can be normal, shield, shield with light, shotgun, or hi-tech guards on both chapters.");
 
@@ -166,6 +169,7 @@ namespace MGS2_Randomizer
                 insanityScalarTrackBar.Value = (int) (config.LastOptionsSelected.GuardRandomizationBounds * 100);
                 keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
                 randomizeReinforcementGuardTypesCheckBox.Checked = config.LastOptionsSelected.RandomizeReinforcementGuardTypes;
+                randomizeGuardPatrolsCheckbox.Checked = config.LastOptionsSelected.RandomizeGuardPatrols;
 
                 if (!randomizeAutomaticRewardsCheckbox.Checked)
                 {
@@ -219,7 +223,8 @@ namespace MGS2_Randomizer
                         RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
                         GuardRandomizationBounds = insanityScalarTrackBar.Value / 100f,
                         KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
-                        RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked
+                        RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked,
+                        RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked
                     }
                 };
 
@@ -255,6 +260,7 @@ namespace MGS2_Randomizer
                 randomizeTankerControlUnitLocations.Enabled = enable;
                 randomizeGuardValuesCheckBox.Enabled = enable;
                 randomizeReinforcementGuardTypesCheckBox.Enabled = enable;
+                randomizeGuardPatrolsCheckbox.Enabled = enable;
                 if (randomizeGuardValuesCheckBox.Checked)
                 {
                     insanityScalarLabel.Enabled = enable;
@@ -446,7 +452,8 @@ namespace MGS2_Randomizer
                         RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
                         GuardRandomizationBounds = insanityScalarValue / 100,
                         KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
-                        RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked
+                        RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked,
+                        RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked
                     };
                     _logger.Debug($"Calling randomize item spawns with randomization options: {randomizationOptions}");
                     int seed = 0;
@@ -573,6 +580,11 @@ namespace MGS2_Randomizer
         }
 
         private void randomizeReinforcementGuardTypesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
+        }
+
+        private void randomizeGuardPatrolsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             UpdateConfig();
         }
