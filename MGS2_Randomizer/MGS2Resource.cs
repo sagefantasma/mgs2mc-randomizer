@@ -266,6 +266,18 @@ namespace MGS2_Randomizer
         public static KmsResource ScopeCustomBox = new KmsResource("sougan",
             path: "assets/kms/us/sougan.kms,us/stage/XXXX/cache/002c297b.kms,cache/002c297b.kms\r\r\n",
             cmdl: "assets/kms/us/sougan.cmdl,us/stage/XXXX/cache/002c297b.cmdl,eu/stage/XXXX/cache/002c297b.cmdl\r\r\n");
+        public static BasicResource CaseDr = new BasicResource("case_dr",
+            path: "textures/flatlist/case_dr.bmp.ctxr,stage/XXXX/cache/case_dr.bmp.ctxr,eu/stage/XXXX/cache/00883186/0064227b.ctxr\r\r\n");
+        public static BasicResource CaseLan = new BasicResource("case_lan",
+            path: "textures/flatlist/case_lan.bmp.ctxr,stage/XXXX/cache/case_lan.bmp.ctxr,eu/stage/XXXX/cache/00883186/00846dba.ctxr\r\r\n");
+        public static BasicResource CaseTestSide = new BasicResource("case_test_side",
+            path: "textures/flatlist/case_test_side.bmp.ctxr,stage/XXXX/cache/case_test_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/004ec1b4.ctxr\r\r\n");
+        public static BasicResource CaseTestTop = new BasicResource("case_test_top",
+            path: "textures/flatlist/case_test_top.bmp.ctxr,stage/XXXX/cache/case_test_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/007a7ad6.ctxr\r\r\n");
+        public static BasicResource ShuukanshiHyoushi3 = new BasicResource("shuukanshi_hyoushi3",
+            path: "textures/flatlist/shuukanshi_hyoushi3.bmp.ctxr,stage/XXXX/cache/shuukanshi_hyoushi3.bmp.ctxr,eu/stage/XXXX/cache/00883186/0070206b.ctxr\r\r\n");
+        public static BasicResource ShuukanshiUra2 = new BasicResource("shuukanshi_ura2",
+            path: "textures/flatlist/shuukanshi_ura2.bmp.ctxr,stage/XXXX/cache/shuukanshi_ura2.bmp.ctxr,eu/stage/XXXX/cache/00883186/00559380.ctxr\r\r\n");
 
         //Shield guard assets
         public static KmsResource ShlLit2 = new KmsResource("shl_lit2",
@@ -703,7 +715,8 @@ namespace MGS2_Randomizer
             MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2,
             MGS2Resource.ColdMedsLabelTexture, MGS2Resource.GoggleIboxTexture, MGS2Resource.GoggleIboxTri, MGS2Resource.DigitalCameraBoxTexture, MGS2Resource.Dzp2TxAlpTexture,
             MGS2Resource.RifleIboxTexture, MGS2Resource.LauncherAmmoSideTexture, MGS2Resource.LauncherIboxTexture, MGS2Resource.Ibox2TxAllTexture, MGS2Resource. DMicLabelTexture,
-            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture
+            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture, MGS2Resource.CaseDr, MGS2Resource.CaseLan, MGS2Resource.CaseTestSide,
+            MGS2Resource.CaseTestTop, MGS2Resource.ShuukanshiHyoushi3, MGS2Resource.ShuukanshiUra2
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 
