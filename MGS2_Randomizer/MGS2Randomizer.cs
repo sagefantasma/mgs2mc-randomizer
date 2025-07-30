@@ -180,6 +180,13 @@ namespace MGS2_Randomizer
 
         public class RandomizationOptions
         {
+            public enum RouteRandomizationBehavior
+            {
+                Full,
+                NoNodeShare,
+                NoRouteShare
+            }
+
             public bool RandomizeSpawns { get; set; }
             public bool NoHardLogicLocks { get; set; }
             public bool NikitaShell2 { get; set; }
@@ -196,6 +203,7 @@ namespace MGS2_Randomizer
             public float GuardRandomizationBounds { get; set; }
             public bool KeepGuardValuesConsistentAcrossLevels { get; set; }
             public bool RandomizeGuardPatrols { get; set; }
+            public RouteRandomizationBehavior GuardPatrolRandomizationBehavior { get; set; }
             public bool RandomizeReinforcementGuardTypes { get; set; }
 
             public override string ToString()
@@ -215,6 +223,7 @@ namespace MGS2_Randomizer
                     $"KeepGuardValuesConsistent = {KeepGuardValuesConsistentAcrossLevels};\n" +
                     $"GuardRandomizationBounds = {GuardRandomizationBounds};\n"+
                     $"RandomizeGuardPatrols = { RandomizeGuardPatrols};\n" +
+                    $"GuardPatrolRandomizationBehavior = { GuardPatrolRandomizationBehavior};\n" +
                     $"RandomizeReinforcementGuardTypes = {RandomizeReinforcementGuardTypes};\n" +
                     $"RandomizeTankerControlUnits = {RandomizeTankerControlUnits};\n\n\n\n\n\n";
             }
@@ -1196,8 +1205,9 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void RandomizeGuardPatrols()
+        private void RandomizeGuardPatrols(RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior)
         {
+            //TODO: implement guard-ID tracking for chosen routes so we can enable no-route sharing. 
             //TODO: add logic for randomizing defender and attacker routes, too?
             //w21a guard just insta dies at the start if he's far enough on the route xdd
             //A7 92 65 0? 06 77 F7 F7 is the true magic, but we're able to get away with just 06 77 F7 F7
@@ -1217,6 +1227,7 @@ namespace MGS2_Randomizer
 
             foreach(string gcxFile in gcxFilesToEdit)
             {
+                Dictionary<int, List<int>> chosenRoutes = new Dictionary<int, List<int>>();
                 if (gcxFile.Contains("w11a")) // 2/3 of the guards here are attackers, which we aren't messing with atm.
                     continue;
                 gcxContents = File.ReadAllBytes(gcxFile);
@@ -1235,8 +1246,26 @@ namespace MGS2_Randomizer
                                 foreach(int subfunctionCall in subfunctionCalls)
                                 {
                                     Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    while((guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id)) ||
+                                        (chosenRoutes.ContainsKey(randomlySelectedRoute.Id) && randomlySelectedRoute.Indices == chosenRoutes[randomlySelectedRoute.Id].Count))
+                                    {
+                                        randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    }
                                     gcxContents[subfunctionCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
-                                    gcxContents[subfunctionCall + 9] = (byte)(0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices));
+                                    int startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+                                    if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                                    {
+                                        while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoNodeShare && chosenRoutes[randomlySelectedRoute.Id].Contains(startingIndex))
+                                        {
+                                            startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+                                        }
+                                    }
+                                    gcxContents[subfunctionCall + 9] = (byte)startingIndex;
+
+                                    if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                                        chosenRoutes[randomlySelectedRoute.Id].Add(startingIndex);
+                                    else
+                                        chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { startingIndex });
                                 }
                                 edited = true;
                             }
@@ -1258,6 +1287,11 @@ namespace MGS2_Randomizer
                                         continue;
                                     }
                                     Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    while ((guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id)) ||
+                                        (chosenRoutes.ContainsKey(randomlySelectedRoute.Id) && randomlySelectedRoute.Indices == chosenRoutes[randomlySelectedRoute.Id].Count))
+                                    {
+                                        randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                                    }
                                     //Deck B crew quarters had weird results on randomization, i think because topside guard(0x1F7F777) is forced to start at a specific spot for tutorial
                                     //I *thought* this guard was another one that needed to be handled safely, but I think it's just an issue with a few specific routes on this level.
                                     /*if (!guardId.SequenceEqual(new byte[] { 0x77, 0xF7, 0xF7, 0x02 }) && stageInfo.AreaCode == "w01b")
@@ -1274,7 +1308,20 @@ namespace MGS2_Randomizer
                                     {
                                         gcxContents[paramRDesignation + 2] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
                                         int paramNDesignation = FindClosestGreaterValue(paramNDesignations, watcherInitCall);
-                                        gcxContents[paramNDesignation + 2] = (byte)(0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices));
+                                        int startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+                                        if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                                        {
+                                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoNodeShare && chosenRoutes[randomlySelectedRoute.Id].Contains(startingIndex))
+                                            {
+                                                startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+                                            }
+                                        }
+
+                                        gcxContents[paramNDesignation + 2] = (byte)startingIndex;
+                                        if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                                            chosenRoutes[randomlySelectedRoute.Id].Add(startingIndex);
+                                        else
+                                            chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { startingIndex });
                                     }
                                 }
                                 edited = true;
@@ -1294,8 +1341,16 @@ namespace MGS2_Randomizer
                         foreach(int tenguAInitCall in tenguAInit1Calls)
                         {
                             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                            {
+                                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            }
                             if (randomlySelectedRoute != null)
+                            {
                                 gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                if(guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
+                                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
+                            }
                         }
                         edited = true;
                     }
@@ -1305,8 +1360,16 @@ namespace MGS2_Randomizer
                         foreach(int tenguAInitCall in tenguAInit2Calls)
                         {
                             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                            {
+                                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            }
                             if (randomlySelectedRoute != null)
+                            {
                                 gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                if (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
+                                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
+                            }
                         }
                         edited = true;
                     }
@@ -1316,8 +1379,16 @@ namespace MGS2_Randomizer
                         foreach (int tenguBInitCall in tenguBInitCalls)
                         {                            
                             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                            {
+                                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+                            }
                             if (randomlySelectedRoute != null)
+                            {
                                 gcxContents[tenguBInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                                if (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
+                                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
+                            }
                         }
                         edited = true;
                     }
@@ -2839,7 +2910,7 @@ namespace MGS2_Randomizer
 
             if (options.RandomizeGuardPatrols)
             {
-                RandomizeGuardPatrols();
+                RandomizeGuardPatrols(options.GuardPatrolRandomizationBehavior);
             }
 
             return Seed;

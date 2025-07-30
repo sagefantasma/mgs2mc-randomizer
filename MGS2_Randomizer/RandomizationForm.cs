@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static MGS2_Randomizer.MGS2Randomizer;
 
 namespace MGS2_Randomizer
 {
@@ -56,11 +57,16 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
+                $" - Added sub-options to guard patrol routes: fully random and no node sharing.\r\n" +
+                $"    - Fully random means guards have the possibility of sharing the same route and position in the route.\r\n" +
+                $"    - No node sharing means guards can share routes, but never the same position in the route.\r\n" +
+                $" - Added additional Konami-made routes to the route randomization pool.\r\n" +
+                $"    - These routes are not used in the normal story, but were created at some point in development by Konami.\r\n" +
+                $"    - All of these additional routes have been manually verified to be usable.\r\n" +
+                $" - Fixed model and texture issues on Strut A - Sea Dock and KL Connecting Bridge for the Plant chapter.\r\n\r\n" +
+                $"Changes in v1.3.0.0:\r\n\r\n" +
                 $" - Added \"Randomize Guard Patrol Routes\" option.\r\n" +
-                $" - Fixed a bug where the Arsenal Tengus were losing some of their animations with randomization.\r\n\r\n" +
-                $"Changes in v1.2.0.0:\r\n\r\n" +
-                $" - Added \"Randomize Reinforcement Guard Types\" option.\r\n" +
-                $" - Fixed an issue where the guard randomization bounds weren't working as expected.";
+                $" - Fixed a bug where the Arsenal Tengus were losing some of their animations with randomization.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
@@ -135,6 +141,15 @@ namespace MGS2_Randomizer
             this.helpProvider1.SetShowHelp(this.randomizeGuardPatrolsCheckbox, true);
             this.helpProvider1.SetHelpString(this.randomizeGuardPatrolsCheckbox, "Randomize what patrol each guard follows, as well as what point in the patrol the guard starts at.");
 
+            this.helpProvider1.SetShowHelp(this.fullyRandomRadioBtn, true);
+            this.helpProvider1.SetHelpString(this.fullyRandomRadioBtn, "When randomizing guard patrols, do not prevent guards from sharing routes or nodes.");
+
+            this.helpProvider1.SetShowHelp(this.noNodeSharingRadioBtn, true);
+            this.helpProvider1.SetHelpString(this.noNodeSharingRadioBtn, "When randomizing guard patrols, prevent guards from sharing nodes on the same route.");
+
+            this.helpProvider1.SetShowHelp(this.noRouteSharingRadioBtn, true);
+            this.helpProvider1.SetHelpString(this.noRouteSharingRadioBtn, "When randomizing guard patrols, prevent guards from ever sharing the same route.");
+
             this.helpProvider1.SetShowHelp(this.randomizeReinforcementGuardTypesCheckBox, true);
             this.helpProvider1.SetHelpString(this.randomizeReinforcementGuardTypesCheckBox, "Randomize what types of guards are spawned when reinforcements are called for. Can be normal, shield, shield with light, shotgun, or hi-tech guards on both chapters.");
 
@@ -170,6 +185,18 @@ namespace MGS2_Randomizer
                 keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
                 randomizeReinforcementGuardTypesCheckBox.Checked = config.LastOptionsSelected.RandomizeReinforcementGuardTypes;
                 randomizeGuardPatrolsCheckbox.Checked = config.LastOptionsSelected.RandomizeGuardPatrols;
+                switch (config.LastOptionsSelected.GuardPatrolRandomizationBehavior)
+                {
+                    case RandomizationOptions.RouteRandomizationBehavior.Full:
+                        fullyRandomRadioBtn.Checked = true;
+                        break;
+                    case RandomizationOptions.RouteRandomizationBehavior.NoRouteShare:
+                        noRouteSharingRadioBtn.Checked = true;
+                        break;
+                    case RandomizationOptions.RouteRandomizationBehavior.NoNodeShare:
+                        noNodeSharingRadioBtn.Checked = true;
+                        break;
+                }
 
                 if (!randomizeAutomaticRewardsCheckbox.Checked)
                 {
@@ -224,7 +251,10 @@ namespace MGS2_Randomizer
                         GuardRandomizationBounds = insanityScalarTrackBar.Value / 100f,
                         KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
                         RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked,
-                        RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked
+                        RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked,
+                        GuardPatrolRandomizationBehavior = fullyRandomRadioBtn.Checked ? MGS2Randomizer.RandomizationOptions.RouteRandomizationBehavior.Full : 
+                            noNodeSharingRadioBtn.Checked ? MGS2Randomizer.RandomizationOptions.RouteRandomizationBehavior.NoNodeShare : 
+                            MGS2Randomizer.RandomizationOptions.RouteRandomizationBehavior.NoRouteShare
                     }
                 };
 
@@ -266,6 +296,12 @@ namespace MGS2_Randomizer
                     insanityScalarLabel.Enabled = enable;
                     insanityScalarTrackBar.Enabled = enable;
                     keepGuardValuesConsistentAcrossLevelsCheckbox.Enabled = enable;
+                }
+                if (randomizeGuardPatrolsCheckbox.Checked)
+                {
+                    fullyRandomRadioBtn.Enabled = enable;
+                    noNodeSharingRadioBtn.Enabled = enable;
+                    noRouteSharingRadioBtn.Enabled = enable;
                 }
                 if (randomizeAutomaticRewardsCheckbox.Checked && randomizeAutomaticRewardsCheckbox.Enabled)
                 {
@@ -453,7 +489,8 @@ namespace MGS2_Randomizer
                         GuardRandomizationBounds = insanityScalarValue / 100,
                         KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
                         RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked,
-                        RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked
+                        RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked,
+                        GuardPatrolRandomizationBehavior = GetRouteRandomizationBehavior()
                     };
                     _logger.Debug($"Calling randomize item spawns with randomization options: {randomizationOptions}");
                     int seed = 0;
@@ -472,7 +509,7 @@ namespace MGS2_Randomizer
                         {
                             throw oome; //rethrow to help debug
                         }
-                        catch (MGS2Randomizer.RandomizerException ee)
+                        catch (RandomizerException ee)
                         {
                             _logger.Debug("Bad seed, trying to randomize again");
                             //randomizer.Seed = new Random(DateTime.UtcNow.Hour + DateTime.UtcNow.Minute + DateTime.UtcNow.Second + DateTime.UtcNow.Millisecond);
@@ -500,6 +537,16 @@ namespace MGS2_Randomizer
             {
 
             }
+        }
+
+        private RandomizationOptions.RouteRandomizationBehavior GetRouteRandomizationBehavior()
+        {
+            if (fullyRandomRadioBtn.Checked)
+                return RandomizationOptions.RouteRandomizationBehavior.Full;
+            else if (noNodeSharingRadioBtn.Checked)
+                return RandomizationOptions.RouteRandomizationBehavior.NoNodeShare;
+            else
+                return RandomizationOptions.RouteRandomizationBehavior.NoRouteShare;
         }
 
         private void ReportABug_Click(object sender, EventArgs e)
@@ -587,6 +634,9 @@ namespace MGS2_Randomizer
         private void randomizeGuardPatrolsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             UpdateConfig();
+            fullyRandomRadioBtn.Enabled = randomizeGuardPatrolsCheckbox.Checked;
+            noNodeSharingRadioBtn.Enabled = randomizeGuardPatrolsCheckbox.Checked;
+            noRouteSharingRadioBtn.Enabled = randomizeGuardPatrolsCheckbox.Checked;
         }
     }
 }
