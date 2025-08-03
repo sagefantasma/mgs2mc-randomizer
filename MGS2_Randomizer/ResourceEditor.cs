@@ -76,7 +76,7 @@ namespace MGS2_Randomizer
                 switch (resource.FileType)
                 {
                     case FileType.Kms:
-                        if (Manifest.KmsFiles.Any(kms => kms.Contains(resource.Resource.Name)))
+                        if (Manifest.KmsFiles.Any(kms => kms.Contains(resource.Resource.Id)))
                             return false;
                         break;
                     case FileType.Ctxr:
@@ -84,7 +84,7 @@ namespace MGS2_Randomizer
                             return false;
                         break;
                     case FileType.Cmdl:
-                        if (BpAssets.KmsFiles.Any(cmdl => cmdl.Contains(resource.Resource.Name)))
+                        if (BpAssets.KmsFiles.Any(cmdl => cmdl.Contains(resource.Resource.Id)))
                             return false;
                         break;
                     case FileType.Tri:

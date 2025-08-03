@@ -104,7 +104,8 @@ namespace MGS2_Randomizer
         public static KmsResource DigitalCameraIbox = new KmsResource("digital_camera_ibox",
             path: "assets/kms/us/digital_camera_ibox_stage_a03b.kms,us/stage/XXXX/cache/001cd720.kms,cache/001cd720.kms\r\r\n",
             cmdl: "assets/kms/us/digital_camera_ibox_stage_a03b.cmdl,us/stage/XXXX/cache/001cd720.cmdl,eu/stage/XXXX/cache/001cd720.cmdl\r\r\n");
-        public static BasicResource DigitalCameraBoxTexture = new BasicResource("degital_camera","textures/flatlist/degital_camera.bmp.ctxr,stage/XXXX/cache/degital_camera.bmp.ctxr,eu/stage/XXXX/cache/00883186/00fb2060.ctxr\r\r\n");
+        public static BasicResource DigitalCameraBoxTexture = new BasicResource("degital_camera",
+            "textures/flatlist/degital_camera.bmp.ctxr,stage/XXXX/cache/degital_camera.bmp.ctxr,eu/stage/XXXX/cache/00883186/00fb2060.ctxr\r\r\n");
         public static KmsResource DigitalCameraLabel = new KmsResource("digital_camera_label",
             path: "assets/kms/us/digital_camera_label_stage_a03b.kms,us/stage/XXXX/cache/00ca2e0f.kms,cache/00ca2e0f.kms\r\r\n",
             cmdl: "assets/kms/us/digital_camera_label_stage_a03b.cmdl,us/stage/XXXX/cache/00ca2e0f.cmdl,eu/stage/XXXX/cache/00ca2e0f.cmdl\r\r\n");
@@ -266,6 +267,42 @@ namespace MGS2_Randomizer
         public static KmsResource ScopeCustomBox = new KmsResource("sougan",
             path: "assets/kms/us/sougan.kms,us/stage/XXXX/cache/002c297b.kms,cache/002c297b.kms\r\r\n",
             cmdl: "assets/kms/us/sougan.cmdl,us/stage/XXXX/cache/002c297b.cmdl,eu/stage/XXXX/cache/002c297b.cmdl\r\r\n");
+        public static BasicResource CaseDr = new BasicResource("case_dr",
+            path: "textures/flatlist/case_dr.bmp.ctxr,stage/XXXX/cache/case_dr.bmp.ctxr,eu/stage/XXXX/cache/00883186/0064227b.ctxr\r\r\n");
+        public static BasicResource CaseLan = new BasicResource("case_lan",
+            path: "textures/flatlist/case_lan.bmp.ctxr,stage/XXXX/cache/case_lan.bmp.ctxr,eu/stage/XXXX/cache/00883186/00846dba.ctxr\r\r\n");
+        public static BasicResource CaseTestSide = new BasicResource("case_test_side",
+            path: "textures/flatlist/case_test_side.bmp.ctxr,stage/XXXX/cache/case_test_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/004ec1b4.ctxr\r\r\n");
+        public static BasicResource CaseTestTop = new BasicResource("case_test_top",
+            path: "textures/flatlist/case_test_top.bmp.ctxr,stage/XXXX/cache/case_test_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/007a7ad6.ctxr\r\r\n");
+        public static BasicResource ShuukanshiHyoushi3 = new BasicResource("shuukanshi_hyoushi3",
+            path: "textures/flatlist/shuukanshi_hyoushi3.bmp.ctxr,stage/XXXX/cache/shuukanshi_hyoushi3.bmp.ctxr,eu/stage/XXXX/cache/00883186/0070206b.ctxr\r\r\n");
+        public static BasicResource ShuukanshiUra2 = new BasicResource("shuukanshi_ura2",
+            path: "textures/flatlist/shuukanshi_ura2.bmp.ctxr,stage/XXXX/cache/shuukanshi_ura2.bmp.ctxr,eu/stage/XXXX/cache/00883186/00559380.ctxr\r\r\n");
+        public static BasicResource HGrenadeAlp = new BasicResource("h_grenade_alp",
+            path: "textures/flatlist/h_grenade_alp.bmp.ctxr,stage/XXXX/cache/h_grenade_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00304c29.ctxr\r\r\n");
+        public static BasicResource Psg1TTxAlp = new BasicResource("psg1-t_tx_alp",
+            path: "textures/flatlist/psg1-T_tx_alp.bmp.ctxr,stage/XXXX/cache/psg1-T_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/000805c2.ctxr\r\r\n");
+        public static BasicResource RifleAmmoRabelAlpOvl = new BasicResource("rifle_ammo_alp_ovl",
+            path: "textures/flatlist/rifle_ammo_rabel_alp_ovl.bmp.ctxr,stage/XXXX/cache/rifle_ammo_rabel_alp_ovl.bmp.ctxr,eu/stage/XXXX/cache/00883186/007951dc.ctxr\r\r\n");
+        public static BasicResource RifleAmmoSide = new BasicResource("rifle_ammo_side",
+            path: "textures/flatlist/rifle_ammo_side.bmp.ctxr,stage/XXXX/cache/rifle_ammo_side.bmp.ctxr,eu/stage/XXXX/cache/00883186/00c84cc6.ctxr\r\r\n");
+        public static BasicResource RifleAmmoTop = new BasicResource("rifle_ammo_top",
+            path: "textures/flatlist/rifle_ammo_top.bmp.ctxr,stage/XXXX/cache/rifle_ammo_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/000e472f.ctxr\r\r\n");
+        public static BasicResource AmmoCase1Top = new BasicResource("ammo_case1_top",
+            path: "textures/flatlist/ammo_case1_top.bmp.ctxr,stage/XXXX/cache/ammo_case1_top.bmp.ctxr,eu/stage/XXXX/cache/00883186/00508c26.ctxr\r\r\n");
+        public static BasicResource APSensorAlp = new BasicResource("a_p_sensor_alp",
+            path: "textures/flatlist/a_p_sensor_alp.bmp.ctxr,stage/XXXX/cache/a_p_sensor_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00e1c920.ctxr\r\r\n");
+        public static BasicResource APSensorCase = new BasicResource("a_p_sensor_case",
+            path: "textures/flatlist/a_p_sensor_case.bmp.ctxr,stage/XXXX/cache/a_p_sensor_case.bmp.ctxr,eu/stage/XXXX/cache/00883186/0039f8e1.ctxr\r\r\n");
+        public static BasicResource APSensorCase2 = new BasicResource("a_p_sensor_case2",
+            path: "textures/flatlist/a_p_sensor_case2.bmp.ctxr,stage/XXXX/cache/a_p_sensor_case2.bmp.ctxr,eu/stage/XXXX/cache/00883186/003f1c59.ctxr\r\r\n");
+        public static BasicResource CigaretteTx = new BasicResource("cigarette_tx",
+            path: "textures/flatlist/cigarette_tx.bmp.ctxr,stage/XXXX/cache/cigarette_tx.bmp.ctxr,eu/stage/XXXX/cache/00883186/00b8e858.ctxr\r\r\n");
+        public static BasicResource CigaretteTxAlp = new BasicResource("cigarette_tx_alp",
+            path: "textures/flatlist/cigarette_tx_alp.bmp.ctxr,stage/XXXX/cache/cigarette_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00bca075.ctxr\r\r\n");
+        public static BasicResource IboxAll3 = new BasicResource("ibox_all3",
+            path: "textures/flatlist/ibox_all3.bmp.ctxr,stage/XXXX/cache/ibox_all3.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a69.ctxr\r\r\n");
 
         //Shield guard assets
         public static KmsResource ShlLit2 = new KmsResource("shl_lit2",
@@ -703,7 +740,10 @@ namespace MGS2_Randomizer
             MGS2Resource.CigarettesLabel, MGS2Resource.SensorALabel, MGS2Resource.APSensorIbox, MGS2Resource.APSensorLabel, MGS2Resource.ItemBox2,
             MGS2Resource.ColdMedsLabelTexture, MGS2Resource.GoggleIboxTexture, MGS2Resource.GoggleIboxTri, MGS2Resource.DigitalCameraBoxTexture, MGS2Resource.Dzp2TxAlpTexture,
             MGS2Resource.RifleIboxTexture, MGS2Resource.LauncherAmmoSideTexture, MGS2Resource.LauncherIboxTexture, MGS2Resource.Ibox2TxAllTexture, MGS2Resource. DMicLabelTexture,
-            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture
+            MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture, MGS2Resource.CaseDr, MGS2Resource.CaseLan, MGS2Resource.CaseTestSide,
+            MGS2Resource.CaseTestTop, MGS2Resource.ShuukanshiHyoushi3, MGS2Resource.ShuukanshiUra2, MGS2Resource.HGrenadeAlp, MGS2Resource.Psg1TTxAlp,
+            MGS2Resource.RifleAmmoRabelAlpOvl, MGS2Resource.RifleAmmoSide, MGS2Resource.RifleAmmoTop, MGS2Resource.AmmoCase1Top, MGS2Resource.APSensorAlp,
+            MGS2Resource.APSensorCase, MGS2Resource.APSensorCase2, MGS2Resource.CigaretteTx, MGS2Resource.CigaretteTxAlp
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 
