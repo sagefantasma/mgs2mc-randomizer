@@ -495,9 +495,11 @@ namespace MGS2_Randomizer
             //Add AP Sensor and Scope to randomization pool
             KeyValuePair<Location, Item> newSpawn1 = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.Name == "BottomFloorMiddleCrates" && spawn.Key.GcxFile == "w22a");
             _vanillaItems.PlantSet10.Entities[newSpawn1.Key] = MGS2Items.APSensor;
+            _vanillaItems.PlantCard5Set.Entities[newSpawn1.Key] = MGS2Items.APSensor;
 
             KeyValuePair<Location, Item> newSpawn2 = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.Name == "BottomFloorParkourBoxes" && spawn.Key.GcxFile == "w22a");
             _vanillaItems.PlantSet10.Entities[newSpawn2.Key] = MGS2Items.Scope1;
+            _vanillaItems.PlantCard5Set.Entities[newSpawn2.Key] = MGS2Items.Scope1;
         }
 
         private void RandomizeStartingItems()
