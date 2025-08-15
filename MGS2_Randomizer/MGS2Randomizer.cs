@@ -1322,10 +1322,11 @@ namespace MGS2_Randomizer
                                 {
                                     byte[] guardId = new byte[4];
                                     Array.Copy(gcxContents, watcherInitCall + 5, guardId, 0, 4);
-                                    if (guardId.SequenceEqual(new byte[] { 0xFC, 0x39, 0x65, 0x03 }) && gcxFile.Contains("w31d"))
+                                    if ((guardId.SequenceEqual(new byte[] { 0xFC, 0x39, 0x65, 0x03 }) || guardId.SequenceEqual(new byte[] { 0xFC, 0x39, 0x65, 0x06})) 
+                                        && gcxFile.Contains("w31d"))
                                     {
-                                        //This specific guard is the only watcher that uses a varbuf for route and index assignment
-                                        //As such, it will eventually need to be handled uniquely, but for now I'm just not going to mess with him
+                                        //These specific guards are the only watcher that uses a varbuf for route and index assignment
+                                        //As such, it will eventually need to be handled uniquely, but for now I'm just not going to mess with them
                                         continue;
                                     }
                                     Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
