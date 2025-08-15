@@ -1248,7 +1248,6 @@ namespace MGS2_Randomizer
 
         private void RandomizeGuardPatrols(RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior)
         {
-            //TODO: can this method be broken down further? it is entirely too large
             //TODO: implement guard-ID tracking for chosen routes so we can enable no-route sharing. 
             //TODO: add logic for randomizing defender and attacker routes, too?
             //w21a guard just insta dies at the start if he's far enough on the route xdd
@@ -1256,12 +1255,14 @@ namespace MGS2_Randomizer
             byte[] watcherInitBytes = new byte[] { 0x06, 0x77, 0xF7, 0xF7 };
             //this will allow us to catch all of the other problematic spawns that aren't tengus
             byte[] subfunctionCallBytes = new byte[] { 0xDD, 0x6F, 0xE8, 0x0D };
-
             byte[] tenguACallBytes1 = new byte[] { 0x45, 0x6B, 0x8F, 0x0D };
             byte[] tenguACallBytes2 = new byte[] { 0x88, 0x94, 0x70, 0x0D };
             byte[] tenguBCallBytes = new byte[] { 0x45, 0x6B, 0x9F, 0x0D };
             byte[] paramRDesignationBytes = new byte[] { 0x52, 0x72 }; //52 72 ?? is the determination of hzx route 
             byte[] paramNDesignationBytes = new byte[] { 0x52, 0x6E }; //52 6E ?? is the determination of starting index in route
+            int subfunctionRouteDesignationOffset = 8;
+            int subfunctionIndexDesignationOffset = 9;
+            int gcxDesignationOffset = 2;
 
             List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
             byte[] gcxContents;
@@ -1273,7 +1274,6 @@ namespace MGS2_Randomizer
                 if (gcxFile.Contains("w11a")) // 2/3 of the guards here are attackers, which we aren't messing with atm.
                     continue;
                 gcxContents = File.ReadAllBytes(gcxFile);
-                List<int> paramRDesignations = GcxEditor.FindAllSubArray(gcxContents, paramRDesignationBytes);
                 if (!gcxFile.Contains("w4")) //non-tengu levels
                 {
                     GuardStageInfo stageInfo = GuardStage.GuardStageList.Find(x => gcxFile.Contains(x.AreaCode));
@@ -1287,27 +1287,7 @@ namespace MGS2_Randomizer
                             {
                                 foreach(int subfunctionCall in subfunctionCalls)
                                 {
-                                    Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                                    while((guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id)) ||
-                                        (chosenRoutes.ContainsKey(randomlySelectedRoute.Id) && randomlySelectedRoute.Indices == chosenRoutes[randomlySelectedRoute.Id].Count))
-                                    {
-                                        randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                                    }
-                                    gcxContents[subfunctionCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
-                                    int startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
-                                    if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                                    {
-                                        while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoNodeShare && chosenRoutes[randomlySelectedRoute.Id].Contains(startingIndex))
-                                        {
-                                            startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
-                                        }
-                                    }
-                                    gcxContents[subfunctionCall + 9] = (byte)startingIndex;
-
-                                    if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                                        chosenRoutes[randomlySelectedRoute.Id].Add(startingIndex);
-                                    else
-                                        chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { startingIndex });
+                                    RandomizeNormalGuard(gcxFile, gcxContents, chosenRoutes, guardRouteBehavior, subfunctionCall + subfunctionRouteDesignationOffset, subfunctionCall + subfunctionIndexDesignationOffset);
                                 }
                                 edited = true;
                             }
@@ -1315,6 +1295,7 @@ namespace MGS2_Randomizer
                         else
                         {
                             List<int> watcherInitCalls = GcxEditor.FindAllSubArray(gcxContents, watcherInitBytes);
+                            List<int> paramRDesignations = GcxEditor.FindAllSubArray(gcxContents, paramRDesignationBytes);
                             List<int> paramNDesignations = GcxEditor.FindAllSubArray(gcxContents, paramNDesignationBytes);
                             if (watcherInitCalls != null)
                             {
@@ -1329,43 +1310,11 @@ namespace MGS2_Randomizer
                                         //As such, it will eventually need to be handled uniquely, but for now I'm just not going to mess with them
                                         continue;
                                     }
-                                    Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                                    while ((guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id)) ||
-                                        (chosenRoutes.ContainsKey(randomlySelectedRoute.Id) && randomlySelectedRoute.Indices == chosenRoutes[randomlySelectedRoute.Id].Count))
-                                    {
-                                        randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                                    }
-                                    //Deck B crew quarters had weird results on randomization, i think because topside guard(0x1F7F777) is forced to start at a specific spot for tutorial
-                                    //I *thought* this guard was another one that needed to be handled safely, but I think it's just an issue with a few specific routes on this level.
-                                    /*if (!guardId.SequenceEqual(new byte[] { 0x77, 0xF7, 0xF7, 0x02 }) && stageInfo.AreaCode == "w01b")
-                                    {
-                                        while(!(new int[] { 12, 14 }).Contains(randomlySelectedRoute.Id))
-                                        {
-                                            randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                                        }
-                                    }*/
-
-                                    int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
                                     
-                                    if (randomlySelectedRoute != null)
-                                    {
-                                        gcxContents[paramRDesignation + 2] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
-                                        int paramNDesignation = FindClosestGreaterValue(paramNDesignations, watcherInitCall);
-                                        int startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
-                                        if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                                        {
-                                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoNodeShare && chosenRoutes[randomlySelectedRoute.Id].Contains(startingIndex))
-                                            {
-                                                startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
-                                            }
-                                        }
+                                    int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
+                                    int paramNDesignation = FindClosestGreaterValue(paramNDesignations, watcherInitCall);
 
-                                        gcxContents[paramNDesignation + 2] = (byte)startingIndex;
-                                        if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                                            chosenRoutes[randomlySelectedRoute.Id].Add(startingIndex);
-                                        else
-                                            chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { startingIndex });
-                                    }
+                                    RandomizeNormalGuard(gcxFile, gcxContents, chosenRoutes, guardRouteBehavior, paramRDesignation + gcxDesignationOffset, paramNDesignation + gcxDesignationOffset);
                                 }
                                 edited = true;
                             }
@@ -1381,38 +1330,18 @@ namespace MGS2_Randomizer
 
                     if (tenguAInit1Calls != null)
                     {
-                        foreach(int tenguAInitCall in tenguAInit1Calls)
+                        foreach(int tenguAInit1Call in tenguAInit1Calls)
                         {
-                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                            {
-                                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            }
-                            if (randomlySelectedRoute != null)
-                            {
-                                gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
-                                if(guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
-                                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
-                            }
+                            RandomizeTenguCall(gcxFile, gcxContents, guardRouteBehavior, chosenRoutes, tenguAInit1Call);
                         }
                         edited = true;
                     }
 
                     if(tenguAInit2Calls != null)
                     {
-                        foreach(int tenguAInitCall in tenguAInit2Calls)
+                        foreach(int tenguAInit2Call in tenguAInit2Calls)
                         {
-                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                            {
-                                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            }
-                            if (randomlySelectedRoute != null)
-                            {
-                                gcxContents[tenguAInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
-                                if (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
-                                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
-                            }
+                            RandomizeTenguCall(gcxFile, gcxContents, guardRouteBehavior, chosenRoutes, tenguAInit2Call);
                         }
                         edited = true;
                     }
@@ -1420,18 +1349,8 @@ namespace MGS2_Randomizer
                     if (tenguBInitCalls != null)
                     {
                         foreach (int tenguBInitCall in tenguBInitCalls)
-                        {                            
-                            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
-                            {
-                                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
-                            }
-                            if (randomlySelectedRoute != null)
-                            {
-                                gcxContents[tenguBInitCall + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
-                                if (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
-                                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
-                            }
+                        {
+                            RandomizeTenguCall(gcxFile, gcxContents, guardRouteBehavior, chosenRoutes, tenguBInitCall);
                         }
                         edited = true;
                     }
@@ -1440,6 +1359,65 @@ namespace MGS2_Randomizer
                 if (edited)
                     File.WriteAllBytes(gcxFile, gcxContents);
                 edited = false;
+            }
+        }
+
+        private void RandomizeNormalGuard(string gcxFile, byte[] gcxContents, Dictionary<int, List<int>> chosenRoutes, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, int routeDesignation, int indexDesignation)
+        {
+            Route randomlySelectedRoute = GetRandomNormalGuardRoute(gcxFile, chosenRoutes, guardRouteBehavior);
+            gcxContents[routeDesignation] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+            int startingIndex = GetStartingIndex(chosenRoutes, randomlySelectedRoute, guardRouteBehavior);
+            gcxContents[indexDesignation] = (byte)startingIndex;
+
+            AddChosenRouteToDict(chosenRoutes, randomlySelectedRoute, startingIndex);
+        }
+
+        private Route GetRandomNormalGuardRoute(string gcxFile, Dictionary<int, List<int>> chosenRoutes, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior)
+        {
+            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+            while ((guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id)) ||
+                (chosenRoutes.ContainsKey(randomlySelectedRoute.Id) && randomlySelectedRoute.Indices == chosenRoutes[randomlySelectedRoute.Id].Count))
+            {
+                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+            }
+
+            return randomlySelectedRoute;
+        }
+
+        private void AddChosenRouteToDict(Dictionary<int, List<int>> chosenRoutes, Route randomlySelectedRoute, int startingIndex)
+        {
+            if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+                chosenRoutes[randomlySelectedRoute.Id].Add(startingIndex);
+            else
+                chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { startingIndex });
+        }
+
+        private int GetStartingIndex(Dictionary<int, List<int>> chosenRoutes, Route randomlySelectedRoute, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior)
+        {
+            int startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+            if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+            {
+                while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoNodeShare && chosenRoutes[randomlySelectedRoute.Id].Contains(startingIndex))
+                {
+                    startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+                }
+            }
+
+            return startingIndex;
+        }
+
+        private void RandomizeTenguCall(string gcxFile, byte[] gcxContents, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, Dictionary<int, List<int>> chosenRoutes, int callOffset)
+        {
+            Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+            while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
+            {
+                randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
+            }
+            if (randomlySelectedRoute != null)
+            {
+                gcxContents[callOffset + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                if (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
+                    chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
             }
         }
 
