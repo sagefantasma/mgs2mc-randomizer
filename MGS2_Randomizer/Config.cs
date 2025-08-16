@@ -27,6 +27,6 @@ namespace MGS2_Randomizer
         [JsonPropertyName("mgs2ExePath")]
         public string Mgs2ExePath { get; set; }
         [JsonPropertyName("lastOptionsSelected")]
-        public MGS2Randomizer.RandomizationOptions LastOptionsSelected { get; set; }
+        public RandomizationOptions LastOptionsSelected { get; set; }
     }
 }

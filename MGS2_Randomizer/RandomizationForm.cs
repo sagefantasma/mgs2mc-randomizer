@@ -233,7 +233,7 @@ namespace MGS2_Randomizer
                 Config config = new Config
                 {
                     Mgs2ExePath = InstallLocation,
-                    LastOptionsSelected = new MGS2Randomizer.RandomizationOptions
+                    LastOptionsSelected = new RandomizationOptions
                     {
                         RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
                         NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
@@ -252,9 +252,9 @@ namespace MGS2_Randomizer
                         KeepGuardValuesConsistentAcrossLevels = keepGuardValuesConsistentAcrossLevelsCheckbox.Checked,
                         RandomizeReinforcementGuardTypes = randomizeReinforcementGuardTypesCheckBox.Checked,
                         RandomizeGuardPatrols = randomizeGuardPatrolsCheckbox.Checked,
-                        GuardPatrolRandomizationBehavior = fullyRandomRadioBtn.Checked ? MGS2Randomizer.RandomizationOptions.RouteRandomizationBehavior.Full : 
-                            noNodeSharingRadioBtn.Checked ? MGS2Randomizer.RandomizationOptions.RouteRandomizationBehavior.NoNodeShare : 
-                            MGS2Randomizer.RandomizationOptions.RouteRandomizationBehavior.NoRouteShare
+                        GuardPatrolRandomizationBehavior = fullyRandomRadioBtn.Checked ? RandomizationOptions.RouteRandomizationBehavior.Full : 
+                            noNodeSharingRadioBtn.Checked ? RandomizationOptions.RouteRandomizationBehavior.NoNodeShare : 
+                            RandomizationOptions.RouteRandomizationBehavior.NoRouteShare
                     }
                 };
 
@@ -471,7 +471,7 @@ namespace MGS2_Randomizer
                 await Task.Run(() =>
                 {
                     MGS2Randomizer randomizer = new MGS2Randomizer(InstallLocation, (int)seedUpDown.Value);
-                    MGS2Randomizer.RandomizationOptions randomizationOptions = new MGS2Randomizer.RandomizationOptions
+                    RandomizationOptions randomizationOptions = new RandomizationOptions
                     {
                         RandomizeSpawns = randomizeSpawnsCheckbox.Checked,
                         NoHardLogicLocks = seedAlwaysBeatableCheckbox.Checked,
