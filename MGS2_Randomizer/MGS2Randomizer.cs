@@ -13,6 +13,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static MGS2_Randomizer.MGS2Randomizer;
 
 namespace MGS2_Randomizer
 {
@@ -1421,13 +1422,49 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void RandomizeReinforcementGuardTypes()
+        private bool ModifyAllParamECalls(byte[] gcxContents)
         {
-            //TODO: can this method be broken down further? it is entirely too large
-            byte[] subfunctionCallBytes = new byte[] { 0x7D, 0x11, 0xBA, 0xB4, 0xA0 };
             byte[] explicitCallBytes3ByteId = new byte[] { 0xA7, 0x92, 0x65, 0x08, 0x06, 0x07, 0x9A, 0xCC };
             byte[] explicitCallBytes4ByteId = new byte[] { 0xA7, 0x92, 0x65, 0x09, 0x06, 0x07, 0x9A, 0xCC };
             byte[] paramEDesignationBytes = new byte[] { 0x52, 0x65 }; //52 65 C? is the determination of guard type inside an explicit call
+            //explicit calls are more complicated. Param e is designated in different places, based on call construction.
+            //Some reinforcements are called with an ID of only 3 bytes, others with 4 byte ID
+            //We always want the first param E after the explicit call, and it should be safe to look for the first [52 65] after to find it
+            List<int> explicit3ByteIdCalls = GcxEditor.FindAllSubArray(gcxContents, explicitCallBytes3ByteId);
+            List<int> explicit4ByteIdCalls = GcxEditor.FindAllSubArray(gcxContents, explicitCallBytes4ByteId);
+            List<int> paramEDesignationCalls = GcxEditor.FindAllSubArray(gcxContents, paramEDesignationBytes);
+
+            bool edited = false;
+
+            if (explicit3ByteIdCalls != null)
+            {
+                ModifyParamE(explicit3ByteIdCalls, paramEDesignationCalls, gcxContents);
+                edited = true;
+            }
+            if (explicit4ByteIdCalls != null)
+            {
+                ModifyParamE(explicit4ByteIdCalls, paramEDesignationCalls, gcxContents);
+                edited = true;
+            }
+
+            return edited;
+        }
+
+        private void ModifyParamE(List<int> explicitByteIdCalls, List<int> paramEDesignationCalls, byte[] gcxContents)
+        {
+            foreach (int explicit3ByteIdCall in explicitByteIdCalls)
+            {
+                int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit3ByteIdCall);
+                gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
+            }
+        }
+
+        private void RandomizeReinforcementGuardTypes()
+        {
+            byte[] subfunctionCallBytes = new byte[] { 0x7D, 0x11, 0xBA, 0xB4, 0xA0 };
+            int subfunctionParamEOffset = 0x11;
+            int minGuardType = 0xC1;
+            int maxGuardType = 0xC5;
 
             List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
             byte[] gcxContents;
@@ -1435,7 +1472,7 @@ namespace MGS2_Randomizer
 
             foreach (string gcxFile in gcxFilesToEdit)
             {
-                if (gcxFile.Contains("w11a") || gcxFile.Contains("w25d")) //the normal guards in w11a are considered attackers, and w25d has no param e for attackers. Skip these file.
+                if (gcxFile.Contains("w11a") || gcxFile.Contains("w25d")) //the normal guards in w11a are considered attackers, and w25d has no param e for attackers. Skip these files.
                     continue;
                 gcxContents = File.ReadAllBytes(gcxFile);
                 List<int> subFunctionCalls = GcxEditor.FindAllSubArray(gcxContents, subfunctionCallBytes);
@@ -1444,37 +1481,13 @@ namespace MGS2_Randomizer
                     //subfunction calls are always formatted the same way(param E is always the 4th param), so we can handle these simply
                     foreach (int subFunctionCall in subFunctionCalls)
                     {
-                        gcxContents[subFunctionCall + 0x11] = (byte)Randomizer.Next(0xC1,0xC6);
+                        gcxContents[subFunctionCall + subfunctionParamEOffset] = (byte)Randomizer.Next(minGuardType, maxGuardType + 1); //+1 to force real max value inclusion
                     }
                     edited = true;
                 }
                 else
                 {
-                    //explicit calls are more complicated. Param e is designated in different places, based on call construction.
-                    //Some reinforcements are called with an ID of only 3 bytes, others with 4 byte ID
-                    //We always want the first param E after the explicit call, and it should be safe to look for the first [52 65] after to find it
-                    List<int> explicit3ByteIdCalls = GcxEditor.FindAllSubArray(gcxContents, explicitCallBytes3ByteId);
-                    List<int> explicit4ByteIdCalls = GcxEditor.FindAllSubArray(gcxContents, explicitCallBytes4ByteId);
-                    List<int> paramEDesignationCalls = GcxEditor.FindAllSubArray(gcxContents, paramEDesignationBytes);
-
-                    if (explicit3ByteIdCalls != null)
-                    {
-                        foreach (int explicit3ByteIdCall in explicit3ByteIdCalls)
-                        {
-                            int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit3ByteIdCall);
-                            gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
-                        }
-                        edited = true;
-                    }
-                    if (explicit4ByteIdCalls != null)
-                    {
-                        foreach (int explicit4ByteIdCall in explicit4ByteIdCalls)
-                        {
-                            int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit4ByteIdCall);
-                            gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
-                        }
-                        edited = true;
-                    }
+                    edited = ModifyAllParamECalls(gcxContents);
                 }
                 if(edited)
                     File.WriteAllBytes(gcxFile, gcxContents);
@@ -1496,20 +1509,166 @@ namespace MGS2_Randomizer
             return -1;
         }
 
+        private readonly byte[] NormalVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xDE, 0x01 };
+        private readonly byte[] AlertVisionSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE0, 0x01 };
+        private readonly byte[] EvasionVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE2, 0x01 };
+        private readonly byte[] HearingRangeSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE4, 0x01 };
+        private readonly byte[] LifeValueSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE6, 0x01 };
+        private readonly byte[] HitsToStunSetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xE8 };
+        private readonly byte[] SleepDurationSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xEC, 0x01 };
+        private readonly byte[] StunVisionSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xF0, 0x01 };
+        private readonly byte[] Unknown1SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xEA };
+        private readonly byte[] Unknown2SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xF4 };
+
+        private void SetNormalVision(string gcxFile, byte[] gcxContents, short visionRange)
+        {
+            List<int> normalVisionSets = GcxEditor.FindAllSubArray(gcxContents, NormalVisionSetBytes);
+            foreach (int normalVisionSet in normalVisionSets)
+                Array.Copy(BitConverter.GetBytes(visionRange), 0, gcxContents, normalVisionSet + NormalVisionSetBytes.Length, sizeof(short));
+        }
+
+        private void SetAlertVision(string gcxFile, byte[] gcxContents, short visionRange)
+        {
+            List<int> alertVisionSets = GcxEditor.FindAllSubArray(gcxContents, AlertVisionSetBytes);
+            foreach (int alertVisionSet in alertVisionSets)
+                Array.Copy(BitConverter.GetBytes(visionRange), 0, gcxContents, alertVisionSet + AlertVisionSetBytes.Length, sizeof(short));
+        }
+
+        private void SetEvasionVision(string gcxFile, byte[] gcxContents, short visionRange)
+        {
+            List<int> evasionVisionSets = GcxEditor.FindAllSubArray(gcxContents, EvasionVisionSetBytes);
+            foreach (int evasionVisionSet in evasionVisionSets)
+                Array.Copy(BitConverter.GetBytes(visionRange), 0, gcxContents, evasionVisionSet + EvasionVisionSetBytes.Length, sizeof(short));
+        }
+
+        private void SetHearingRange(string gcxFile, byte[] gcxContents, short hearingRange)
+        {
+            List<int> hearingRangeSets = GcxEditor.FindAllSubArray(gcxContents, HearingRangeSetBytes);
+            foreach (int hearingRangeSet in hearingRangeSets)
+                Array.Copy(BitConverter.GetBytes(hearingRange), 0, gcxContents, hearingRangeSet + HearingRangeSetBytes.Length, sizeof(short));
+        }
+
+        private void SetLifeValue(string gcxFile, byte[] gcxContents, short lifeValue)
+        {
+            List<int> lValueSets = GcxEditor.FindAllSubArray(gcxContents, LifeValueSetBytes);
+            foreach (int lValueSet in lValueSets)
+                Array.Copy(BitConverter.GetBytes(lifeValue), 0, gcxContents, lValueSet + LifeValueSetBytes.Length, sizeof(short));
+        }
+
+        private void SetHitsToStunValue(string gcxFile, byte[] gcxContents, byte hitsToStun)
+        {
+            List<int> hitsToStunSets = GcxEditor.FindAllSubArray(gcxContents, HitsToStunSetBytes);
+            foreach (int hitsToStunSet in hitsToStunSets)
+                Array.Copy(BitConverter.GetBytes(hitsToStun), 0, gcxContents, hitsToStunSet + HitsToStunSetBytes.Length, sizeof(byte));
+        }
+
+        private void SetSleepDuration(string gcxFile, byte[] gcxContents, short sleepDuration)
+        {
+            List<int> sleepDurationSets = GcxEditor.FindAllSubArray(gcxContents, SleepDurationSetBytes);
+            foreach (int normalVisionSet in sleepDurationSets)
+                Array.Copy(BitConverter.GetBytes(sleepDuration), 0, gcxContents, normalVisionSet + SleepDurationSetBytes.Length, sizeof(short));
+        }
+
+        private void SetStunDuration(string gcxFile, byte[] gcxContents, short stunDuration)
+        {
+            List<int> stunDurationSets = GcxEditor.FindAllSubArray(gcxContents, StunVisionSetBytes);
+            foreach (int normalVisionSet in stunDurationSets)
+                Array.Copy(BitConverter.GetBytes(stunDuration), 0, gcxContents, normalVisionSet + StunVisionSetBytes.Length, sizeof(short));
+        }
+
+        private void SetUnknown1Value(string gcxFile, byte[] gcxContents, byte unknown1)
+        {
+            List<int> unknown1Sets = GcxEditor.FindAllSubArray(gcxContents, Unknown1SetBytes);
+            foreach (int unknown1Set in unknown1Sets)
+                Array.Copy(BitConverter.GetBytes(unknown1), 0, gcxContents, unknown1Set + Unknown1SetBytes.Length, sizeof(byte));
+        }
+
+        private void SetUnknown2Value(string gcxFile, byte[] gcxContents, byte unknown2)
+        {
+            List<int> unknown2Sets = GcxEditor.FindAllSubArray(gcxContents, Unknown2SetBytes);
+            foreach (int unknown2Set in unknown2Sets)
+                Array.Copy(BitConverter.GetBytes(unknown2), 0, gcxContents, unknown2Set + Unknown2SetBytes.Length, sizeof(byte));
+        }
+
+        private void SetNormalGuardValues(string gcxFile, byte[] gcxContents, GuardValues guardValues)
+        {
+            SetNormalVision(gcxFile, gcxContents, guardValues.NormalVision);
+            SetAlertVision(gcxFile, gcxContents, guardValues.AlertVision);
+            SetEvasionVision(gcxFile, gcxContents, guardValues.EvasionVision);
+            SetHearingRange(gcxFile, gcxContents, guardValues.HearingDistance);
+            SetLifeValue(gcxFile, gcxContents, guardValues.LValue);
+            SetHitsToStunValue(gcxFile, gcxContents, guardValues.HitsToStun);
+            SetSleepDuration(gcxFile, gcxContents, guardValues.SleepDuration);
+            SetStunDuration(gcxFile, gcxContents, guardValues.StunDuration);
+            SetUnknown1Value(gcxFile, gcxContents, guardValues.Unknown1);
+            SetUnknown2Value(gcxFile, gcxContents, guardValues.Unknown2);
+        }
+
+        private void SetW42aTenguValues(byte[] gcxContents, GuardValues guardValues)
+        {
+            int normalVisionOffset = 0xA;
+            int alertVisionOffset = 0xD;
+
+            //need to alter calls to both tengu spawners
+            List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x88, 0x94, 0x70, 0x0D });
+            foreach (int tenguSet in tengu1Sets)
+            {
+                Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, tenguSet + normalVisionOffset, sizeof(short));
+                Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + alertVisionOffset, sizeof(short));
+            }
+
+            List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x45, 0x6B, 0x8F, 0x0D });
+            foreach (int tenguSet in tengu2Sets)
+            {
+                Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, tenguSet + normalVisionOffset, sizeof(short));
+                Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + alertVisionOffset, sizeof(short));
+            }
+        }
+
+        private void SetW44aTenguValues(byte[] gcxContents, GuardValues guardValues)
+        {
+            //need to alter varbuf_0x9A8 (Vision) and varbuf_0x9AA (HP)
+            int alertVisionOffset = 0x6;
+            int hpValueOffset = 0x6;
+
+            //Set the vision for tengus in this level
+            List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xA8 });
+            foreach (int tenguSet in tengu1Sets)
+            {
+                Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + alertVisionOffset, sizeof(short));
+            }
+
+            //Set the HP for tengus in this level
+            List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xAA });
+            foreach (int tenguSet in tengu2Sets)
+            {
+                Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + hpValueOffset, sizeof(short));
+            }
+        }
+
+        private void SetW45aTenguValues(byte[] gcxContents, GuardValues guardValues)
+        {
+            //need to alter varbuf_0xA0C (Life) and varbuf_0xA0E (Hits to stun)
+            int hpValueOffset = 0x6;
+            int hitsToStunOffset = 0x5;
+
+            //Set the hp for tengus in this level
+            List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x0A, 0x0C });
+            foreach (int tenguSet in tengu1Sets)
+            {
+                Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + hpValueOffset, sizeof(short));
+            }
+
+            //Set the hits to stun for tengus in this level
+            List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x37, 0x11, 0x00, 0x0A, 0x0E });
+            foreach (int tenguSet in tengu2Sets)
+            {
+                Array.Copy(BitConverter.GetBytes(guardValues.HitsToStun), 0, gcxContents, tenguSet + hitsToStunOffset, sizeof(byte));
+            }
+        }
+
         private void RandomizeGuardValues(bool levelConsistency = true, bool valueConsistency = false, float insanityScalar = .25f)
         {
-            //TODO: can this method be broken down further? it is entirely too large
-            byte[] normalVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xDE, 0x01 };
-            byte[] alertVisionSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE0, 0x01 };
-            byte[] evasionVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE2, 0x01 };
-            byte[] hearingRangeSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE4, 0x01 };
-            byte[] lValueSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE6, 0x01 };
-            byte[] hitsToStunSetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xE8 };
-            byte[] sleepDurationSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xEC, 0x01 };
-            byte[] stunVisionSetBytes = new byte[] { 0x39, 0x19, 0x00, 0x01, 0xF0, 0x01 };
-            byte[] unknown1SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xEA };
-            byte[] unknown2SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xF4 };
-
             List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
             byte[] gcxContents;
             GuardValues guardValues = GetRandomGuardValues(valueConsistency, insanityScalar);
@@ -1517,100 +1676,21 @@ namespace MGS2_Randomizer
             foreach (string gcxFile in gcxFilesToEdit)
             {
                 gcxContents = File.ReadAllBytes(gcxFile);
-                List<int> normalVisionSets = GcxEditor.FindAllSubArray(gcxContents, normalVisionSetBytes);
-                foreach (int normalVisionSet in normalVisionSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, normalVisionSet + normalVisionSetBytes.Length, 2);
-
-                List<int> alertVisionSets = GcxEditor.FindAllSubArray(gcxContents, alertVisionSetBytes);
-                foreach (int alertVisionSet in alertVisionSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, alertVisionSet + alertVisionSetBytes.Length, 2);
-
-                List<int> evasionVisionSets = GcxEditor.FindAllSubArray(gcxContents, evasionVisionSetBytes);
-                foreach (int evasionVisionSet in evasionVisionSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.EvasionVision), 0, gcxContents, evasionVisionSet + evasionVisionSetBytes.Length, 2);
-
-                List<int> hearingRangeSets = GcxEditor.FindAllSubArray(gcxContents, hearingRangeSetBytes);
-                foreach (int hearingRangeSet in hearingRangeSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.HearingDistance), 0, gcxContents, hearingRangeSet + hearingRangeSetBytes.Length, 2);
-
-                List<int> lValueSets = GcxEditor.FindAllSubArray(gcxContents, lValueSetBytes);
-                foreach (int lValueSet in lValueSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, lValueSet + lValueSetBytes.Length, 2);
-
-                List<int> hitsToStunSets = GcxEditor.FindAllSubArray(gcxContents, hitsToStunSetBytes);
-                foreach (int hitsToStunSet in hitsToStunSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.HitsToStun), 0, gcxContents, hitsToStunSet + hitsToStunSetBytes.Length, 1);
-
-                List<int> sleepDurationSets = GcxEditor.FindAllSubArray(gcxContents, sleepDurationSetBytes);
-                foreach (int normalVisionSet in sleepDurationSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.SleepDuration), 0, gcxContents, normalVisionSet + sleepDurationSetBytes.Length, 2);
-
-                List<int> stunDurationSets = GcxEditor.FindAllSubArray(gcxContents, stunVisionSetBytes);
-                foreach (int normalVisionSet in stunDurationSets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.StunDuration), 0, gcxContents, normalVisionSet + stunVisionSetBytes.Length, 2);
-
-                List<int> unknown1Sets = GcxEditor.FindAllSubArray(gcxContents, unknown1SetBytes);
-                foreach (int unknown1Set in unknown1Sets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.Unknown1), 0, gcxContents, unknown1Set + unknown1SetBytes.Length, 1);
-
-                List<int> unknown2Sets = GcxEditor.FindAllSubArray(gcxContents, unknown2SetBytes);
-                foreach (int unknown2Set in unknown2Sets)
-                    Array.Copy(BitConverter.GetBytes(guardValues.Unknown2), 0, gcxContents, unknown2Set + unknown2SetBytes.Length, 1);
+                SetNormalGuardValues(gcxFile, gcxContents, guardValues);
 
                 if (gcxFile.Contains("w42a"))
                 {
-                    //need to alter calls to both tengu spawners
-                    List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x88, 0x94, 0x70, 0x0D });
-                    foreach (int tenguSet in tengu1Sets)
-                    {
-                        Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, tenguSet + 0xA, 2);
-                        Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + 0xD, 2);
-                    }
-
-                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x45, 0x6B, 0x8F, 0x0D });
-                    foreach (int tenguSet in tengu2Sets)
-                    {
-                        Array.Copy(BitConverter.GetBytes(guardValues.NormalVision), 0, gcxContents, tenguSet + 0xA, 2);
-                        Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + 0xD, 2);
-                    }
+                    SetW42aTenguValues(gcxContents, guardValues);
                 }
 
                 if (gcxFile.Contains("w44a"))
                 {
-                    //need to alter varbuf_0x9A8 (Vision) and varbuf_0x9AA (HP)
-
-                    //Set the vision for tengus in this level
-                    List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xA8 });
-                    foreach (int tenguSet in tengu1Sets)
-                    {
-                        Array.Copy(BitConverter.GetBytes(guardValues.AlertVision), 0, gcxContents, tenguSet + 0x6, 2);
-                    }
-
-                    //Set the HP for tengus in this level
-                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x09, 0xAA });
-                    foreach (int tenguSet in tengu2Sets)
-                    {
-                        Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + 0x6, 2);
-                    }
+                    SetW44aTenguValues(gcxContents, guardValues);
                 }
 
                 if (gcxFile.Contains("w45a"))
                 {
-                    //need to alter varbuf_0xA0C (Life) and varbuf_0xA0E (Hits to stun)
-
-                    //Set the vision for tengus in this level
-                    List<int> tengu1Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x39, 0x11, 0x00, 0x0A, 0x0C });
-                    foreach (int tenguSet in tengu1Sets)
-                    {
-                        Array.Copy(BitConverter.GetBytes(guardValues.LValue), 0, gcxContents, tenguSet + 0x6, 2);
-                    }
-
-                    //Set the HP for tengus in this level
-                    List<int> tengu2Sets = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x37, 0x11, 0x00, 0x0A, 0x0E });
-                    foreach (int tenguSet in tengu2Sets)
-                    {
-                        Array.Copy(BitConverter.GetBytes(guardValues.HitsToStun), 0, gcxContents, tenguSet + 0x5, 1);
-                    }
+                    SetW45aTenguValues(gcxContents, guardValues);
                 }
 
                 if (!levelConsistency)
@@ -1758,20 +1838,29 @@ namespace MGS2_Randomizer
             return byteLocation;
         }
 
-        private void RandomizeC4Locations()
-        {
-            //TODO: can this method be broken down further? it is entirely too large
-            RandomizationForm._logger.Debug("Randomizing C4s...");
-            byte[] bulC4InitBytes = { 0x11, 0xBB, 0xDB, 0x06 };
-            string gcxFile;
-            byte[] gcxContents;
-            List<int> c4Locations;
+        private readonly byte[] BulC4InitBytes = { 0x11, 0xBB, 0xDB, 0x06 };
 
-            #region Strut A Roof
+        private void SetC4Location(byte[] gcxContents, byte[] bytesToFind, byte[] xLocation, byte[] yLocation, byte[] zLocation, int xOffset, int yOffset, int zOffset)
+        {
+            List<int> c4Locations = GcxEditor.FindAllSubArray(gcxContents, bytesToFind);
+
+            foreach(int c4Location in c4Locations)
+            {
+                Array.Copy(xLocation, 0, gcxContents, c4Location + xOffset, xLocation.Length);
+                Array.Copy(yLocation, 0, gcxContents, c4Location + yOffset, yLocation.Length);
+                Array.Copy(zLocation, 0, gcxContents, c4Location + zOffset, zLocation.Length);
+            }
+        }
+
+        private void RandomizeStrutARoofC4()
+        {
             int roofChoice = Randomizer.Next(3);
             byte[] roofXLocation = new byte[2];
             byte[] roofYLocation = new byte[2];
             byte[] roofZLocation = new byte[2];
+            int xLocationOffset = 0xC;
+            int yLocationOffset = 0xF;
+            int zLocationOffset = 0x12;
             switch (roofChoice)
             {
                 case 0:
@@ -1791,39 +1880,27 @@ namespace MGS2_Randomizer
 
             if (roofChoice != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12a"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, bulC4InitBytes);
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(roofXLocation, 0, gcxContents, c4Location + 0xC, 2);
-                    Array.Copy(roofYLocation, 0, gcxContents, c4Location + 0xF, 2);
-                    Array.Copy(roofZLocation, 0, gcxContents, c4Location + 0x12, 2);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12a"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, BulC4InitBytes, roofXLocation, roofYLocation, roofZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
 
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12c"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, bulC4InitBytes);
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(roofXLocation, 0, gcxContents, c4Location + 0xC, 2);
-                    Array.Copy(roofYLocation, 0, gcxContents, c4Location + 0xF, 2);
-                    Array.Copy(roofZLocation, 0, gcxContents, c4Location + 0x12, 2);
-                }
-
+                SetC4Location(gcxContents, BulC4InitBytes, roofXLocation, roofYLocation, roofZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Pump Room
+        private void RandomizePumpRoomC4()
+        {
             int pumpRoom = Randomizer.Next(6);
             byte[] pumpRoomXLocation = new byte[1];
             byte[] pumpRoomYLocation = new byte[1];
             byte[] pumpRoomZLocation = new byte[2];
+            int xLocationOffset = 0xD;
+            int yLocationOffset = 0xF;
+            int zLocationOffset = 0x11;
+            byte[] pumpRoomC4DeclarationBytes = new byte[] { 0x16, 0x99, 0x61, 0x59 };
             switch (pumpRoom)
             {
                 case 0:
@@ -1858,26 +1935,22 @@ namespace MGS2_Randomizer
 
             if (pumpRoom != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12b"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x16, 0x99, 0x61, 0x59 });
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(pumpRoomXLocation, 0, gcxContents, c4Location + 0xD, 1);
-                    Array.Copy(pumpRoomYLocation, 0, gcxContents, c4Location + 0xF, 1);
-                    Array.Copy(pumpRoomZLocation, 0, gcxContents, c4Location + 0x11, 2);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12b"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, pumpRoomC4DeclarationBytes, pumpRoomXLocation, pumpRoomYLocation, pumpRoomZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Transformer Room
+        private void RandomizeTransformerRoomC4()
+        {
             int transformerRoom = Randomizer.Next(6);
             byte[] transformerRoomXLocation = new byte[4];
             byte[] transformerRoomYLocation = new byte[2];
             byte[] transformerRoomZLocation = new byte[4];
+            int xLocationOffset = 0xC;
+            int yLocationOffset = 0x11;
+            int zLocationOffset = 0x14;
             switch (transformerRoom)
             {
                 case 0:
@@ -1912,26 +1985,23 @@ namespace MGS2_Randomizer
 
             if (transformerRoom != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w14a"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, bulC4InitBytes);
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(transformerRoomXLocation, 0, gcxContents, c4Location + 0xC, 4);
-                    Array.Copy(transformerRoomYLocation, 0, gcxContents, c4Location + 0x11, 2);
-                    Array.Copy(transformerRoomZLocation, 0, gcxContents, c4Location + 0x14, 4);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w14a"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, BulC4InitBytes, transformerRoomXLocation, transformerRoomYLocation, transformerRoomZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Mess Hall
+        private void RandomizeMessHallC4()
+        {
             int diningHall = Randomizer.Next(8);
             byte[] diningHallXLocation = new byte[4];
             byte[] diningHallYLocation = new byte[2];
             byte[] diningHallZLocation = new byte[4];
+            int xLocationOffset = 0xD;
+            int yLocationOffset = 0xF;
+            int zLocationOffset = 0x11;
+            byte[] diningHallC4DeclarationBytes = new byte[] { 0x20, 0x99, 0x61, 0x59 };
             switch (diningHall)
             {
                 case 0:
@@ -1976,39 +2046,44 @@ namespace MGS2_Randomizer
 
             if (diningHall != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16a"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x20, 0x99, 0x61, 0x59 });
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(diningHallXLocation, 0, gcxContents, c4Location + 0xD, 4);
-                    Array.Copy(diningHallYLocation, 0, gcxContents, c4Location + 0x12, 2);
-                    Array.Copy(diningHallZLocation, 0, gcxContents, c4Location + 0x15, 4);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16a"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, diningHallC4DeclarationBytes, diningHallXLocation, diningHallYLocation, diningHallZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
 
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16b"));
                 gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x20, 0x99, 0x61, 0x59 });
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(diningHallXLocation, 0, gcxContents, c4Location + 0xD, 4);
-                    Array.Copy(diningHallYLocation, 0, gcxContents, c4Location + 0x12, 2);
-                    Array.Copy(diningHallZLocation, 0, gcxContents, c4Location + 0x15, 4);
-                }
-
+                SetC4Location(gcxContents, diningHallC4DeclarationBytes, diningHallXLocation, diningHallYLocation, diningHallZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Sediment Pool
+        private void RemoveHatchOpenedRequirement(byte[] gcxContents, List<int> hatchReferenceOffset)
+        {
+            byte originalByte = 0;
+            int i = 0;
+            while (originalByte != 0xC1)
+            {
+                originalByte = gcxContents[hatchReferenceOffset[i] + 7];
+                if (originalByte != 0xC1)
+                {
+                    i++;
+                }
+            }
+
+            gcxContents[hatchReferenceOffset[i] + 7] = 0xC2;
+        }
+
+        private void RandomizeSedimentPoolC4s()
+        {
             int sedimentPool1 = Randomizer.Next(5);
             byte[] sedimentPool1XLocation = new byte[2];
             byte[] sedimentPool1YLocation = new byte[2];
             byte[] sedimentPool1ZLocation = new byte[4];
+            int xLocationOffset = 0xB;
+            int yLocationOffset = 0xE;
+            int zLocationOffset = 0x11;
+            byte[] sedimentPool1C4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4D, 0x25, 0xB2 };
             switch (sedimentPool1)
             {
                 default:
@@ -2049,6 +2124,7 @@ namespace MGS2_Randomizer
             byte[] sedimentPool2XLocation = new byte[2];
             byte[] sedimentPool2YLocation = new byte[2];
             byte[] sedimentPool2ZLocation = new byte[4];
+            byte[] sedimentPool2C4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4E, 0x25, 0xB2 };
             switch (sedimentPool2)
             {
                 default:
@@ -2081,6 +2157,7 @@ namespace MGS2_Randomizer
             byte[] sedimentPool3XLocation = new byte[2];
             byte[] sedimentPool3YLocation = new byte[2];
             byte[] sedimentPool3ZLocation = new byte[4];
+            byte[] sedimentPool3C4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4F, 0x25, 0xB2 };
             switch (sedimentPool3)
             {
                 case 0:
@@ -2110,79 +2187,41 @@ namespace MGS2_Randomizer
 
             if (sedimentPool1 != 0 || sedimentPool2 != 0 || sedimentPool3 != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w18a"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                List<int> c41Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4D, 0x25, 0xB2 });
-                List<int> c42Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4E, 0x25, 0xB2 });
-                List<int> c43Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4F, 0x25, 0xB2 });
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w18a"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
                 if (sedimentPool1 != 0)
                 {
-                    //need to grab third hit of 4D25B2 + 7 and change from C1 -> C2
-                    //otherwise, only default spawn will work
-                    List<int> bomb1References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4D, 0x25, 0xB2 });
-                    byte originalByte = 0;
-                    int i = 0;
-                    while (originalByte != 0xC1)
-                    {
-                        originalByte = gcxContents[bomb1References[i] + 7];
-                        if (originalByte != 0xC1)
-                        {
-                            i++;
-                        }
-                    }
-
-                    gcxContents[bomb1References[i] + 7] = 0xC2;
-                    foreach (int c4Location in c41Locations)
-                    {
-                        Array.Copy(sedimentPool1XLocation, 0, gcxContents, c4Location + 0xB, 2);
-                        Array.Copy(sedimentPool1YLocation, 0, gcxContents, c4Location + 0xE, 2);
-                        Array.Copy(sedimentPool1ZLocation, 0, gcxContents, c4Location + 0x11, 4);
-                    }
+                    //need to remove hatch opened requirement, otherwise it will only be defusable when standard spawn hatch is opened
+                    List<int> hatch1References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4D, 0x25, 0xB2 });
+                    RemoveHatchOpenedRequirement(gcxContents, hatch1References);
+                    SetC4Location(gcxContents, sedimentPool1C4DeclarationBytes, sedimentPool1XLocation, sedimentPool1YLocation, sedimentPool1ZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 }
                 if (sedimentPool2 != 0)
                 {
-                    //need to grab second hit of 4E25B2 + 7 and change from C1 -> C2
-                    //otherwise, only default spawn will work
-                    List<int> bomb2References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4E, 0x25, 0xB2 });
-                    byte originalByte = 0;
-                    int i = 0;
-                    while (originalByte != 0xC1)
-                    {
-                        originalByte = gcxContents[bomb2References[i] + 7];
-                        if (originalByte != 0xC1)
-                        {
-                            i++;
-                        }
-                    }
-
-                    gcxContents[bomb2References[i] + 7] = 0xC2;
-                    foreach (int c4Location in c42Locations)
-                    {
-                        Array.Copy(sedimentPool2XLocation, 0, gcxContents, c4Location + 0xB, 2);
-                        Array.Copy(sedimentPool2YLocation, 0, gcxContents, c4Location + 0xE, 2);
-                        Array.Copy(sedimentPool2ZLocation, 0, gcxContents, c4Location + 0x11, 4);
-                    }
+                    //need to remove hatch opened requirement, otherwise it will only be defusable when standard spawn hatch is opened
+                    List<int> hatch2References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4E, 0x25, 0xB2 });
+                    RemoveHatchOpenedRequirement(gcxContents, hatch2References);
+                    SetC4Location(gcxContents, sedimentPool2C4DeclarationBytes, sedimentPool2XLocation, sedimentPool2YLocation, sedimentPool2ZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 }
                 if (sedimentPool3 != 0)
                 {
-                    foreach (int c4Location in c43Locations)
-                    {
-                        Array.Copy(sedimentPool3XLocation, 0, gcxContents, c4Location + 0xB, 2);
-                        Array.Copy(sedimentPool3YLocation, 0, gcxContents, c4Location + 0xE, 2);
-                        Array.Copy(sedimentPool3ZLocation, 0, gcxContents, c4Location + 0x11, 4);
-                    }
+                    SetC4Location(gcxContents, sedimentPool3C4DeclarationBytes, sedimentPool3XLocation, sedimentPool3YLocation, sedimentPool3ZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 }
 
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Parcel Room
+        private void RandomizeParcelRoomC4()
+        {
             int parcelRoom = Randomizer.Next(4);
             byte[] parcelRoomXLocation = new byte[4];
             byte[] parcelRoomYLocation = new byte[2];
             byte[] parcelRoomZLocation = new byte[4];
+            int xLocationOffset = 0x19;
+            int yLocationOffset = 0x1E;
+            int zLocationOffset = 0x21;
+            byte[] parcelRoomC4DeclarationBytes = new byte[] { 0x06, 0x44, 0x31, 0x41, 0x0D, 0xEA, 0x7D, 0x5C, 0x99 };
             switch (parcelRoom)
             {
                 case 0:
@@ -2207,26 +2246,22 @@ namespace MGS2_Randomizer
 
             if (parcelRoom != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20a"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x06, 0x44, 0x31, 0x41, 0x0D, 0xEA, 0x7D, 0x5C, 0x99 });
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(parcelRoomXLocation, 0, gcxContents, c4Location + 0x19, 4);
-                    Array.Copy(parcelRoomYLocation, 0, gcxContents, c4Location + 0x1E, 2);
-                    Array.Copy(parcelRoomZLocation, 0, gcxContents, c4Location + 0x21, 4);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20a"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, parcelRoomC4DeclarationBytes, parcelRoomXLocation, parcelRoomYLocation, parcelRoomZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Helipad
+        private void RandomizeHeliportC4()
+        {
             int helipad = Randomizer.Next(5);
             byte[] helipadXLocation = new byte[4];
             byte[] helipadYLocation = new byte[2];
             byte[] helipadZLocation = new byte[4];
+            int xLocationOffset = 0xC;
+            int yLocationOffset = 0x11;
+            int zLocationOffset = 0x14;
             switch (helipad)
             {
                 case 0:
@@ -2256,26 +2291,23 @@ namespace MGS2_Randomizer
 
             if (helipad != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20b"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, bulC4InitBytes);
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(helipadXLocation, 0, gcxContents, c4Location + 0xC, 4);
-                    Array.Copy(helipadYLocation, 0, gcxContents, c4Location + 0x11, 2);
-                    Array.Copy(helipadZLocation, 0, gcxContents, c4Location + 0x14, 4);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20b"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, BulC4InitBytes, helipadXLocation, helipadYLocation, helipadZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
 
-            #region Armory
+        private void RandomizeArmoryC4()
+        {
             int armory = Randomizer.Next(9);
             byte[] armoryXLocation = new byte[4];
             byte[] armoryYLocation = new byte[2];
             byte[] armoryZLocation = new byte[2];
+            int xLocationOffset = 0xD;
+            int yLocationOffset = 0xF;
+            int zLocationOffset = 0x11;
+            byte[] armoryC4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x25, 0x6F, 0x3A };
             switch (armory)
             {
                 case 0:
@@ -2325,21 +2357,25 @@ namespace MGS2_Randomizer
 
             if (armory != 0)
             {
-                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w22a"));
-                gcxContents = File.ReadAllBytes(gcxFile);
-                c4Locations = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x25, 0x6F, 0x3A });
-
-                foreach (int c4Location in c4Locations)
-                {
-                    Array.Copy(armoryXLocation, 0, gcxContents, c4Location + 0xB, 4);
-                    Array.Copy(armoryYLocation, 0, gcxContents, c4Location + 0x10, 2);
-                    Array.Copy(armoryZLocation, 0, gcxContents, c4Location + 0x13, 2);
-                    Array.Copy(new byte[] { 0x00, 0x04 }, 0, gcxContents, c4Location + 0x19, 2);
-                }
-
+                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w22a"));
+                byte[] gcxContents = File.ReadAllBytes(gcxFile);
+                SetC4Location(gcxContents, armoryC4DeclarationBytes, armoryXLocation, armoryYLocation, armoryZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
-            #endregion
+        }
+
+        private void RandomizeC4Locations()
+        {
+            RandomizationForm._logger.Debug("Randomizing C4s...");
+
+            RandomizeStrutARoofC4();
+            RandomizePumpRoomC4();
+            RandomizeTransformerRoomC4();
+            RandomizeMessHallC4();
+            RandomizeSedimentPoolC4s();
+            RandomizeParcelRoomC4();
+            RandomizeHeliportC4();
+            RandomizeArmoryC4();
         }
 
         public void Derandomize()
