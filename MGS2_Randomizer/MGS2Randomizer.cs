@@ -302,7 +302,7 @@ namespace MGS2_Randomizer
             return w21a.BuildGcxFile();
         }
 
-        private void MoveClaymores(byte[] gcxContents, List<PointF> walkableArea, int leftWall, int rightSideLowerCatwalk)
+        private void MoveClaymores(ref byte[] gcxContents, List<PointF> walkableArea, int leftWall, int rightSideLowerCatwalk)
         {
             List<int> claymores = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x85, 0xD6, 0x78 });
 
@@ -346,7 +346,7 @@ namespace MGS2_Randomizer
 
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
 
-            MoveClaymores(gcxContents, walkableArea, leftWall, rightSideLowerCatwalk);
+            MoveClaymores(ref gcxContents, walkableArea, leftWall, rightSideLowerCatwalk);
 
             File.WriteAllBytes(gcxFile, gcxContents);
         }
@@ -880,7 +880,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void RandomizeOlgaReward(string spoiler)
+        private void RandomizeOlgaReward(ref string spoiler)
         {
             //Olga gives USP
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w00c"));
@@ -895,7 +895,7 @@ namespace MGS2_Randomizer
             File.WriteAllBytes(gcxFile, gcxContents);
         }
 
-        private void RandomizePliskinRewards(string spoiler, bool randomizeCards)
+        private void RandomizePliskinRewards(ref string spoiler, bool randomizeCards)
         {
             //Pliskin gives SOCOM & Cigs
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w14a"));
@@ -929,7 +929,7 @@ namespace MGS2_Randomizer
             File.WriteAllBytes(gcxFile, gcxContents);
         }
 
-        private void RandomizeStillmanRewards(string spoiler, bool randomizeCards)
+        private void RandomizeStillmanRewards(ref string spoiler, bool randomizeCards)
         {
             //Stillman gives Card 1, Sensor A & Coolant Spray
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16a"));
@@ -970,7 +970,7 @@ namespace MGS2_Randomizer
             File.WriteAllBytes(gcxFile, gcxContents);
         }
 
-        private void RandomizeNinjaRewards(string spoiler, bool randomizeCards)
+        private void RandomizeNinjaRewards(ref string spoiler, bool randomizeCards)
         {
             //Ninja gives Card 2, BDU & Phone
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20d"));
@@ -1049,7 +1049,7 @@ namespace MGS2_Randomizer
             File.WriteAllBytes(gcxFile, gcxContents);
         }
 
-        private void RandomizeAmesReward(string spoiler)
+        private void RandomizeAmesReward(ref string spoiler)
         {
             //Ames gives Card 3
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w24b"));
@@ -1065,7 +1065,7 @@ namespace MGS2_Randomizer
             File.WriteAllBytes(gcxFile, gcxContents);
         }
 
-        private void RandomizePresidentRewards(string spoiler, bool randomizeCards)
+        private void RandomizePresidentRewards(ref string spoiler, bool randomizeCards)
         {
             //President gives Card 4 & MO Disk
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w31a"));
@@ -1091,7 +1091,7 @@ namespace MGS2_Randomizer
             File.WriteAllBytes(gcxFile, gcxContents);
         }
 
-        private void RandomizeEmmaReward(string spoiler)
+        private void RandomizeEmmaReward(ref string spoiler)
         {
             //Emma gives Card 5 
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w25d"));
@@ -1114,24 +1114,24 @@ namespace MGS2_Randomizer
             AddAutomaticRewardsToPools();
             string spoiler = "";
 
-            RandomizeOlgaReward(spoiler);
+            RandomizeOlgaReward(ref spoiler);
 
-            RandomizePliskinRewards(spoiler, randomizeCards);
+            RandomizePliskinRewards(ref spoiler, randomizeCards);
 
-            RandomizeStillmanRewards(spoiler, randomizeCards);
+            RandomizeStillmanRewards(ref spoiler, randomizeCards);
 
-            RandomizeNinjaRewards(spoiler, randomizeCards);
+            RandomizeNinjaRewards(ref spoiler, randomizeCards);
 
             if (randomizeCards)
             {
-                RandomizeAmesReward(spoiler);
+                RandomizeAmesReward(ref spoiler);
             }
 
-            RandomizePresidentRewards(spoiler, randomizeCards);
+            RandomizePresidentRewards(ref spoiler, randomizeCards);
 
             if (randomizeCards)
             {
-                RandomizeEmmaReward(spoiler);
+                RandomizeEmmaReward(ref spoiler);
             }
 
             //Snake HF Blade
@@ -1231,7 +1231,7 @@ namespace MGS2_Randomizer
                             {
                                 foreach(int subfunctionCall in subfunctionCalls)
                                 {
-                                    RandomizeNormalGuard(gcxFile, gcxContents, chosenRoutes, guardRouteBehavior, subfunctionCall + subfunctionRouteDesignationOffset, subfunctionCall + subfunctionIndexDesignationOffset);
+                                    RandomizeNormalGuard(gcxFile, ref gcxContents, ref chosenRoutes, guardRouteBehavior, subfunctionCall + subfunctionRouteDesignationOffset, subfunctionCall + subfunctionIndexDesignationOffset);
                                 }
                                 edited = true;
                             }
@@ -1258,7 +1258,7 @@ namespace MGS2_Randomizer
                                     int paramRDesignation = FindClosestGreaterValue(paramRDesignations, watcherInitCall);
                                     int paramNDesignation = FindClosestGreaterValue(paramNDesignations, watcherInitCall);
 
-                                    RandomizeNormalGuard(gcxFile, gcxContents, chosenRoutes, guardRouteBehavior, paramRDesignation + gcxDesignationOffset, paramNDesignation + gcxDesignationOffset);
+                                    RandomizeNormalGuard(gcxFile, ref gcxContents, ref chosenRoutes, guardRouteBehavior, paramRDesignation + gcxDesignationOffset, paramNDesignation + gcxDesignationOffset);
                                 }
                                 edited = true;
                             }
@@ -1276,7 +1276,7 @@ namespace MGS2_Randomizer
                     {
                         foreach(int tenguAInit1Call in tenguAInit1Calls)
                         {
-                            RandomizeTenguCall(gcxFile, gcxContents, guardRouteBehavior, chosenRoutes, tenguAInit1Call);
+                            RandomizeTenguCall(gcxFile, ref gcxContents, guardRouteBehavior, chosenRoutes, tenguAInit1Call);
                         }
                         edited = true;
                     }
@@ -1285,7 +1285,7 @@ namespace MGS2_Randomizer
                     {
                         foreach(int tenguAInit2Call in tenguAInit2Calls)
                         {
-                            RandomizeTenguCall(gcxFile, gcxContents, guardRouteBehavior, chosenRoutes, tenguAInit2Call);
+                            RandomizeTenguCall(gcxFile, ref gcxContents, guardRouteBehavior, chosenRoutes, tenguAInit2Call);
                         }
                         edited = true;
                     }
@@ -1294,7 +1294,7 @@ namespace MGS2_Randomizer
                     {
                         foreach (int tenguBInitCall in tenguBInitCalls)
                         {
-                            RandomizeTenguCall(gcxFile, gcxContents, guardRouteBehavior, chosenRoutes, tenguBInitCall);
+                            RandomizeTenguCall(gcxFile, ref gcxContents, guardRouteBehavior, chosenRoutes, tenguBInitCall);
                         }
                         edited = true;
                     }
@@ -1306,14 +1306,14 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void RandomizeNormalGuard(string gcxFile, byte[] gcxContents, Dictionary<int, List<int>> chosenRoutes, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, int routeDesignation, int indexDesignation)
+        private void RandomizeNormalGuard(string gcxFile, ref byte[] gcxContents, ref Dictionary<int, List<int>> chosenRoutes, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, int routeDesignation, int indexDesignation)
         {
             Route randomlySelectedRoute = GetRandomNormalGuardRoute(gcxFile, chosenRoutes, guardRouteBehavior);
             gcxContents[routeDesignation] = (byte)(GcxDecimalZero + (byte)randomlySelectedRoute.Id);
             int startingIndex = GetStartingIndex(chosenRoutes, randomlySelectedRoute, guardRouteBehavior);
             gcxContents[indexDesignation] = (byte)startingIndex;
 
-            AddChosenRouteToDict(chosenRoutes, randomlySelectedRoute, startingIndex);
+            AddChosenRouteToDict(ref chosenRoutes, randomlySelectedRoute, startingIndex);
         }
 
         private Route GetRandomNormalGuardRoute(string gcxFile, Dictionary<int, List<int>> chosenRoutes, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior)
@@ -1328,7 +1328,7 @@ namespace MGS2_Randomizer
             return randomlySelectedRoute;
         }
 
-        private void AddChosenRouteToDict(Dictionary<int, List<int>> chosenRoutes, Route randomlySelectedRoute, int startingIndex)
+        private void AddChosenRouteToDict(ref Dictionary<int, List<int>> chosenRoutes, Route randomlySelectedRoute, int startingIndex)
         {
             if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
                 chosenRoutes[randomlySelectedRoute.Id].Add(startingIndex);
@@ -1350,7 +1350,7 @@ namespace MGS2_Randomizer
             return startingIndex;
         }
 
-        private void RandomizeTenguCall(string gcxFile, byte[] gcxContents, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, Dictionary<int, List<int>> chosenRoutes, int callOffset)
+        private void RandomizeTenguCall(string gcxFile, ref byte[] gcxContents, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, Dictionary<int, List<int>> chosenRoutes, int callOffset)
         {
             Route randomlySelectedRoute = SelectRandomRouteFromFile(gcxFile);
             while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare && chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
@@ -1365,7 +1365,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        private bool ModifyAllParamECalls(byte[] gcxContents)
+        private bool ModifyAllParamECalls(ref byte[] gcxContents)
         {
             byte[] explicitCallBytes3ByteId = new byte[] { 0xA7, 0x92, 0x65, 0x08, 0x06, 0x07, 0x9A, 0xCC };
             byte[] explicitCallBytes4ByteId = new byte[] { 0xA7, 0x92, 0x65, 0x09, 0x06, 0x07, 0x9A, 0xCC };
@@ -1381,19 +1381,19 @@ namespace MGS2_Randomizer
 
             if (explicit3ByteIdCalls != null)
             {
-                ModifyParamE(explicit3ByteIdCalls, paramEDesignationCalls, gcxContents);
+                ModifyParamE(explicit3ByteIdCalls, paramEDesignationCalls, ref gcxContents);
                 edited = true;
             }
             if (explicit4ByteIdCalls != null)
             {
-                ModifyParamE(explicit4ByteIdCalls, paramEDesignationCalls, gcxContents);
+                ModifyParamE(explicit4ByteIdCalls, paramEDesignationCalls, ref gcxContents);
                 edited = true;
             }
 
             return edited;
         }
 
-        private void ModifyParamE(List<int> explicitByteIdCalls, List<int> paramEDesignationCalls, byte[] gcxContents)
+        private void ModifyParamE(List<int> explicitByteIdCalls, List<int> paramEDesignationCalls, ref byte[] gcxContents)
         {
             foreach (int explicit3ByteIdCall in explicitByteIdCalls)
             {
@@ -1430,7 +1430,7 @@ namespace MGS2_Randomizer
                 }
                 else
                 {
-                    edited = ModifyAllParamECalls(gcxContents);
+                    edited = ModifyAllParamECalls(ref gcxContents);
                 }
                 if(edited)
                     File.WriteAllBytes(gcxFile, gcxContents);
@@ -1452,91 +1452,91 @@ namespace MGS2_Randomizer
             return -1;
         }
 
-        private void SetNormalVision(string gcxFile, byte[] gcxContents, short visionRange)
+        private void SetNormalVision(string gcxFile, ref byte[] gcxContents, short visionRange)
         {
             List<int> normalVisionSets = GcxEditor.FindAllSubArray(gcxContents, NormalVisionSetBytes);
             foreach (int normalVisionSet in normalVisionSets)
                 Array.Copy(BitConverter.GetBytes(visionRange), 0, gcxContents, normalVisionSet + NormalVisionSetBytes.Length, sizeof(short));
         }
 
-        private void SetAlertVision(string gcxFile, byte[] gcxContents, short visionRange)
+        private void SetAlertVision(string gcxFile, ref byte[] gcxContents, short visionRange)
         {
             List<int> alertVisionSets = GcxEditor.FindAllSubArray(gcxContents, AlertVisionSetBytes);
             foreach (int alertVisionSet in alertVisionSets)
                 Array.Copy(BitConverter.GetBytes(visionRange), 0, gcxContents, alertVisionSet + AlertVisionSetBytes.Length, sizeof(short));
         }
 
-        private void SetEvasionVision(string gcxFile, byte[] gcxContents, short visionRange)
+        private void SetEvasionVision(string gcxFile, ref byte[] gcxContents, short visionRange)
         {
             List<int> evasionVisionSets = GcxEditor.FindAllSubArray(gcxContents, EvasionVisionSetBytes);
             foreach (int evasionVisionSet in evasionVisionSets)
                 Array.Copy(BitConverter.GetBytes(visionRange), 0, gcxContents, evasionVisionSet + EvasionVisionSetBytes.Length, sizeof(short));
         }
 
-        private void SetHearingRange(string gcxFile, byte[] gcxContents, short hearingRange)
+        private void SetHearingRange(string gcxFile, ref byte[] gcxContents, short hearingRange)
         {
             List<int> hearingRangeSets = GcxEditor.FindAllSubArray(gcxContents, HearingRangeSetBytes);
             foreach (int hearingRangeSet in hearingRangeSets)
                 Array.Copy(BitConverter.GetBytes(hearingRange), 0, gcxContents, hearingRangeSet + HearingRangeSetBytes.Length, sizeof(short));
         }
 
-        private void SetLifeValue(string gcxFile, byte[] gcxContents, short lifeValue)
+        private void SetLifeValue(string gcxFile, ref byte[] gcxContents, short lifeValue)
         {
             List<int> lValueSets = GcxEditor.FindAllSubArray(gcxContents, LifeValueSetBytes);
             foreach (int lValueSet in lValueSets)
                 Array.Copy(BitConverter.GetBytes(lifeValue), 0, gcxContents, lValueSet + LifeValueSetBytes.Length, sizeof(short));
         }
 
-        private void SetHitsToStunValue(string gcxFile, byte[] gcxContents, byte hitsToStun)
+        private void SetHitsToStunValue(string gcxFile, ref byte[] gcxContents, byte hitsToStun)
         {
             List<int> hitsToStunSets = GcxEditor.FindAllSubArray(gcxContents, HitsToStunSetBytes);
             foreach (int hitsToStunSet in hitsToStunSets)
                 Array.Copy(BitConverter.GetBytes(hitsToStun), 0, gcxContents, hitsToStunSet + HitsToStunSetBytes.Length, sizeof(byte));
         }
 
-        private void SetSleepDuration(string gcxFile, byte[] gcxContents, short sleepDuration)
+        private void SetSleepDuration(string gcxFile, ref byte[] gcxContents, short sleepDuration)
         {
             List<int> sleepDurationSets = GcxEditor.FindAllSubArray(gcxContents, SleepDurationSetBytes);
             foreach (int normalVisionSet in sleepDurationSets)
                 Array.Copy(BitConverter.GetBytes(sleepDuration), 0, gcxContents, normalVisionSet + SleepDurationSetBytes.Length, sizeof(short));
         }
 
-        private void SetStunDuration(string gcxFile, byte[] gcxContents, short stunDuration)
+        private void SetStunDuration(string gcxFile, ref byte[] gcxContents, short stunDuration)
         {
             List<int> stunDurationSets = GcxEditor.FindAllSubArray(gcxContents, StunVisionSetBytes);
             foreach (int normalVisionSet in stunDurationSets)
                 Array.Copy(BitConverter.GetBytes(stunDuration), 0, gcxContents, normalVisionSet + StunVisionSetBytes.Length, sizeof(short));
         }
 
-        private void SetUnknown1Value(string gcxFile, byte[] gcxContents, byte unknown1)
+        private void SetUnknown1Value(string gcxFile, ref byte[] gcxContents, byte unknown1)
         {
             List<int> unknown1Sets = GcxEditor.FindAllSubArray(gcxContents, Unknown1SetBytes);
             foreach (int unknown1Set in unknown1Sets)
                 Array.Copy(BitConverter.GetBytes(unknown1), 0, gcxContents, unknown1Set + Unknown1SetBytes.Length, sizeof(byte));
         }
 
-        private void SetUnknown2Value(string gcxFile, byte[] gcxContents, byte unknown2)
+        private void SetUnknown2Value(string gcxFile, ref byte[] gcxContents, byte unknown2)
         {
             List<int> unknown2Sets = GcxEditor.FindAllSubArray(gcxContents, Unknown2SetBytes);
             foreach (int unknown2Set in unknown2Sets)
                 Array.Copy(BitConverter.GetBytes(unknown2), 0, gcxContents, unknown2Set + Unknown2SetBytes.Length, sizeof(byte));
         }
 
-        private void SetNormalGuardValues(string gcxFile, byte[] gcxContents, GuardValues guardValues)
+        private void SetNormalGuardValues(string gcxFile, ref byte[] gcxContents, GuardValues guardValues)
         {
-            SetNormalVision(gcxFile, gcxContents, guardValues.NormalVision);
-            SetAlertVision(gcxFile, gcxContents, guardValues.AlertVision);
-            SetEvasionVision(gcxFile, gcxContents, guardValues.EvasionVision);
-            SetHearingRange(gcxFile, gcxContents, guardValues.HearingDistance);
-            SetLifeValue(gcxFile, gcxContents, guardValues.LValue);
-            SetHitsToStunValue(gcxFile, gcxContents, guardValues.HitsToStun);
-            SetSleepDuration(gcxFile, gcxContents, guardValues.SleepDuration);
-            SetStunDuration(gcxFile, gcxContents, guardValues.StunDuration);
-            SetUnknown1Value(gcxFile, gcxContents, guardValues.Unknown1);
-            SetUnknown2Value(gcxFile, gcxContents, guardValues.Unknown2);
+            SetNormalVision(gcxFile, ref gcxContents, guardValues.NormalVision);
+            SetAlertVision(gcxFile, ref gcxContents, guardValues.AlertVision);
+            SetEvasionVision(gcxFile, ref gcxContents, guardValues.EvasionVision);
+            SetHearingRange(gcxFile, ref gcxContents, guardValues.HearingDistance);
+            SetLifeValue(gcxFile, ref gcxContents, guardValues.LValue);
+            SetHitsToStunValue(gcxFile, ref gcxContents, guardValues.HitsToStun);
+            SetSleepDuration(gcxFile, ref gcxContents, guardValues.SleepDuration);
+            SetStunDuration(gcxFile, ref gcxContents, guardValues.StunDuration);
+            SetUnknown1Value(gcxFile, ref gcxContents, guardValues.Unknown1);
+            SetUnknown2Value(gcxFile, ref gcxContents, guardValues.Unknown2);
         }
 
-        private void SetW42aTenguValues(byte[] gcxContents, GuardValues guardValues)
+        private void SetW42aTenguValues(ref byte[] gcxContents, GuardValues guardValues)
         {
             int normalVisionOffset = 0xA;
             int alertVisionOffset = 0xD;
@@ -1557,7 +1557,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void SetW44aTenguValues(byte[] gcxContents, GuardValues guardValues)
+        private void SetW44aTenguValues(ref byte[] gcxContents, GuardValues guardValues)
         {
             //need to alter varbuf_0x9A8 (Vision) and varbuf_0x9AA (HP)
             int alertVisionOffset = 0x6;
@@ -1578,7 +1578,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void SetW45aTenguValues(byte[] gcxContents, GuardValues guardValues)
+        private void SetW45aTenguValues(ref byte[] gcxContents, GuardValues guardValues)
         {
             //need to alter varbuf_0xA0C (Life) and varbuf_0xA0E (Hits to stun)
             int hpValueOffset = 0x6;
@@ -1608,21 +1608,21 @@ namespace MGS2_Randomizer
             foreach (string gcxFile in gcxFilesToEdit)
             {
                 gcxContents = File.ReadAllBytes(gcxFile);
-                SetNormalGuardValues(gcxFile, gcxContents, guardValues);
+                SetNormalGuardValues(gcxFile, ref gcxContents, guardValues);
 
                 if (gcxFile.Contains("w42a"))
                 {
-                    SetW42aTenguValues(gcxContents, guardValues);
+                    SetW42aTenguValues(ref gcxContents, guardValues);
                 }
 
                 if (gcxFile.Contains("w44a"))
                 {
-                    SetW44aTenguValues(gcxContents, guardValues);
+                    SetW44aTenguValues(ref gcxContents, guardValues);
                 }
 
                 if (gcxFile.Contains("w45a"))
                 {
-                    SetW45aTenguValues(gcxContents, guardValues);
+                    SetW45aTenguValues(ref gcxContents, guardValues);
                 }
 
                 if (!levelConsistency)
@@ -1807,6 +1807,7 @@ namespace MGS2_Randomizer
                 File.WriteAllBytes(gcxFile, gcxContents);
 
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12c"));
+                gcxContents = File.ReadAllBytes(gcxFile);
                 SetC4Location(gcxContents, BulC4InitBytes, roofLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
@@ -1914,8 +1915,8 @@ namespace MGS2_Randomizer
             int diningHall = Randomizer.Next(8);
             ByteLocation location = new ByteLocation();
             int xLocationOffset = 0xD;
-            int yLocationOffset = 0xF;
-            int zLocationOffset = 0x11;
+            int yLocationOffset = 0x12;
+            int zLocationOffset = 0x15;
             byte[] diningHallC4DeclarationBytes = new byte[] { 0x20, 0x99, 0x61, 0x59 };
             switch (diningHall)
             {
@@ -2207,9 +2208,9 @@ namespace MGS2_Randomizer
         {
             int armory = Randomizer.Next(9);
             ByteLocation location = new ByteLocation();
-            int xLocationOffset = 0xD;
-            int yLocationOffset = 0xF;
-            int zLocationOffset = 0x11;
+            int xLocationOffset = 0xB;
+            int yLocationOffset = 0x10;
+            int zLocationOffset = 0x13;
             byte[] armoryC4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x25, 0x6F, 0x3A };
             switch (armory)
             {
@@ -2523,6 +2524,11 @@ namespace MGS2_Randomizer
                 _randomizedItems.PlantCard5Set.Entities.Add(entity.Key, entity.Value);
             }
 
+            OverwritePlantSet();
+        }
+
+        private void OverwritePlantSet()
+        {
             //Need to populate PlantSet10 entities as it is the one used to write the randomization to the gcx files
             foreach (var entity in _randomizedItems.PlantCard5Set.Entities)
             {
@@ -2982,7 +2988,7 @@ namespace MGS2_Randomizer
             List<KeyValuePair<Location, Item>> partSpawnsForItemToSwapWith = partSpawns.Where(spawn => (spawn.Value.Name == itemToSwapWith.Name)
             && spawn.Key.MandatorySpawn
             && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[itemToFix])).ToList();
-            KeyValuePair<Location, Item> spawnToSwap = partSpawns[Randomizer.Next(0, partSpawnsForItemToSwapWith.Count - 1)]; //could this be just count? i think so?
+            KeyValuePair<Location, Item> spawnToSwap = partSpawns[Randomizer.Next(0, partSpawnsForItemToSwapWith.Count)]; //could this be just count? i think so?
 
             SwapSpawnContents(itemSet, spawnToSwap, progressiveSpawn);
         }
@@ -3070,8 +3076,8 @@ namespace MGS2_Randomizer
             KeyValuePair<Location, Item> socomSpawn = itemSet.Entities.FirstOrDefault(spawn => spawn.Value.Name == itemToFix.Name);
             List<KeyValuePair<Location, Item>> part1SocomAmmoSpawns = partSpawns.Where(spawn => spawn.Value.Name == itemToSwapWith.Name
             && spawn.Key.MandatorySpawn
-            && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[MGS2Weapons.Socom] : true)).ToList();
-            KeyValuePair<Location, Item> ammoSpawnToSwap = part1SocomAmmoSpawns[Randomizer.Next(0, part1SocomAmmoSpawns.Count - 1)]; //could this just be .Count? i think so?
+            && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[itemToFix] : true)).ToList();
+            KeyValuePair<Location, Item> ammoSpawnToSwap = part1SocomAmmoSpawns[Randomizer.Next(0, part1SocomAmmoSpawns.Count)]; 
 
             SwapSpawnContents(itemSet, ammoSpawnToSwap, socomSpawn);
         }
@@ -3081,7 +3087,7 @@ namespace MGS2_Randomizer
             KeyValuePair<Location, Item> cardSpawn = cardSpawns.Where(spawn => spawn.Value.Name == cardToFix.Name).FirstOrDefault();
             List<KeyValuePair<Location, Item>> mandatorySpawnsInAccessLevel = itemSet.Entities.Where(spawn => spawn.Key.MandatorySpawn
                 && spawn.Key.CardNeededToAccess == accessLevel).ToList();
-            KeyValuePair<Location, Item> spawnToSwap = mandatorySpawnsInAccessLevel[Randomizer.Next(0, mandatorySpawnsInAccessLevel.Count - 1)];
+            KeyValuePair<Location, Item> spawnToSwap = mandatorySpawnsInAccessLevel[Randomizer.Next(0, mandatorySpawnsInAccessLevel.Count)];
 
             SwapSpawnContents(masterItemSet.PlantCard5Set, spawnToSwap, cardSpawn);
         }
@@ -3205,7 +3211,8 @@ namespace MGS2_Randomizer
                     }
                 }
             }
-            
+
+            OverwritePlantSet();
             #endregion
 
             return true;
@@ -3221,9 +3228,9 @@ namespace MGS2_Randomizer
             return spawningFunctions.Any(function => func.DecodedContents.Contains(function));
         }
 
-        private void OpenFileForRandomization(GcxEditor gcx_Editor, ProcEditor procEditor, Dictionary<string, OpenedFileData> openedFiles, string gcxFile, string stageToEdit, KeyValuePair<Location, Item> spawnToEdit, List<DecodedProc> spawns)
+        private OpenedFileData OpenFileForRandomization(Dictionary<string, OpenedFileData> openedFiles, string gcxFile, string stageToEdit, KeyValuePair<Location, Item> spawnToEdit)
         {
-            gcx_Editor = new GcxEditor();
+            GcxEditor gcx_Editor = new GcxEditor();
             try
             {
                 gcx_Editor.CallDecompiler(gcxFile);
@@ -3235,15 +3242,17 @@ namespace MGS2_Randomizer
             try
             {
                 List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                spawns = new List<DecodedProc>();
+                List<DecodedProc> spawns = new List<DecodedProc>();
                 foreach (DecodedProc entry in allFileFunctions)
                 {
                     if (ContainsSpawningFunctions(entry))
                         spawns.Add(entry);
                 }
                 AddAllProcs(gcx_Editor);
-                procEditor = new ProcEditor(spawns, true);
+                ProcEditor procEditor = new ProcEditor(spawns, true);
                 openedFiles.Add(stageToEdit, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+
+                return new OpenedFileData() { DecodedProcs = spawns, ProcEditor = procEditor, GcxEditor = gcx_Editor };
             }
             catch (Exception e)
             {
@@ -3251,21 +3260,17 @@ namespace MGS2_Randomizer
             }
         }
 
-        private OpenedFileData GetObjectsFromOpenedFileData(Dictionary<string, OpenedFileData> openedFiles, GcxEditor gcx_Editor, ProcEditor procEditor, List<DecodedProc> spawns, string gcxFile)
-        {
-            OpenedFileData openedFileData = openedFiles[gcxFile];
-            gcx_Editor = openedFileData.GcxEditor;
-            spawns = openedFileData.DecodedProcs;
-            procEditor = openedFileData.ProcEditor;
-
-            return openedFileData;
-        }
-
-        private void ModifySpawnInMemory(string gcxFile, KeyValuePair<Location, Item> spawnToEdit, ProcEditor procEditor, string cheatSheet)
+        private string ModifySpawnInMemory(string gcxFile, KeyValuePair<Location, Item> spawnToEdit, ProcEditor procEditor, string cheatSheet)
         {
             cheatSheet += $"{gcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
+            /*if (_vanillaItems.TankerPart3.Entities[spawnToEdit.Key].Name != spawnToEdit.Value.Name)
+            {
+
+            }*/
             procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
             procEditor.SaveAutomatedChangesToMemory();
+
+            return cheatSheet;
         }
 
         private void FixPlantReferencesForTanker(byte[] newGcxBytes)
@@ -3284,38 +3289,47 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void ProcessSpawnToEdit(KeyValuePair<Location, Item> spawnToEdit, Dictionary<string, OpenedFileData> openedFiles, string cheatSheet)
+        private string ProcessSpawnToEdit(KeyValuePair<Location, Item> spawnToEdit, Dictionary<string, OpenedFileData> openedFiles, string cheatSheet)
         {
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
-            GcxEditor gcx_Editor = null;
             List<DecodedProc> spawns = null;
             ProcEditor procEditor = null;
 
             if (!openedFiles.ContainsKey(spawnToEdit.Key.GcxFile))
             {
-                OpenFileForRandomization(gcx_Editor, procEditor, openedFiles, gcxFile, spawnToEdit.Key.GcxFile, spawnToEdit, spawns);
+                OpenedFileData openedFileData = OpenFileForRandomization(openedFiles, gcxFile, spawnToEdit.Key.GcxFile, spawnToEdit);
+                spawns = openedFileData.DecodedProcs;
+                procEditor = openedFileData.ProcEditor;
             }
             else
             {
-                OpenedFileData openedFileData = GetObjectsFromOpenedFileData(openedFiles, gcx_Editor, procEditor, spawns, spawnToEdit.Key.GcxFile);
+                OpenedFileData openedFileData = openedFiles[spawnToEdit.Key.GcxFile];
+                spawns = openedFileData.DecodedProcs;
+                procEditor = openedFileData.ProcEditor;
             }
 
-            ModifySpawnInMemory(spawnToEdit.Key.GcxFile, spawnToEdit, procEditor, cheatSheet);
+            cheatSheet = ModifySpawnInMemory(spawnToEdit.Key.GcxFile, spawnToEdit, procEditor, cheatSheet);
 
             if (spawnToEdit.Key.SisterSpawn != null)
             {
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.SisterSpawn}"));
                 if (!openedFiles.ContainsKey(spawnToEdit.Key.SisterSpawn))
                 {
-                    OpenFileForRandomization(gcx_Editor, procEditor, openedFiles, gcxFile, spawnToEdit.Key.SisterSpawn, spawnToEdit, spawns);
+                    OpenedFileData openedFileData = OpenFileForRandomization(openedFiles, gcxFile, spawnToEdit.Key.SisterSpawn, spawnToEdit);
+                    spawns = openedFileData.DecodedProcs;
+                    procEditor = openedFileData.ProcEditor;
                 }
                 else
                 {
-                    OpenedFileData openedFileData = GetObjectsFromOpenedFileData(openedFiles, gcx_Editor, procEditor, spawns, spawnToEdit.Key.SisterSpawn);
+                    OpenedFileData openedFileData = openedFiles[spawnToEdit.Key.SisterSpawn];
+                    spawns = openedFileData.DecodedProcs;
+                    procEditor = openedFileData.ProcEditor;
                 }
 
-                ModifySpawnInMemory(spawnToEdit.Key.SisterSpawn, spawnToEdit, procEditor, cheatSheet);
+                cheatSheet = ModifySpawnInMemory(spawnToEdit.Key.SisterSpawn, spawnToEdit, procEditor, cheatSheet);
             }
+
+            return cheatSheet;
         }
 
         private void SaveFileToDisk(KeyValuePair<string, OpenedFileData> kvp, bool customDirectory, DirectoryInfo createdDirectory)
@@ -3344,13 +3358,13 @@ namespace MGS2_Randomizer
             RandomizationForm._logger.Debug("Saving tanker randomization to memory...");
             foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.TankerPart3.Entities)
             {
-                ProcessSpawnToEdit(spawnToEdit, openedFiles, cheatSheet);
+                cheatSheet = ProcessSpawnToEdit(spawnToEdit, openedFiles, cheatSheet);
             }
-            
+
             RandomizationForm._logger.Debug("Saving plant randomization to memory...");
             foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.PlantSet10.Entities)
             {
-                ProcessSpawnToEdit(spawnToEdit, openedFiles, cheatSheet);
+                cheatSheet = ProcessSpawnToEdit(spawnToEdit, openedFiles, cheatSheet);
             }
 
             DirectoryInfo createdDirectory = new DirectoryInfo(Environment.CurrentDirectory);
