@@ -7,21 +7,6 @@ using System.Threading.Tasks;
 
 namespace MGS2_Randomizer
 {
-    /*
-     * {
-  "mgs2ExePath": "C:/Program Files (x86)/Steam/steamapps/common/MGS2/METAL GEAR SOLID2.exe",
-  "lastOptionsSelected": {
-    "NoHardLogicLocks": true,
-    "NikitaShell2": true,
-    "RandomizeStartingItems": false,
-    "RandomizeAutomaticRewards": false,
-    "RandomizeClaymores": false,
-    "RandomizeC4": false,
-    "IncludeRations": false,
-    "AllWeaponsSpawnable": false
-  }
-}
-*/
     internal class Config
     {
         [JsonPropertyName("mgs2ExePath")]

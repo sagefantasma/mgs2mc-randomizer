@@ -22,7 +22,6 @@ namespace MGS2_Randomizer
         private DirectoryInfo ResourceSuperDirectory { get; set; }
         private DirectoryInfo OriginalGcxFilesDirectory { get; set; }
         private List<string> GcxFileDirectory { get; set; }
-        static GcxEditor gcxEditor = new GcxEditor();
 
         private static MGS2ItemSet _vanillaItems;
         private static MGS2ItemSet _randomizedItems;
@@ -42,11 +41,6 @@ namespace MGS2_Randomizer
         private readonly byte WeaponIndexBase = 0xBB;
         private readonly byte ItemIndexBase = 0xBD;
         private string SpoilerContents = "";
-        private int PlantSet2CardsRequired = 1;
-        private int PlantSet3CardsRequired = 2;
-        private int PlantSet6CardsRequired = 3;
-        private int PlantSet7CardsRequired = 4;
-        private int PlantSet9CardsRequired = 5;
         private readonly byte[] NormalVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xDE, 0x01 };
         private readonly byte[] AlertVisionSetBytes = new byte[] { 0xA0, 0x39, 0x11, 0x00, 0x01, 0xE0, 0x01 };
         private readonly byte[] EvasionVisionSetBytes = new byte[] { 0x39, 0x11, 0x00, 0x01, 0xE2, 0x01 };
@@ -58,55 +52,97 @@ namespace MGS2_Randomizer
         private readonly byte[] Unknown1SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xEA };
         private readonly byte[] Unknown2SetBytes = new byte[] { 0x37, 0x11, 0x00, 0x01, 0xF4 };
         private readonly byte[] BulC4InitBytes = { 0x11, 0xBB, 0xDB, 0x06 };
+        private const byte GcxDecimalZero = 0xC1;
+        private const byte GcxDecimalOne = 0xC2;
 
 
         private static List<RandomizedItem> MasterRaidenItemAwardOptions = new List<RandomizedItem> {
-            new RandomizedItem{Index = 1+0xC1, Count = 2+0xC1,Name = "Ration" }, new RandomizedItem{Index = 3+0xC1, Count = 1+0xC1, Name = "Cold Medicine" },
-            new RandomizedItem{Index = 4+0xC1, Count = 5+0xC1, Name = "Bandages" },new RandomizedItem{Index = 5+0xC1, Count = 5+0xC1, Name = "Pentazemin" },
-            new RandomizedItem{Index = 6+0xC1, Count = 1+0xC1, Name = "B.D.U" },new RandomizedItem{Index = 7 + 0xC1,Count = 1 + 0xC1, Name = "Body Armor" },
-            new RandomizedItem{Index = 8+0xC1, Count = 1 + 0xC1, Name = "Stealth" },new RandomizedItem{Index = 9 + 0xC1, Count = 1 + 0xC1, Name = "Mine Detector" },
-            new RandomizedItem{Index = 10+0xC1, Count = 1 + 0xC1, Name = "Sensor A" }, new RandomizedItem{Index = 11 + 0xC1, Count = 1 + 0xC1, Name = "Sensor B" },
-            new RandomizedItem{Index = 12+0xC1, Count = 1 + 0xC1, Name = "N.V.G." }, new RandomizedItem{Index = 13 + 0xC1, Count = 1 + 0xC1, Name = "Thermal Goggles" },
-            new RandomizedItem{Index = 14+0xC1, Count = 1 + 0xC1, Name = "Scope" }, new RandomizedItem{Index = 15 + 0xC1, Count = 1 + 0xC1, Name = "Digital Camera" },
-            new RandomizedItem{Index = 16+0xC1, Count = 21 + 0xC1, Name = "Box 1" }, new RandomizedItem{Index = 17 + 0xC1, Count = 1 + 0xC1, Name = "Cigarettes" },
-            /*new RandomizedItem{Index = 18+0xC1, Count = 1 + 0xC1, Name = "Card 1" },*/ new RandomizedItem{Index = 19 + 0xC1, Count = 1 + 0xC1, Name = "Shaver" },
-            new RandomizedItem{Index = 20+0xC1, Count = 1 + 0xC1, Name = "Phone" }, new RandomizedItem{Index = 22 + 0xC1, Count = 21 + 0xC1, Name = "Box 2" },
-            new RandomizedItem{Index = 23+0xC1, Count = 21 + 0xC1, Name = "Box 3" },new RandomizedItem{Index = 25 + 0xC1, Count = 1 + 0xC1, Name = "A.P. Sensor" },
-            new RandomizedItem{Index = 26+0xC1, Count = 21 + 0xC1, Name = "Box 4" }, new RandomizedItem{Index = 27 + 0xC1, Count = 21 + 0xC1, Name = "Box 5" },
-            new RandomizedItem{Index = 29+0xC1, Count = 1 + 0xC1, Name = "SOCOM Suppressor" }, new RandomizedItem{Index = 30 + 0xC1, Count = 1 + 0xC1, Name = "AK Suppressor" },
-            new RandomizedItem{Index = 34+0xC1, Count = 1 + 0xC1, Name = "M.O. Disc" }, new RandomizedItem{Index = 36 + 0xC1, Count = 1 + 0xC1, Name = "Infinity Wig" },
-            new RandomizedItem{Index = 37+0xC1, Count = 1 + 0xC1, Name = "Blue Wig" }, new RandomizedItem{Index = 38 + 0xC1, Count = 1 + 0xC1, Name = "Orange Wig" },
-            /*new RandomizedItem{Index = 18+0xC1, Count = 2 + 0xC1, Name = "Card 2" }, new RandomizedItem{Index = 18 + 0xC1, Count = 3 + 0xC1, Name = "Card 3" },
-            new RandomizedItem{Index = 18+0xC1, Count = 4+0xC1, Name = "Card 4" }, new RandomizedItem{Index = 18 + 0xC1, Count = 5 + 0xC1, Name = "Card 5" }*/ };
+            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Ration" }, 
+            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cold Medicine" },
+            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Bandages" },
+            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Pentazemin" },
+            new RandomizedItem{Index = 6 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "B.D.U" },
+            new RandomizedItem{Index = 7 + GcxDecimalZero,Count = 1 + GcxDecimalZero, Name = "Body Armor" },
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Stealth" },
+            new RandomizedItem{Index = 9 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Mine Detector" },
+            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Sensor A" }, 
+            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Sensor B" },
+            new RandomizedItem{Index = 12 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "N.V.G." }, 
+            new RandomizedItem{Index = 13 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Thermal Goggles" },
+            new RandomizedItem{Index = 14 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Scope" }, 
+            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Digital Camera" },
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 1" }, 
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cigarettes" },
+            /*new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Card 1" },*/ 
+            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Shaver" },
+            new RandomizedItem{Index = 20 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Phone" }, 
+            new RandomizedItem{Index = 22 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 2" },
+            new RandomizedItem{Index = 23 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 3" },
+            new RandomizedItem{Index = 25 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "A.P. Sensor" },
+            new RandomizedItem{Index = 26 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 4" }, 
+            new RandomizedItem{Index = 27 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 5" },
+            new RandomizedItem{Index = 29 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "SOCOM Suppressor" }, 
+            new RandomizedItem{Index = 30 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "AK Suppressor" },
+            new RandomizedItem{Index = 34 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "M.O. Disc" }, 
+            new RandomizedItem{Index = 36 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Infinity Wig" },
+            new RandomizedItem{Index = 37 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Blue Wig" }, 
+            new RandomizedItem{Index = 38 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Orange Wig" },
+            /*new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Card 2" }, 
+             * new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 3 + GcxDecimalZero, Name = "Card 3" },
+            new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Card 4" }, 
+            new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Card 5" }*/ 
+        };
         private List<RandomizedItem> RaidenItemAwardOptions;
 
         private static List<RandomizedItem> MasterRaidenWeaponAwardOptions = new List<RandomizedItem> {
-            new RandomizedItem{Index = 3 + 0xC1, Count = 12 + 0xC1, Name= "SOCOM" }, new RandomizedItem{Index = 5 + 0xC1, Count = 10 + 0xC1, Name= "RGB6" },
-            new RandomizedItem{Index = 7 + 0xC1,Count = 10 + 0xC1, Name = "Stinger" }, new RandomizedItem{Index = 14 + 0xC1,Count = 1 + 0xC1,Name = "Coolant" },
-            new RandomizedItem{Index = 18 + 0xC1,Count = 60 + 0xC1,Name= "M4" }, new RandomizedItem{Index = 19 + 0xC1,Count = 20 + 0xC1,Name= "PSG1T" },
-            new RandomizedItem{Index = 21 + 0xC1,Count = 5 + 0xC1, Name= "Book" }, new RandomizedItem{Index = 6 + 0xC1, Count = 10 + 0xC1, Name = "Nikita" },
-            new RandomizedItem{Index = 1 + 0xC1,Count = 15 + 0xC1, Name= "M9" }, new RandomizedItem{Index = 4 + 0xC1, Count = 10 + 0xC1, Name = "PSG1" },
-            new RandomizedItem{Index = 8 + 0xC1,Count = 5 + 0xC1, Name= "Claymore" }, new RandomizedItem{Index = 8 + 0xC1, Count = 5 + 0xC1, Name = "C4" },
-            new RandomizedItem{Index = 10 + 0xC1,Count = 2 + 0xC1, Name= "Chaff Grenade" }, new RandomizedItem{Index = 11 + 0xC1, Count = 2 + 0xC1, Name = "Stun Grenade" },
-            new RandomizedItem{Index = 12 + 0xC1,Count = 1 + 0xC1, Name= "Directional Microphone" }, new RandomizedItem{Index = 15 + 0xC1, Count = 60 + 0xC1, Name = "AKS-74u" },
-            new RandomizedItem{Index = 16 + 0xC1,Count = 5 + 0xC1, Name= "Magazine" }, new RandomizedItem{Index = 17 + 0xC1, Count = 2 + 0xC1, Name = "Grenade" },
+            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 12 + GcxDecimalZero, Name = "SOCOM" }, 
+            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "RGB6" },
+            new RandomizedItem{Index = 7 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "Stinger" }, 
+            new RandomizedItem{Index = 14 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Coolant" },
+            new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 60 + GcxDecimalZero, Name = "M4" }, 
+            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 20 + GcxDecimalZero, Name = "PSG1T" },
+            new RandomizedItem{Index = 21 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Book" }, 
+            new RandomizedItem{Index = 6 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "Nikita" },
+            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 15 + GcxDecimalZero, Name = "M9" }, 
+            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "PSG1" },
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Claymore" }, 
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "C4" },
+            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Chaff Grenade" }, 
+            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Stun Grenade" },
+            new RandomizedItem{Index = 12 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Directional Microphone" }, 
+            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 60 + GcxDecimalZero, Name = "AKS-74u" },
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Magazine" }, 
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Grenade" },
         };
         private List<RandomizedItem> RaidenWeaponAwardOptions;
 
-        private static List<RandomizedItem> MasterSnakeItemAwardOptions = new List<RandomizedItem> { new RandomizedItem { Index = 1 + 0xC1, Count = 2, Name = "Ration" },
-            new RandomizedItem{Index = 3 + 0xC1, Count = 1 + 0xC1, Name = "Cold Medicine" },new RandomizedItem{Index = 4 + 0xC1, Count = 5 + 0xC1, Name = "Bandage" },
-            new RandomizedItem{Index = 5 + 0xC1, Count = 5 + 0xC1, Name = "Pentazemin" }, new RandomizedItem{Index = 8 + 0xC1, Count = 1 + 0xC1, Name = "Stealth" },
-            new RandomizedItem{Index = 9 + 0xC1, Count = 1 + 0xC1, Name = "Mine Detector" }, new RandomizedItem{Index = 13 + 0xC1, Count = 1 + 0xC1, Name = "Thermals" },
-            new RandomizedItem{Index = 21 + 0xC1, Count = 1 + 0xC1, Name = "Camera" }, new RandomizedItem{Index = 15 + 0xC1, Count = 1 + 0xC1, Name = "Digital Camera" },
-            new RandomizedItem{Index = 16 + 0xC1, Count = 21 + 0xC1, Name = "Box 1" }, new RandomizedItem{Index = 17 + 0xC1, Count = 1 + 0xC1, Name = "Cigarettes" },
-            new RandomizedItem{Index = 19 + 0xC1, Count = 1 + 0xC1, Name = "Shaver" }, new RandomizedItem{Index = 25 + 0xC1, Count = 1 + 0xC1, Name = "A.P. Sensor" },
-            new RandomizedItem{Index = 35 + 0xC1, Count = 1 + 0xC1, Name = "USP Suppressor" }, new RandomizedItem{Index = 32 + 0xC1, Count = 1 + 0xC1, Name = "Bandana" } };
+        private static List<RandomizedItem> MasterSnakeItemAwardOptions = new List<RandomizedItem> { 
+            new RandomizedItem { Index = 1 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Ration" },
+            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cold Medicine" },
+            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Bandage" },
+            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Pentazemin" }, 
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Stealth" },
+            new RandomizedItem{Index = 9 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Mine Detector" }, 
+            new RandomizedItem{Index = 13 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Thermals" },
+            new RandomizedItem{Index = 21 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Camera" }, 
+            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Digital Camera" },
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 1" }, 
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cigarettes" },
+            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Shaver" }, 
+            new RandomizedItem{Index = 25 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "A.P. Sensor" },
+            new RandomizedItem{Index = 35 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "USP Suppressor" }, 
+            new RandomizedItem{Index = 32 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Bandana" } 
+        };
         private List<RandomizedItem> SnakeItemAwardOptions;
 
         private static List<RandomizedItem> MasterSnakeWeaponAwardOptions = new List<RandomizedItem> {
-            new RandomizedItem{Index = 2 + 0xC1, Count = 12 + 0xC1, Name= "USP" }, new RandomizedItem{Index = 1 + 0xC1, Count = 15 + 0xC1, Name= "M9" },
-            new RandomizedItem{Index = 11 + 0xC1,Count = 4 + 0xC1, Name = "Stun Grenade" }, new RandomizedItem{Index = 10 + 0xC1,Count = 4 + 0xC1,Name = "Chaff Grenade" },
-            new RandomizedItem{Index = 17 + 0xC1, Count = 4 + 0xC1, Name = "Grenade" }, new RandomizedItem{Index = 16 + 0xC1, Count = 10 + 0xC1, Name = "Magazine" } };
+            new RandomizedItem{Index = 2 + GcxDecimalZero, Count = 12 + GcxDecimalZero, Name = "USP" }, 
+            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 15 + GcxDecimalZero, Name = "M9" },
+            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Stun Grenade" }, 
+            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Chaff Grenade" },
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Grenade" }, 
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "Magazine" } 
+        };
         private List<RandomizedItem> SnakeWeaponAwardOptions;
 
         public MGS2Randomizer(string mgs2Directory, int seed = 0)
@@ -427,7 +463,7 @@ namespace MGS2_Randomizer
             //Snake starts with M9, so randomize that
             List<int> snakeWeaponAward = GcxEditor.FindAllSubArray(gcxContents, TankerInitializeWeaponsArray);
             RandomizedItem randomTankerStartingWeapon = GetRandomItem(true, false);
-            int indexToModify = randomTankerStartingWeapon.Index - 0xC1;
+            int indexToModify = randomTankerStartingWeapon.Index - GcxDecimalZero;
             byte[] newInitializeWeaponsArray = new byte[emptyInitializeWeaponsArray.Length + 3];
             Array.Copy(emptyInitializeWeaponsArray, newInitializeWeaponsArray, indexToModify);
             Array.Copy(snakeStartingAmmoBytes, 0, newInitializeWeaponsArray, indexToModify, snakeStartingAmmoBytes.Length);
@@ -447,7 +483,7 @@ namespace MGS2_Randomizer
 
             int cameraIndex = GcxEditor.FindSubArray(w00aByteContents, new byte[] { 0x39, 0x21, 0x80, 0x01, 0xEC, 0xF1, 0xD6, 0xC2 }) + 7;
 
-            w00aByteContents[cameraIndex] = 0xC1;
+            w00aByteContents[cameraIndex] = GcxDecimalZero;
             File.WriteAllBytes(w00aFile, w00aByteContents);
         }
 
@@ -459,11 +495,11 @@ namespace MGS2_Randomizer
 
             List<int> autoMenuInitId = GcxEditor.FindAllSubArray(w00aContents, new byte[] { 0x86, 0x3A, 0xA2 });
 
-            w00aContents[autoMenuInitId[0] + 8] = 0xC1;
-            w00aContents[autoMenuInitId[0] + 9] = 0xC1;
+            w00aContents[autoMenuInitId[0] + 8] = GcxDecimalZero;
+            w00aContents[autoMenuInitId[0] + 9] = GcxDecimalZero;
 
-            w00aContents[autoMenuInitId[1] + 14] = 0xC1;
-            w00aContents[autoMenuInitId[1] + 18] = 0xC1;
+            w00aContents[autoMenuInitId[1] + 14] = GcxDecimalZero;
+            w00aContents[autoMenuInitId[1] + 18] = GcxDecimalZero;
             File.WriteAllBytes(w00a, w00aContents);
         }
 
@@ -514,19 +550,19 @@ namespace MGS2_Randomizer
             List<int> selectedRandomItemIndices = new List<int>();
             foreach (RandomizedItem item in randomStartingItems)
             {
-                selectedRandomItemIndices.Add(item.Index - 0xC1);
+                selectedRandomItemIndices.Add(item.Index - GcxDecimalZero);
             }
             selectedRandomItemIndices.Sort();
 
             byte[] newInitializeItemsArray = new byte[EmptyInitializeItemsArray.Length + 3];
-            newInitializeItemsArray[0] = 0xC2;
+            newInitializeItemsArray[0] = GcxDecimalOne;
             for (int i = 1; i < newInitializeItemsArray.Length; i++)
             {
                 if (selectedRandomItemIndices.Contains(i))
                 {
                     if (selectedRandomItemIndices.Count > 1)
                     {
-                        newInitializeItemsArray[i] = 0xC2;
+                        newInitializeItemsArray[i] = GcxDecimalOne;
                         selectedRandomItemIndices.Remove(i);
                     }
                     else
@@ -537,7 +573,7 @@ namespace MGS2_Randomizer
                 }
                 else
                 {
-                    newInitializeItemsArray[i] = 0xC1;
+                    newInitializeItemsArray[i] = GcxDecimalZero;
                 }
             }
             foreach (int location in itemAwardLocations)
@@ -1109,17 +1145,17 @@ namespace MGS2_Randomizer
             //Value consistency will decide whether values will be all relatively similar, or completely random (i.e., guards could have drastically different hearing and vision values if false)
             //Insanity scalar will be used to "rein in" the randomization - .25f is right around the normal range for the game)
 
-            byte scaledByteMax = (byte)((0xFF - 0xC1) * insanityScalar + 0xC1);
+            byte scaledByteMax = (byte)((0xFF - GcxDecimalZero) * insanityScalar + GcxDecimalZero);
             short normalVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short alertVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short evasionVision = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short hearingRange = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short lValue = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
-            byte hitsToStun = (byte)Randomizer.Next(0xC1, scaledByteMax);
+            byte hitsToStun = (byte)Randomizer.Next(GcxDecimalZero, scaledByteMax);
             short sleepDuration = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
             short stunDuration = (short)(Randomizer.Next(0, 0x7FFF) * insanityScalar);
-            byte unknown1 = (byte)Randomizer.Next(0xC1, scaledByteMax);
-            byte unknown2 = (byte)Randomizer.Next(0xC1, scaledByteMax);
+            byte unknown1 = (byte)Randomizer.Next(GcxDecimalZero, scaledByteMax);
+            byte unknown2 = (byte)Randomizer.Next(GcxDecimalZero, scaledByteMax);
 
             if (valueConsistency)
             {
@@ -1273,7 +1309,7 @@ namespace MGS2_Randomizer
         private void RandomizeNormalGuard(string gcxFile, byte[] gcxContents, Dictionary<int, List<int>> chosenRoutes, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior, int routeDesignation, int indexDesignation)
         {
             Route randomlySelectedRoute = GetRandomNormalGuardRoute(gcxFile, chosenRoutes, guardRouteBehavior);
-            gcxContents[routeDesignation] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+            gcxContents[routeDesignation] = (byte)(GcxDecimalZero + (byte)randomlySelectedRoute.Id);
             int startingIndex = GetStartingIndex(chosenRoutes, randomlySelectedRoute, guardRouteBehavior);
             gcxContents[indexDesignation] = (byte)startingIndex;
 
@@ -1302,12 +1338,12 @@ namespace MGS2_Randomizer
 
         private int GetStartingIndex(Dictionary<int, List<int>> chosenRoutes, Route randomlySelectedRoute, RandomizationOptions.RouteRandomizationBehavior guardRouteBehavior)
         {
-            int startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+            int startingIndex = GcxDecimalZero + Randomizer.Next(0, randomlySelectedRoute.Indices);
             if (chosenRoutes.ContainsKey(randomlySelectedRoute.Id))
             {
                 while (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoNodeShare && chosenRoutes[randomlySelectedRoute.Id].Contains(startingIndex))
                 {
-                    startingIndex = 0xC1 + Randomizer.Next(0, randomlySelectedRoute.Indices);
+                    startingIndex = GcxDecimalZero + Randomizer.Next(0, randomlySelectedRoute.Indices);
                 }
             }
 
@@ -1323,7 +1359,7 @@ namespace MGS2_Randomizer
             }
             if (randomlySelectedRoute != null)
             {
-                gcxContents[callOffset + 8] = (byte)(0xC1 + (byte)randomlySelectedRoute.Id);
+                gcxContents[callOffset + 8] = (byte)(GcxDecimalZero + (byte)randomlySelectedRoute.Id);
                 if (guardRouteBehavior == RandomizationOptions.RouteRandomizationBehavior.NoRouteShare)
                     chosenRoutes.Add(randomlySelectedRoute.Id, new List<int> { });
             }
@@ -1362,7 +1398,7 @@ namespace MGS2_Randomizer
             foreach (int explicit3ByteIdCall in explicitByteIdCalls)
             {
                 int paramEDesignation = FindClosestGreaterValue(paramEDesignationCalls, explicit3ByteIdCall);
-                gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(0xC1, 0xC6);
+                gcxContents[paramEDesignation + 2] = (byte)Randomizer.Next(GcxDecimalZero, 0xC6);
             }
         }
 
@@ -1370,7 +1406,7 @@ namespace MGS2_Randomizer
         {
             byte[] subfunctionCallBytes = new byte[] { 0x7D, 0x11, 0xBA, 0xB4, 0xA0 };
             int subfunctionParamEOffset = 0x11;
-            int minGuardType = 0xC1;
+            int minGuardType = GcxDecimalZero;
             int maxGuardType = 0xC5;
 
             List<string> gcxFilesToEdit = GcxFileDirectory.FindAll(file => file.Contains("scenerio_stage_w") && !file.Contains("scenerio_stage_wp") && !file.Contains("webdemo") && !file.Contains("wmovie") && file.EndsWith(".gcx"));
@@ -1727,24 +1763,22 @@ namespace MGS2_Randomizer
             return byteLocation;
         }
 
-        private void SetC4Location(byte[] gcxContents, byte[] bytesToFind, byte[] xLocation, byte[] yLocation, byte[] zLocation, int xOffset, int yOffset, int zOffset)
+        private void SetC4Location(byte[] gcxContents, byte[] bytesToFind, ByteLocation location, int xOffset, int yOffset, int zOffset)
         {
             List<int> c4Locations = GcxEditor.FindAllSubArray(gcxContents, bytesToFind);
 
             foreach(int c4Location in c4Locations)
             {
-                Array.Copy(xLocation, 0, gcxContents, c4Location + xOffset, xLocation.Length);
-                Array.Copy(yLocation, 0, gcxContents, c4Location + yOffset, yLocation.Length);
-                Array.Copy(zLocation, 0, gcxContents, c4Location + zOffset, zLocation.Length);
+                Array.Copy(location.X, 0, gcxContents, c4Location + xOffset, location.X.Length);
+                Array.Copy(location.Y, 0, gcxContents, c4Location + yOffset, location.Y.Length);
+                Array.Copy(location.Z, 0, gcxContents, c4Location + zOffset, location.Z.Length);
             }
         }
 
         private void RandomizeStrutARoofC4()
         {
             int roofChoice = Randomizer.Next(3);
-            byte[] roofXLocation = new byte[2];
-            byte[] roofYLocation = new byte[2];
-            byte[] roofZLocation = new byte[2];
+            ByteLocation roofLocation = new ByteLocation();
             int xLocationOffset = 0xC;
             int yLocationOffset = 0xF;
             int zLocationOffset = 0x12;
@@ -1754,14 +1788,14 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    roofXLocation = new byte[] { 0xCD, 0x0B };
-                    roofYLocation = new byte[] { 0x6A, 0x14 };
-                    roofZLocation = new byte[] { 0x00, 0x00 };
+                    roofLocation.X = new byte[] { 0xCD, 0x0B };
+                    roofLocation.Y = new byte[] { 0x6A, 0x14 };
+                    roofLocation.Z = new byte[] { 0x00, 0x00 };
                     break;
                 case 2:
-                    roofXLocation = new byte[] { 0x52, 0xE4 };
-                    roofYLocation = new byte[] { 0x6A, 0x18 };
-                    roofZLocation = new byte[] { 0x57, 0x09 };
+                    roofLocation.X = new byte[] { 0x52, 0xE4 };
+                    roofLocation.Y = new byte[] { 0x6A, 0x18 };
+                    roofLocation.Z = new byte[] { 0x57, 0x09 };
                     break;
             }
 
@@ -1769,11 +1803,11 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12a"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, BulC4InitBytes, roofXLocation, roofYLocation, roofZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, BulC4InitBytes, roofLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
 
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12c"));
-                SetC4Location(gcxContents, BulC4InitBytes, roofXLocation, roofYLocation, roofZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, BulC4InitBytes, roofLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -1781,9 +1815,7 @@ namespace MGS2_Randomizer
         private void RandomizePumpRoomC4()
         {
             int pumpRoom = Randomizer.Next(6);
-            byte[] pumpRoomXLocation = new byte[1];
-            byte[] pumpRoomYLocation = new byte[1];
-            byte[] pumpRoomZLocation = new byte[2];
+            ByteLocation pumpRoomLocation = new ByteLocation();
             int xLocationOffset = 0xD;
             int yLocationOffset = 0xF;
             int zLocationOffset = 0x11;
@@ -1794,29 +1826,29 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    pumpRoomXLocation = new byte[] { 0x6F };
-                    pumpRoomYLocation = new byte[] { 0xFF };
-                    pumpRoomZLocation = new byte[] { 0x00, 0x01 };
+                    pumpRoomLocation.X = new byte[] { 0x6F };
+                    pumpRoomLocation.Y = new byte[] { 0xFF };
+                    pumpRoomLocation.Z = new byte[] { 0x00, 0x01 };
                     break;
                 case 2:
-                    pumpRoomXLocation = new byte[] { 0x70 };
-                    pumpRoomYLocation = new byte[] { 0xFF };
-                    pumpRoomZLocation = new byte[] { 0x80, 0x31 };
+                    pumpRoomLocation.X = new byte[] { 0x70 };
+                    pumpRoomLocation.Y = new byte[] { 0xFF };
+                    pumpRoomLocation.Z = new byte[] { 0x80, 0x31 };
                     break;
                 case 3:
-                    pumpRoomXLocation = new byte[] { 0x00 };
-                    pumpRoomYLocation = new byte[] { 0xFF };
-                    pumpRoomZLocation = new byte[] { 0x38, 0x20 };
+                    pumpRoomLocation.X = new byte[] { 0x00 };
+                    pumpRoomLocation.Y = new byte[] { 0xFF };
+                    pumpRoomLocation.Z = new byte[] { 0x38, 0x20 };
                     break;
                 case 4:
-                    pumpRoomXLocation = new byte[] { 0x00 };
-                    pumpRoomYLocation = new byte[] { 0xFF };
-                    pumpRoomZLocation = new byte[] { 0x40, 0x1A };
+                    pumpRoomLocation.X = new byte[] { 0x00 };
+                    pumpRoomLocation.Y = new byte[] { 0xFF };
+                    pumpRoomLocation.Z = new byte[] { 0x40, 0x1A };
                     break;
                 case 5:
-                    pumpRoomXLocation = new byte[] { 0x00 };
-                    pumpRoomYLocation = new byte[] { 0xFF };
-                    pumpRoomZLocation = new byte[] { 0x50, 0x10 };
+                    pumpRoomLocation.X = new byte[] { 0x00 };
+                    pumpRoomLocation.Y = new byte[] { 0xFF };
+                    pumpRoomLocation.Z = new byte[] { 0x50, 0x10 };
                     break;
             }
 
@@ -1824,7 +1856,7 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w12b"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, pumpRoomC4DeclarationBytes, pumpRoomXLocation, pumpRoomYLocation, pumpRoomZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, pumpRoomC4DeclarationBytes, pumpRoomLocation, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -1832,9 +1864,7 @@ namespace MGS2_Randomizer
         private void RandomizeTransformerRoomC4()
         {
             int transformerRoom = Randomizer.Next(6);
-            byte[] transformerRoomXLocation = new byte[4];
-            byte[] transformerRoomYLocation = new byte[2];
-            byte[] transformerRoomZLocation = new byte[4];
+            ByteLocation location = new ByteLocation();
             int xLocationOffset = 0xC;
             int yLocationOffset = 0x11;
             int zLocationOffset = 0x14;
@@ -1844,29 +1874,29 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    transformerRoomXLocation = new byte[] { 0x56, 0x43, 0xFF, 0xFF };
-                    transformerRoomYLocation = new byte[] { 0x4C, 0x04 };
-                    transformerRoomZLocation = new byte[] { 0x90, 0x75, 0xFF, 0xFF };
+                    location.X = new byte[] { 0x56, 0x43, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x4C, 0x04 };
+                    location.Z = new byte[] { 0x90, 0x75, 0xFF, 0xFF };
                     break;
                 case 2:
-                    transformerRoomXLocation = new byte[] { 0x56, 0x43, 0xFF, 0xFF };
-                    transformerRoomYLocation = new byte[] { 0x7A, 0x00 };
-                    transformerRoomZLocation = new byte[] { 0x10, 0x89, 0xFF, 0xFF };
+                    location.X = new byte[] { 0x56, 0x43, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x7A, 0x00 };
+                    location.Z = new byte[] { 0x10, 0x89, 0xFF, 0xFF };
                     break;
                 case 3:
-                    transformerRoomXLocation = new byte[] { 0x00, 0x20, 0xFF, 0xFF };
-                    transformerRoomYLocation = new byte[] { 0xE3, 0x01 };
-                    transformerRoomZLocation = new byte[] { 0x90, 0x93, 0xFF, 0xFF };
+                    location.X = new byte[] { 0x00, 0x20, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0xE3, 0x01 };
+                    location.Z = new byte[] { 0x90, 0x93, 0xFF, 0xFF };
                     break;
                 case 4:
-                    transformerRoomXLocation = new byte[] { 0xC6, 0x2C, 0xFF, 0xFF };
-                    transformerRoomYLocation = new byte[] { 0x40, 0x0D };
-                    transformerRoomZLocation = new byte[] { 0xAC, 0x67, 0xFF, 0xFF };
+                    location.X = new byte[] { 0xC6, 0x2C, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x40, 0x0D };
+                    location.Z = new byte[] { 0xAC, 0x67, 0xFF, 0xFF };
                     break;
                 case 5:
-                    transformerRoomXLocation = new byte[] { 0x61, 0x53, 0xFF, 0xFF };
-                    transformerRoomYLocation = new byte[] { 0x7A, 0x00 };
-                    transformerRoomZLocation = new byte[] { 0xA1, 0x67, 0xFF, 0xFF };
+                    location.X = new byte[] { 0x61, 0x53, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x7A, 0x00 };
+                    location.Z = new byte[] { 0xA1, 0x67, 0xFF, 0xFF };
                     break;
             }
 
@@ -1874,7 +1904,7 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w14a"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, BulC4InitBytes, transformerRoomXLocation, transformerRoomYLocation, transformerRoomZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, BulC4InitBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -1882,9 +1912,7 @@ namespace MGS2_Randomizer
         private void RandomizeMessHallC4()
         {
             int diningHall = Randomizer.Next(8);
-            byte[] diningHallXLocation = new byte[4];
-            byte[] diningHallYLocation = new byte[2];
-            byte[] diningHallZLocation = new byte[4];
+            ByteLocation location = new ByteLocation();
             int xLocationOffset = 0xD;
             int yLocationOffset = 0xF;
             int zLocationOffset = 0x11;
@@ -1895,39 +1923,39 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    diningHallXLocation = new byte[] { 0x41, 0x44, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0xB0, 0x05 };
-                    diningHallZLocation = new byte[] { 0xC3, 0xBD, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x41, 0x44, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0xB0, 0x05 };
+                    location.Z = new byte[] { 0xC3, 0xBD, 0xFE, 0xFF };
                     break;
                 case 2:
-                    diningHallXLocation = new byte[] { 0x2E, 0x52, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0x32, 0x0D };
-                    diningHallZLocation = new byte[] { 0xC3, 0xBD, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x2E, 0x52, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x32, 0x0D };
+                    location.Z = new byte[] { 0xC3, 0xBD, 0xFE, 0xFF };
                     break;
                 case 3:
-                    diningHallXLocation = new byte[] { 0x34, 0x28, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0x32, 0x0B };
-                    diningHallZLocation = new byte[] { 0xAB, 0xC1, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x34, 0x28, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x32, 0x0B };
+                    location.Z = new byte[] { 0xAB, 0xC1, 0xFE, 0xFF };
                     break;
                 case 4:
-                    diningHallXLocation = new byte[] { 0x61, 0x0F, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0xE2, 0x0C };
-                    diningHallZLocation = new byte[] { 0x28, 0xAC, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x61, 0x0F, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0xE2, 0x0C };
+                    location.Z = new byte[] { 0x28, 0xAC, 0xFE, 0xFF };
                     break;
                 case 5:
-                    diningHallXLocation = new byte[] { 0x11, 0x25, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0x00, 0x0C };
-                    diningHallZLocation = new byte[] { 0x33, 0xD5, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x11, 0x25, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x00, 0x0C };
+                    location.Z = new byte[] { 0x33, 0xD5, 0xFE, 0xFF };
                     break;
                 case 6:
-                    diningHallXLocation = new byte[] { 0xA9, 0x4D, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0x60, 0x09 };
-                    diningHallZLocation = new byte[] { 0xD8, 0x76, 0xFE, 0xFF };
+                    location.X = new byte[] { 0xA9, 0x4D, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x60, 0x09 };
+                    location.Z = new byte[] { 0xD8, 0x76, 0xFE, 0xFF };
                     break;
                 case 7:
-                    diningHallXLocation = new byte[] { 0x2E, 0x11, 0xFF, 0xFF };
-                    diningHallYLocation = new byte[] { 0x70, 0x01 };
-                    diningHallZLocation = new byte[] { 0x9D, 0x90, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x2E, 0x11, 0xFF, 0xFF };
+                    location.Y = new byte[] { 0x70, 0x01 };
+                    location.Z = new byte[] { 0x9D, 0x90, 0xFE, 0xFF };
                     break;
             }
 
@@ -1935,12 +1963,12 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16a"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, diningHallC4DeclarationBytes, diningHallXLocation, diningHallYLocation, diningHallZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, diningHallC4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
 
                 gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16b"));
                 gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, diningHallC4DeclarationBytes, diningHallXLocation, diningHallYLocation, diningHallZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, diningHallC4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -1949,24 +1977,22 @@ namespace MGS2_Randomizer
         {
             byte originalByte = 0;
             int i = 0;
-            while (originalByte != 0xC1)
+            while (originalByte != GcxDecimalZero)
             {
                 originalByte = gcxContents[hatchReferenceOffset[i] + 7];
-                if (originalByte != 0xC1)
+                if (originalByte != GcxDecimalZero)
                 {
                     i++;
                 }
             }
 
-            gcxContents[hatchReferenceOffset[i] + 7] = 0xC2;
+            gcxContents[hatchReferenceOffset[i] + 7] = GcxDecimalOne;
         }
 
         private void RandomizeSedimentPoolC4s()
         {
             int sedimentPool1 = Randomizer.Next(5);
-            byte[] sedimentPool1XLocation = new byte[2];
-            byte[] sedimentPool1YLocation = new byte[2];
-            byte[] sedimentPool1ZLocation = new byte[4];
+            ByteLocation location = new ByteLocation();
             int xLocationOffset = 0xB;
             int yLocationOffset = 0xE;
             int zLocationOffset = 0x11;
@@ -1981,36 +2007,34 @@ namespace MGS2_Randomizer
                     break;
                 case 1:
                     //other liftable & sprayable hatch
-                    sedimentPool1XLocation = new byte[] { 0x0B, 0xDB };
-                    sedimentPool1YLocation = new byte[] { 0x66, 0xEF };
-                    sedimentPool1ZLocation = new byte[] { 0x41, 0x0C, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x0B, 0xDB };
+                    location.Y = new byte[] { 0x66, 0xEF };
+                    location.Z = new byte[] { 0x41, 0x0C, 0xFE, 0xFF };
                     break;
                 case 2:
                     //behind fence
-                    sedimentPool1XLocation = new byte[] { 0x45, 0xE4 };
-                    sedimentPool1YLocation = new byte[] { 0x60, 0xF0 };
-                    sedimentPool1ZLocation = new byte[] { 0x56, 0x5F, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x45, 0xE4 };
+                    location.Y = new byte[] { 0x60, 0xF0 };
+                    location.Z = new byte[] { 0x56, 0x5F, 0xFE, 0xFF };
                     break;
                 case 3:
                     //left-side scaffold 
-                    sedimentPool1XLocation = new byte[] { 0x9F, 0xFC };
-                    sedimentPool1YLocation = new byte[] { 0x75, 0xED };
-                    sedimentPool1ZLocation = new byte[] { 0xA3, 0x06, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x9F, 0xFC };
+                    location.Y = new byte[] { 0x75, 0xED };
+                    location.Z = new byte[] { 0xA3, 0x06, 0xFE, 0xFF };
                     break;
 
                 case 4:
                     //under stairs 
-                    sedimentPool1XLocation = new byte[] { 0x99, 0xEA };
-                    sedimentPool1YLocation = new byte[] { 0x60, 0xF0 };
-                    sedimentPool1ZLocation = new byte[] { 0x62, 0xF7, 0xFD, 0xFF };
+                    location.X = new byte[] { 0x99, 0xEA };
+                    location.Y = new byte[] { 0x60, 0xF0 };
+                    location.Z = new byte[] { 0x62, 0xF7, 0xFD, 0xFF };
                     break;
 
             }
 
             int sedimentPool2 = Randomizer.Next(4);
-            byte[] sedimentPool2XLocation = new byte[2];
-            byte[] sedimentPool2YLocation = new byte[2];
-            byte[] sedimentPool2ZLocation = new byte[4];
+            ByteLocation location2 = new ByteLocation();
             byte[] sedimentPool2C4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4E, 0x25, 0xB2 };
             switch (sedimentPool2)
             {
@@ -2022,28 +2046,26 @@ namespace MGS2_Randomizer
                     break;
                 case 1:
                     //center cage
-                    sedimentPool2XLocation = new byte[] { 0x77, 0x00 };
-                    sedimentPool2YLocation = new byte[] { 0x30, 0xFC };
-                    sedimentPool2ZLocation = new byte[] { 0x6F, 0x24, 0xFE, 0xFF };
+                    location2.X = new byte[] { 0x77, 0x00 };
+                    location2.Y = new byte[] { 0x30, 0xFC };
+                    location2.Z = new byte[] { 0x6F, 0x24, 0xFE, 0xFF };
                     break;
                 case 2:
                     //behind fence
-                    sedimentPool2XLocation = new byte[] { 0x5C, 0x1C };
-                    sedimentPool2YLocation = new byte[] { 0x60, 0xF0 };
-                    sedimentPool2ZLocation = new byte[] { 0x56, 0x5F, 0xFE, 0xFF };
+                    location2.X = new byte[] { 0x5C, 0x1C };
+                    location2.Y = new byte[] { 0x60, 0xF0 };
+                    location2.Z = new byte[] { 0x56, 0x5F, 0xFE, 0xFF };
                     break;
                 case 3:
                     //right-side scaffold
-                    sedimentPool2XLocation = new byte[] { 0x1C, 0x03 };
-                    sedimentPool2YLocation = new byte[] { 0x75, 0xED };
-                    sedimentPool2ZLocation = new byte[] { 0xB3, 0x06, 0xFE, 0xFF };
+                    location2.X = new byte[] { 0x1C, 0x03 };
+                    location2.Y = new byte[] { 0x75, 0xED };
+                    location2.Z = new byte[] { 0xB3, 0x06, 0xFE, 0xFF };
                     break;
             }
 
             int sedimentPool3 = Randomizer.Next(5);
-            byte[] sedimentPool3XLocation = new byte[2];
-            byte[] sedimentPool3YLocation = new byte[2];
-            byte[] sedimentPool3ZLocation = new byte[4];
+            ByteLocation location3 = new ByteLocation();
             byte[] sedimentPool3C4DeclarationBytes = new byte[] { 0x06, 0x25, 0x6F, 0x3A, 0x06, 0x4F, 0x25, 0xB2 };
             switch (sedimentPool3)
             {
@@ -2051,24 +2073,24 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    sedimentPool3XLocation = new byte[] { 0xBF, 0x00 };
-                    sedimentPool3YLocation = new byte[] { 0xC2, 0x01 };
-                    sedimentPool3ZLocation = new byte[] { 0x6A, 0xF6, 0xFD, 0xFF };
+                    location3.X = new byte[] { 0xBF, 0x00 };
+                    location3.Y = new byte[] { 0xC2, 0x01 };
+                    location3.Z = new byte[] { 0x6A, 0xF6, 0xFD, 0xFF };
                     break;
                 case 2:
-                    sedimentPool3XLocation = new byte[] { 0xB6, 0x26 };
-                    sedimentPool3YLocation = new byte[] { 0xCE, 0xFF };
-                    sedimentPool3ZLocation = new byte[] { 0x54, 0x49, 0xFE, 0xFF };
+                    location3.X = new byte[] { 0xB6, 0x26 };
+                    location3.Y = new byte[] { 0xCE, 0xFF };
+                    location3.Z = new byte[] { 0x54, 0x49, 0xFE, 0xFF };
                     break;
                 case 3:
-                    sedimentPool3XLocation = new byte[] { 0xB0, 0x01 };
-                    sedimentPool3YLocation = new byte[] { 0xB8, 0xFA };
-                    sedimentPool3ZLocation = new byte[] { 0x66, 0x02, 0xFE, 0xFF };
+                    location3.X = new byte[] { 0xB0, 0x01 };
+                    location3.Y = new byte[] { 0xB8, 0xFA };
+                    location3.Z = new byte[] { 0x66, 0x02, 0xFE, 0xFF };
                     break;
                 case 4:
-                    sedimentPool3XLocation = new byte[] { 0xBD, 0x1F };
-                    sedimentPool3YLocation = new byte[] { 0xB8, 0xFA };
-                    sedimentPool3ZLocation = new byte[] { 0xF6, 0x3B, 0xFE, 0xFF };
+                    location3.X = new byte[] { 0xBD, 0x1F };
+                    location3.Y = new byte[] { 0xB8, 0xFA };
+                    location3.Z = new byte[] { 0xF6, 0x3B, 0xFE, 0xFF };
                     break;
             }
 
@@ -2081,18 +2103,18 @@ namespace MGS2_Randomizer
                     //need to remove hatch opened requirement, otherwise it will only be defusable when standard spawn hatch is opened
                     List<int> hatch1References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4D, 0x25, 0xB2 });
                     RemoveHatchOpenedRequirement(gcxContents, hatch1References);
-                    SetC4Location(gcxContents, sedimentPool1C4DeclarationBytes, sedimentPool1XLocation, sedimentPool1YLocation, sedimentPool1ZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                    SetC4Location(gcxContents, sedimentPool1C4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 }
                 if (sedimentPool2 != 0)
                 {
                     //need to remove hatch opened requirement, otherwise it will only be defusable when standard spawn hatch is opened
                     List<int> hatch2References = GcxEditor.FindAllSubArray(gcxContents, new byte[] { 0x4E, 0x25, 0xB2 });
                     RemoveHatchOpenedRequirement(gcxContents, hatch2References);
-                    SetC4Location(gcxContents, sedimentPool2C4DeclarationBytes, sedimentPool2XLocation, sedimentPool2YLocation, sedimentPool2ZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                    SetC4Location(gcxContents, sedimentPool2C4DeclarationBytes, location2, xLocationOffset, yLocationOffset, zLocationOffset);
                 }
                 if (sedimentPool3 != 0)
                 {
-                    SetC4Location(gcxContents, sedimentPool3C4DeclarationBytes, sedimentPool3XLocation, sedimentPool3YLocation, sedimentPool3ZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                    SetC4Location(gcxContents, sedimentPool3C4DeclarationBytes, location3, xLocationOffset, yLocationOffset, zLocationOffset);
                 }
 
                 File.WriteAllBytes(gcxFile, gcxContents);
@@ -2102,9 +2124,7 @@ namespace MGS2_Randomizer
         private void RandomizeParcelRoomC4()
         {
             int parcelRoom = Randomizer.Next(4);
-            byte[] parcelRoomXLocation = new byte[4];
-            byte[] parcelRoomYLocation = new byte[2];
-            byte[] parcelRoomZLocation = new byte[4];
+            ByteLocation location = new ByteLocation();
             int xLocationOffset = 0x19;
             int yLocationOffset = 0x1E;
             int zLocationOffset = 0x21;
@@ -2115,19 +2135,19 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    parcelRoomXLocation = new byte[] { 0x27, 0xCC, 0x00, 0x00 };
-                    parcelRoomYLocation = new byte[] { 0x2A, 0x09 };
-                    parcelRoomZLocation = new byte[] { 0x41, 0x7A, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x27, 0xCC, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x2A, 0x09 };
+                    location.Z = new byte[] { 0x41, 0x7A, 0xFE, 0xFF };
                     break;
                 case 2:
-                    parcelRoomXLocation = new byte[] { 0xDC, 0xDC, 0x00, 0x00 };
-                    parcelRoomYLocation = new byte[] { 0x2A, 0x10 };
-                    parcelRoomZLocation = new byte[] { 0x10, 0x89, 0xFE, 0xFF };
+                    location.X = new byte[] { 0xDC, 0xDC, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x2A, 0x10 };
+                    location.Z = new byte[] { 0x10, 0x89, 0xFE, 0xFF };
                     break;
                 case 3:
-                    parcelRoomXLocation = new byte[] { 0x42, 0xE5, 0x00, 0x00 };
-                    parcelRoomYLocation = new byte[] { 0x4B, 0x06 };
-                    parcelRoomZLocation = new byte[] { 0xC1, 0xC2, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x42, 0xE5, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x4B, 0x06 };
+                    location.Z = new byte[] { 0xC1, 0xC2, 0xFE, 0xFF };
                     break;
             }
 
@@ -2135,7 +2155,7 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20a"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, parcelRoomC4DeclarationBytes, parcelRoomXLocation, parcelRoomYLocation, parcelRoomZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, parcelRoomC4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -2143,9 +2163,7 @@ namespace MGS2_Randomizer
         private void RandomizeHeliportC4()
         {
             int helipad = Randomizer.Next(5);
-            byte[] helipadXLocation = new byte[4];
-            byte[] helipadYLocation = new byte[2];
-            byte[] helipadZLocation = new byte[4];
+            ByteLocation location = new ByteLocation();
             int xLocationOffset = 0xC;
             int yLocationOffset = 0x11;
             int zLocationOffset = 0x14;
@@ -2155,24 +2173,24 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    helipadXLocation = new byte[] { 0x44, 0xBB, 0x00, 0x00 };
-                    helipadYLocation = new byte[] { 0x00, 0x31 };
-                    helipadZLocation = new byte[] { 0x3B, 0xA8, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x44, 0xBB, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x00, 0x31 };
+                    location.Z = new byte[] { 0x3B, 0xA8, 0xFE, 0xFF };
                     break;
                 case 2:
-                    helipadXLocation = new byte[] { 0xBF, 0xB1, 0x00, 0x00 };
-                    helipadYLocation = new byte[] { 0x00, 0x2E };
-                    helipadZLocation = new byte[] { 0x3B, 0xA8, 0xFE, 0xFF };
+                    location.X = new byte[] { 0xBF, 0xB1, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x00, 0x2E };
+                    location.Z = new byte[] { 0x3B, 0xA8, 0xFE, 0xFF };
                     break;
                 case 3:
-                    helipadXLocation = new byte[] { 0x75, 0xCD, 0x00, 0x00 };
-                    helipadYLocation = new byte[] { 0x0D, 0x27 };
-                    helipadZLocation = new byte[] { 0xDD, 0xC2, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x75, 0xCD, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x0D, 0x27 };
+                    location.Z = new byte[] { 0xDD, 0xC2, 0xFE, 0xFF };
                     break;
                 case 4:
-                    helipadXLocation = new byte[] { 0x91, 0x9E, 0x00, 0x00 };
-                    helipadYLocation = new byte[] { 0x80, 0x11 };
-                    helipadZLocation = new byte[] { 0x88, 0xA1, 0xFE, 0xFF };
+                    location.X = new byte[] { 0x91, 0x9E, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x80, 0x11 };
+                    location.Z = new byte[] { 0x88, 0xA1, 0xFE, 0xFF };
                     break;
             }
 
@@ -2180,7 +2198,7 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20b"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, BulC4InitBytes, helipadXLocation, helipadYLocation, helipadZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, BulC4InitBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -2188,9 +2206,7 @@ namespace MGS2_Randomizer
         private void RandomizeArmoryC4()
         {
             int armory = Randomizer.Next(9);
-            byte[] armoryXLocation = new byte[4];
-            byte[] armoryYLocation = new byte[2];
-            byte[] armoryZLocation = new byte[2];
+            ByteLocation location = new ByteLocation();
             int xLocationOffset = 0xD;
             int yLocationOffset = 0xF;
             int zLocationOffset = 0x11;
@@ -2201,44 +2217,44 @@ namespace MGS2_Randomizer
                     //change nothing
                     break;
                 case 1:
-                    armoryXLocation = new byte[] { 0x30, 0xC5, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0x60, 0xFB };
-                    armoryZLocation = new byte[] { 0xDC, 0xB6 };
+                    location.X = new byte[] { 0x30, 0xC5, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x60, 0xFB };
+                    location.Z = new byte[] { 0xDC, 0xB6 };
                     break;
                 case 2:
-                    armoryXLocation = new byte[] { 0xA9, 0xB3, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0x60, 0xF0 };
-                    armoryZLocation = new byte[] { 0x9F, 0x81 };
+                    location.X = new byte[] { 0xA9, 0xB3, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x60, 0xF0 };
+                    location.Z = new byte[] { 0x9F, 0x81 };
                     break;
                 case 3:
-                    armoryXLocation = new byte[] { 0x45, 0x9A, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0xE3, 0x01 };
-                    armoryZLocation = new byte[] { 0x53, 0x95 };
+                    location.X = new byte[] { 0x45, 0x9A, 0x00, 0x00 };
+                    location.Y = new byte[] { 0xE3, 0x01 };
+                    location.Z = new byte[] { 0x53, 0x95 };
                     break;
                 case 4:
-                    armoryXLocation = new byte[] { 0x81, 0xAF, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0x9B, 0x05 };
-                    armoryZLocation = new byte[] { 0xB5, 0xB8 };
+                    location.X = new byte[] { 0x81, 0xAF, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x9B, 0x05 };
+                    location.Z = new byte[] { 0xB5, 0xB8 };
                     break;
                 case 5:
-                    armoryXLocation = new byte[] { 0xFE, 0xF3, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0xB2, 0x00 };
-                    armoryZLocation = new byte[] { 0x74, 0xAA };
+                    location.X = new byte[] { 0xFE, 0xF3, 0x00, 0x00 };
+                    location.Y = new byte[] { 0xB2, 0x00 };
+                    location.Z = new byte[] { 0x74, 0xAA };
                     break;
                 case 6:
-                    armoryXLocation = new byte[] { 0x3D, 0xC5, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0xE2, 0x01 };
-                    armoryZLocation = new byte[] { 0x64, 0xA6 };
+                    location.X = new byte[] { 0x3D, 0xC5, 0x00, 0x00 };
+                    location.Y = new byte[] { 0xE2, 0x01 };
+                    location.Z = new byte[] { 0x64, 0xA6 };
                     break;
                 case 7:
-                    armoryXLocation = new byte[] { 0x53, 0xC4, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0x1B, 0x04 };
-                    armoryZLocation = new byte[] { 0x00, 0x8E };
+                    location.X = new byte[] { 0x53, 0xC4, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x1B, 0x04 };
+                    location.Z = new byte[] { 0x00, 0x8E };
                     break;
                 case 8:
-                    armoryXLocation = new byte[] { 0xB9, 0xDA, 0x00, 0x00 };
-                    armoryYLocation = new byte[] { 0x4B, 0x04 };
-                    armoryZLocation = new byte[] { 0xAE, 0x90 };
+                    location.X = new byte[] { 0xB9, 0xDA, 0x00, 0x00 };
+                    location.Y = new byte[] { 0x4B, 0x04 };
+                    location.Z = new byte[] { 0xAE, 0x90 };
                     break;
             }
 
@@ -2246,7 +2262,7 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w22a"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, armoryC4DeclarationBytes, armoryXLocation, armoryYLocation, armoryZLocation, xLocationOffset, yLocationOffset, zLocationOffset);
+                SetC4Location(gcxContents, armoryC4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
@@ -3205,234 +3221,151 @@ namespace MGS2_Randomizer
             return spawningFunctions.Any(function => func.DecodedContents.Contains(function));
         }
 
+        private void OpenFileForRandomization(GcxEditor gcx_Editor, ProcEditor procEditor, Dictionary<string, OpenedFileData> openedFiles, string gcxFile, string stageToEdit, KeyValuePair<Location, Item> spawnToEdit, List<DecodedProc> spawns)
+        {
+            gcx_Editor = new GcxEditor();
+            try
+            {
+                gcx_Editor.CallDecompiler(gcxFile);
+            }
+            catch (Exception e)
+            {
+                throw new RandomizerException($"gcx decompilation failed for stage {stageToEdit}: {e}");
+            }
+            try
+            {
+                List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
+                spawns = new List<DecodedProc>();
+                foreach (DecodedProc entry in allFileFunctions)
+                {
+                    if (ContainsSpawningFunctions(entry))
+                        spawns.Add(entry);
+                }
+                AddAllProcs(gcx_Editor);
+                procEditor = new ProcEditor(spawns, true);
+                openedFiles.Add(stageToEdit, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
+            }
+            catch (Exception e)
+            {
+                throw new RandomizerException($"decompiled gcx for stage {stageToEdit} threw an unexpected error: {e}");
+            }
+        }
+
+        private OpenedFileData GetObjectsFromOpenedFileData(Dictionary<string, OpenedFileData> openedFiles, GcxEditor gcx_Editor, ProcEditor procEditor, List<DecodedProc> spawns, string gcxFile)
+        {
+            OpenedFileData openedFileData = openedFiles[gcxFile];
+            gcx_Editor = openedFileData.GcxEditor;
+            spawns = openedFileData.DecodedProcs;
+            procEditor = openedFileData.ProcEditor;
+
+            return openedFileData;
+        }
+
+        private void ModifySpawnInMemory(string gcxFile, KeyValuePair<Location, Item> spawnToEdit, ProcEditor procEditor, string cheatSheet)
+        {
+            cheatSheet += $"{gcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
+            procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
+            procEditor.SaveAutomatedChangesToMemory();
+        }
+
+        private void FixPlantReferencesForTanker(byte[] newGcxBytes)
+        {
+            //this is here to allow any custom weapon spawns made for Raiden to work for Snake on Tanker levels.
+            List<int> plantWeaponReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x02, 0xAC });
+            foreach (int index in plantWeaponReferences)
+            {
+                Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x01, 0x5C }, 0, newGcxBytes, index, 5);
+            }
+            //this is here to allow any custom item spawns made for Raiden to work for Snake on Tanker levels.
+            List<int> plantItemReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x03, 0x3C });
+            foreach (int index in plantItemReferences)
+            {
+                Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x01, 0xEC }, 0, newGcxBytes, index, 5);
+            }
+        }
+
+        private void ProcessSpawnToEdit(KeyValuePair<Location, Item> spawnToEdit, Dictionary<string, OpenedFileData> openedFiles, string cheatSheet)
+        {
+            string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
+            GcxEditor gcx_Editor = null;
+            List<DecodedProc> spawns = null;
+            ProcEditor procEditor = null;
+
+            if (!openedFiles.ContainsKey(spawnToEdit.Key.GcxFile))
+            {
+                OpenFileForRandomization(gcx_Editor, procEditor, openedFiles, gcxFile, spawnToEdit.Key.GcxFile, spawnToEdit, spawns);
+            }
+            else
+            {
+                OpenedFileData openedFileData = GetObjectsFromOpenedFileData(openedFiles, gcx_Editor, procEditor, spawns, spawnToEdit.Key.GcxFile);
+            }
+
+            ModifySpawnInMemory(spawnToEdit.Key.GcxFile, spawnToEdit, procEditor, cheatSheet);
+
+            if (spawnToEdit.Key.SisterSpawn != null)
+            {
+                gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.SisterSpawn}"));
+                if (!openedFiles.ContainsKey(spawnToEdit.Key.SisterSpawn))
+                {
+                    OpenFileForRandomization(gcx_Editor, procEditor, openedFiles, gcxFile, spawnToEdit.Key.SisterSpawn, spawnToEdit, spawns);
+                }
+                else
+                {
+                    OpenedFileData openedFileData = GetObjectsFromOpenedFileData(openedFiles, gcx_Editor, procEditor, spawns, spawnToEdit.Key.SisterSpawn);
+                }
+
+                ModifySpawnInMemory(spawnToEdit.Key.SisterSpawn, spawnToEdit, procEditor, cheatSheet);
+            }
+        }
+
+        private void SaveFileToDisk(KeyValuePair<string, OpenedFileData> kvp, bool customDirectory, DirectoryInfo createdDirectory)
+        {
+            OpenedFileData openedFileData = kvp.Value;
+            byte[] newGcxBytes = openedFileData.GcxEditor.BuildGcxFile();
+            if (kvp.Key.Contains("w0"))
+            {
+                FixPlantReferencesForTanker(newGcxBytes);
+            }
+            string date = $"{createdDirectory.Name}/scenerio_stage_{kvp.Key}.gcx";
+            if (customDirectory)
+                File.WriteAllBytes(date, newGcxBytes);
+            else
+                File.WriteAllBytes(GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{kvp.Key}")), newGcxBytes);
+        }
+
         public bool SaveRandomizationToDisk(bool makeSpoilerFile = true, bool customDirectory = true)
         {
-            //TODO: can this method be broken down further? it is entirely too large
             AddAllResources();
 
             //since some levels are part of multiple different logic sets,
-            //we should instead go spawn by spawn rather than file by file
+            //we iterate spawn by spawn and modify in memory before saving to disk level by level
             Dictionary<string, OpenedFileData> openedFiles = new Dictionary<string, OpenedFileData>();
             string cheatSheet = SpoilerContents;
             RandomizationForm._logger.Debug("Saving tanker randomization to memory...");
             foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.TankerPart3.Entities)
             {
-                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
-                GcxEditor gcx_Editor;
-                List<DecodedProc> spawns;
-                ProcEditor procEditor;
-                if (!openedFiles.ContainsKey(spawnToEdit.Key.GcxFile))
-                {
-                    gcx_Editor = new GcxEditor();
-                    try
-                    {
-                        gcx_Editor.CallDecompiler(gcxFile);
-                    }
-                    catch(Exception e)
-                    {
-                        throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
-                    }
-                    try
-                    {
-                        List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                        spawns = new List<DecodedProc>();
-                        foreach (DecodedProc entry in allFileFunctions)
-                        {
-                            if (ContainsSpawningFunctions(entry))
-                                spawns.Add(entry);
-                        }
-                        AddAllProcs(gcx_Editor);
-                        procEditor = new ProcEditor(spawns, true);
-                        openedFiles.Add(spawnToEdit.Key.GcxFile, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
-                    }
-                }
-                else
-                {
-                    OpenedFileData openedFileData = openedFiles[spawnToEdit.Key.GcxFile];
-                    gcx_Editor = openedFileData.GcxEditor;
-                    spawns = openedFileData.DecodedProcs;
-                    procEditor = openedFileData.ProcEditor;
-                }
-
-                cheatSheet += $"{spawnToEdit.Key.GcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
-                procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                procEditor.SaveAutomatedChangesToMemory();
-                if (spawnToEdit.Key.SisterSpawn != null)
-                {
-                    //TODO: implement sister spawn duplication better
-                    gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.SisterSpawn}"));
-                    if (!openedFiles.ContainsKey(spawnToEdit.Key.SisterSpawn))
-                    {
-                        gcx_Editor = new GcxEditor();
-                        try
-                        {
-                            gcx_Editor.CallDecompiler(gcxFile);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
-                        }
-                        try
-                        {
-                            List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                            spawns = new List<DecodedProc>();
-                            foreach (DecodedProc entry in allFileFunctions)
-                            {
-                                if (ContainsSpawningFunctions(entry))
-                                    spawns.Add(entry);
-                            }
-                            AddAllProcs(gcx_Editor);
-                            procEditor = new ProcEditor(spawns, true);
-                            openedFiles.Add(spawnToEdit.Key.SisterSpawn, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
-                        }
-                        catch (Exception e)
-                        {
-                            throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
-                        }
-                    }
-                    else
-                    {
-                        OpenedFileData openedFileData = openedFiles[spawnToEdit.Key.SisterSpawn];
-                        gcx_Editor = openedFileData.GcxEditor;
-                        spawns = openedFileData.DecodedProcs;
-                        procEditor = openedFileData.ProcEditor;
-                    }
-
-                    cheatSheet += $"{spawnToEdit.Key.SisterSpawn}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a  {spawnToEdit.Value.Name}\n";
-                    procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                    procEditor.SaveAutomatedChangesToMemory();
-                }
+                ProcessSpawnToEdit(spawnToEdit, openedFiles, cheatSheet);
             }
-
+            
             RandomizationForm._logger.Debug("Saving plant randomization to memory...");
             foreach (KeyValuePair<Location, Item> spawnToEdit in _randomizedItems.PlantSet10.Entities)
             {
-                string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
-                GcxEditor gcx_Editor;
-                List<DecodedProc> spawns;
-                ProcEditor procEditor;
-                if (!openedFiles.ContainsKey(spawnToEdit.Key.GcxFile))
-                {
-                    gcx_Editor = new GcxEditor();
-                    try
-                    {
-                        gcx_Editor.CallDecompiler(gcxFile);
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
-                    }
-                    try
-                    {
-                        List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                        spawns = new List<DecodedProc>();
-                        foreach (DecodedProc entry in allFileFunctions)
-                        {
-                            if (ContainsSpawningFunctions(entry))
-                                spawns.Add(entry);
-                        }
-                        AddAllProcs(gcx_Editor);
-                        procEditor = new ProcEditor(spawns, true);
-                        openedFiles.Add(spawnToEdit.Key.GcxFile, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
-                    }
-                    catch (Exception e)
-                    {
-                        throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
-                    }
-                }
-                else
-                {
-                    OpenedFileData openedFileData = openedFiles[spawnToEdit.Key.GcxFile];
-                    gcx_Editor = openedFileData.GcxEditor;
-                    spawns = openedFileData.DecodedProcs;
-                    procEditor = openedFileData.ProcEditor;
-                }
-
-                cheatSheet += $"{spawnToEdit.Key.GcxFile}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
-                procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                procEditor.SaveAutomatedChangesToMemory();
-                if (spawnToEdit.Key.SisterSpawn != null)
-                {
-                    //TODO: implement sister spawn duplication better
-                    gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.SisterSpawn}"));
-                    if (!openedFiles.ContainsKey(spawnToEdit.Key.SisterSpawn))
-                    {
-                        gcx_Editor = new GcxEditor();
-                        try
-                        {
-                            gcx_Editor.CallDecompiler(gcxFile);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new RandomizerException($"gcx decompilation failed for stage {spawnToEdit.Key.GcxFile}: {e}");
-                        }
-                        try
-                        {
-                            List<DecodedProc> allFileFunctions = gcx_Editor.BuildContentTree();
-                            spawns = new List<DecodedProc>();
-                            foreach (DecodedProc entry in allFileFunctions)
-                            {
-                                if (ContainsSpawningFunctions(entry))
-                                    spawns.Add(entry);
-                            }
-                            AddAllProcs(gcx_Editor);
-                            procEditor = new ProcEditor(spawns, true);
-                            openedFiles.Add(spawnToEdit.Key.SisterSpawn, new OpenedFileData { GcxEditor = gcx_Editor, DecodedProcs = spawns, ProcEditor = procEditor });
-                        }
-                        catch (Exception e)
-                        {
-                            throw new RandomizerException($"decompiled gcx for stage {spawnToEdit.Key.GcxFile} threw an unexpected error: {e}");
-                        }
-                    }
-                    else
-                    {
-                        OpenedFileData openedFileData = openedFiles[spawnToEdit.Key.SisterSpawn];
-                        gcx_Editor = openedFileData.GcxEditor;
-                        spawns = openedFileData.DecodedProcs;
-                        procEditor = openedFileData.ProcEditor;
-                    }
-
-                    cheatSheet += $"{spawnToEdit.Key.SisterSpawn}({MGS2Levels.MainGameStages.PlayableStageList.FirstOrDefault(x => x.AreaCode == spawnToEdit.Key.GcxFile).Name}): {spawnToEdit.Key.Name} now has a {spawnToEdit.Value.Name}\n";
-                    procEditor.ModifySpawnProc(spawnToEdit.Key.SpawnId, spawnToEdit.Value.ProcId);
-                    procEditor.SaveAutomatedChangesToMemory();
-                }
+                ProcessSpawnToEdit(spawnToEdit, openedFiles, cheatSheet);
             }
 
             DirectoryInfo createdDirectory = new DirectoryInfo(Environment.CurrentDirectory);
             if (customDirectory)
                 createdDirectory = Directory.CreateDirectory($"{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}_randomizedGcxFiles");
+
             RandomizationForm._logger.Debug("Saving randomization to disk from memory...");
             foreach (KeyValuePair<string, OpenedFileData> kvp in openedFiles)
             {
-                OpenedFileData openedFileData = kvp.Value;
-                byte[] newGcxBytes = openedFileData.GcxEditor.BuildGcxFile();
-                if (kvp.Key.Contains("w0"))
-                {
-                    //this is here to allow any custom weapon spawns made for Raiden to work for Snake on Tanker levels.
-                    List<int> plantWeaponReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x02, 0xAC });
-                    foreach (int index in plantWeaponReferences)
-                    {
-                        Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x01, 0x5C }, 0, newGcxBytes, index, 5);
-                    }
-                    //this is here to allow any custom item spawns made for Raiden to work for Snake on Tanker levels.
-                    List<int> plantItemReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x03, 0x3C });
-                    foreach (int index in plantItemReferences)
-                    {
-                        Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x01, 0xEC }, 0, newGcxBytes, index, 5);
-                    }
-                }
-                string date = $"{createdDirectory.Name}/scenerio_stage_{kvp.Key}.gcx";
-                if (customDirectory)
-                    File.WriteAllBytes(date, newGcxBytes);
-                else
-                    File.WriteAllBytes(GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{kvp.Key}")), newGcxBytes);
+                SaveFileToDisk(kvp, customDirectory, createdDirectory);
             }
+
             if (makeSpoilerFile)
                 File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/spoiler_seed-{Seed}.txt", cheatSheet);
+
             return true;
         }
 
