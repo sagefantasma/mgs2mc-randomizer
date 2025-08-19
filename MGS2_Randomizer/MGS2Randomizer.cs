@@ -2,6 +2,7 @@
 using MathNet.Spatial.Euclidean;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -2437,6 +2438,14 @@ namespace MGS2_Randomizer
                     continue;
                 }
 
+                if (new[] { "M9" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                {
+                    retries--;
+                    if (retries == 0)
+                        break;
+                    continue;
+                }
+
                 AssignTankerSpawn(itemsAssigned, randomChoice);
 
                 tankerSpawnsLeft.Remove(randomChoice);
@@ -3289,6 +3298,40 @@ namespace MGS2_Randomizer
             }
         }
 
+        private void FixTankerReferencesForPlant(byte[] newGcxBytes)
+        {
+            //this is here to allow any custom weapon spawns made for Snake to work for Raiden on Plant levels.
+            List<int> tankerWeaponReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x01, 0x5C });
+            foreach (int index in tankerWeaponReferences)
+            {
+                Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x02, 0xAC }, 0, newGcxBytes, index, 5);
+            }
+            //this is here to allow any custom item spawns made for Snake to work for Raiden on Plant levels.
+            List<int> tankerItemReferences = GcxEditor.FindAllSubArray(newGcxBytes, new byte[] { 0x39, 0x21, 0x80, 0x01, 0xEC });
+            foreach (int index in tankerItemReferences)
+            {
+                Array.Copy(new byte[] { 0x39, 0x21, 0x80, 0x03, 0x3C }, 0, newGcxBytes, index, 5);
+            }
+        }
+
+        private void FixBuggedSpawns(GcxEditor gcxEditor)
+        {
+            Dictionary<RawProc, string> procsToFix = new Dictionary<RawProc, string> {
+                { KnownProc.AwardBox1, "proc_0x97D665.proc" },
+                { KnownProc.AwardBox2, "proc_0x3E97CF.proc" },
+                { KnownProc.AwardBox3, "proc_0x5E97CF.proc" },
+                { KnownProc.AwardBox4, "proc_0x7E97CF.proc" },
+                { KnownProc.AwardBox5, "proc_0x9E97CF.proc" },
+                { KnownProc.AwardWetBox, "proc_0xCAF11B.proc" } };
+            
+
+            foreach(KeyValuePair<RawProc,string> proc in procsToFix)
+            {
+                byte[] modifiedContents = File.ReadAllBytes(Path.Combine("MGS2 Known Procs", proc.Value));
+                gcxEditor.ModifyProc(proc.Key, modifiedContents);
+            }
+        }
+
         private string ProcessSpawnToEdit(KeyValuePair<Location, Item> spawnToEdit, Dictionary<string, OpenedFileData> openedFiles, string cheatSheet)
         {
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_{spawnToEdit.Key.GcxFile}"));
@@ -3300,6 +3343,7 @@ namespace MGS2_Randomizer
                 OpenedFileData openedFileData = OpenFileForRandomization(openedFiles, gcxFile, spawnToEdit.Key.GcxFile, spawnToEdit);
                 spawns = openedFileData.DecodedProcs;
                 procEditor = openedFileData.ProcEditor;
+                FixBuggedSpawns(openedFileData.GcxEditor);
             }
             else
             {
@@ -3318,6 +3362,7 @@ namespace MGS2_Randomizer
                     OpenedFileData openedFileData = OpenFileForRandomization(openedFiles, gcxFile, spawnToEdit.Key.SisterSpawn, spawnToEdit);
                     spawns = openedFileData.DecodedProcs;
                     procEditor = openedFileData.ProcEditor;
+                    FixBuggedSpawns(openedFileData.GcxEditor);
                 }
                 else
                 {
