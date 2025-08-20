@@ -190,6 +190,13 @@ namespace MGS2_Randomizer
             }
         }
 
+        internal void ModifyProc(RawProc procToEdit, byte[] newContents)
+        {
+            //want the first itemProc and it's contents
+            DecodedProc procInFile = Procedures.Find(x => x.Name.Contains(procToEdit.BigEndianRepresentation));
+            Array.Copy(newContents, procInFile.RawContents, newContents.Length);
+        }
+
         internal List<DecodedProc> BuildContentTree()
         {
             //take the out file and break it down into main function and all procs

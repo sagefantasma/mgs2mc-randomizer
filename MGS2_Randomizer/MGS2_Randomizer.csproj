@@ -29,7 +29,7 @@
     <ProductName>MGS2 Master Collection Randomizer</ProductName>
     <PublisherName>SageFantasma</PublisherName>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.4.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -157,8 +157,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ByteLocation.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="GuardValues.cs" />
+    <Compile Include="OpenedFileData.cs" />
     <Compile Include="RandomizationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,8 +188,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomizationOptions.cs" />
+    <Compile Include="RandomizedItem.cs" />
+    <Compile Include="RandomizerException.cs" />
     <Compile Include="ResourceEditor.cs" />
     <Compile Include="GuardStageInfo.cs" />
+    <Compile Include="Route.cs" />
     <Content Include="AIColonel.ico" />
     <Content Include="mgs2-snake-kept-you-waiting-huh.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

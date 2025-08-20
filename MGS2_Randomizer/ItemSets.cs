@@ -913,11 +913,11 @@ namespace MGS2_Randomizer
             ItemAccessLevels.Add(MGS2Items.SocomSupp, 1);
             ItemAccessLevels.Add(MGS2Items.Thermals, 0);
             ItemAccessLevels.Add(MGS2Weapons.M9, 0);
-            ItemAccessLevels.Add(MGS2Weapons.Socom, 0);
+            ItemAccessLevels.Add(MGS2Weapons.Socom, 1);
             ItemAccessLevels.Add(MGS2Weapons.Psg1, 3);
             ItemAccessLevels.Add(MGS2Weapons.Psg1t, 3);
             ItemAccessLevels.Add(MGS2Weapons.Aks74u, 2);
-            ItemAccessLevels.Add(MGS2Weapons.Coolant, 0);
+            ItemAccessLevels.Add(MGS2Weapons.Coolant, 1);
             ItemAccessLevels.Add(MGS2Weapons.Dmic1, 2);
             ItemAccessLevels.Add(MGS2Weapons.M4, 2);
             ItemAccessLevels.Add(MGS2Weapons.Nikita, 3);

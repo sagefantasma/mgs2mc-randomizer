@@ -303,6 +303,30 @@ namespace MGS2_Randomizer
             path: "textures/flatlist/cigarette_tx_alp.bmp.ctxr,stage/XXXX/cache/cigarette_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/00bca075.ctxr\r\r\n");
         public static BasicResource IboxAll3 = new BasicResource("ibox_all3",
             path: "textures/flatlist/ibox_all3.bmp.ctxr,stage/XXXX/cache/ibox_all3.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a69.ctxr\r\r\n");
+        public static BasicResource HandyTelephoneTri = new BasicResource("handy_telephone.tri",
+            path: "assets/tri/us/handy_telephone.tri,us/stage/XXXX/cache/00562201.tri,cache/00562201.tri\r\r\n");
+        public static KmsResource HandyTelephone = new KmsResource("handy_telephone",
+            path: "assets/kms/us/handy_telephone.kms,us/stage/XXXX/cache/00562201.kms,cache/00562201.kms\r\r\n",
+            cmdl: "assets/kms/us/handy_telephone.cmdl,us/stage/XXXX/cache/00562201.cmdl,eu/stage/XXXX/cache/00562201.cmdl\r\r\n");
+        public static BasicResource HtlTest03 = new BasicResource("htl_test03.bmp",
+            path: "textures/flatlist/htl_test03.bmp.ctxr,stage/XXXX/cache/htl_test03.bmp.ctxr,eu/stage/XXXX/cache/00562201/0002ceef.ctxr\r\r\n");
+        public static BasicResource MoDiskTri = new BasicResource("mo_disk.tri",
+            path: "assets/tri/us/mo_disk.tri,us/stage/XXXX/cache/0023ceef.tri,cache/0023ceef.tri\r\r\n");
+        public static KmsResource MoDisk = new KmsResource("mo_disk",
+            path: "assets/kms/us/mo_disk.kms,us/stage/XXXX/cache/0023ceef.kms,cache/0023ceef.kms\r\r\n",
+            cmdl: "assets/kms/us/mo_disk.cmdl,us/stage/XXXX/cache/0023ceef.cmdl,eu/stage/XXXX/cache/0023ceef.cmdl\r\r\n");
+        public static BasicResource MoDiskNakaMt = new BasicResource("mo_disk_naka_mt.bmp",
+            path: "textures/flatlist/mo_disk_naka_mt.bmp.ctxr,stage/XXXX/cache/mo_disk_naka_mt.bmp.ctxr,eu/stage/XXXX/cache/0023ceef/00d4422b.ctxr\r\r\n");
+        public static BasicResource MoStealCovMk = new BasicResource("mo_steal_cov_mk.bmp",
+            path: "textures/flatlist/mo_steal_cov_mk.bmp.ctxr,stage/XXXX/cache/mo_steal_cov_mk.bmp.ctxr,eu/stage/XXXX/cache/0023ceef/00552e11.ctxr\r\r\n");
+        public static BasicResource AkSpTxMkAlp = new BasicResource("ak_sp_tx_mk_alp.bmp",
+            path: "textures/flatlist/ak_sp_tx_mk_alp.bmp.ctxr,stage/XXXX/cache/ak_sp_tx_mk_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/005515f6.ctxr\r\r\n");
+        public static BasicResource IboxAll4 = new BasicResource("ibox_all4.bmp.ctxr/00883186",
+            path: "textures/flatlist/ibox_all4.bmp.ctxr,stage/XXXX/cache/ibox_all4.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a6a.ctxr\r\r\n");
+        public static BasicResource IboxAll1 = new BasicResource("ibox_all1.bmp.ctxr/00883186",
+            path: "textures/flatlist/ibox_all1.bmp.ctxr,stage/XXXX/cache/ibox_all1.bmp.ctxr,eu/stage/XXXX/cache/00883186/008e6a67.ctxr\r\r\n");
+        public static BasicResource DigicameTxAlp = new BasicResource("digicame_tx_alp",
+            path: "textures/flatlist/digicame_tx_alp.bmp.ctxr,stage/XXXX/cache/digicame_tx_alp.bmp.ctxr,eu/stage/XXXX/cache/00573de0/0019f8d2.ctxr\r\r\n");
 
         //Shield guard assets
         public static KmsResource ShlLit2 = new KmsResource("shl_lit2",
@@ -743,7 +767,10 @@ namespace MGS2_Randomizer
             MGS2Resource.RationTexture, MGS2Resource.MedicineBoxTexture, MGS2Resource.CaseDr, MGS2Resource.CaseLan, MGS2Resource.CaseTestSide,
             MGS2Resource.CaseTestTop, MGS2Resource.ShuukanshiHyoushi3, MGS2Resource.ShuukanshiUra2, MGS2Resource.HGrenadeAlp, MGS2Resource.Psg1TTxAlp,
             MGS2Resource.RifleAmmoRabelAlpOvl, MGS2Resource.RifleAmmoSide, MGS2Resource.RifleAmmoTop, MGS2Resource.AmmoCase1Top, MGS2Resource.APSensorAlp,
-            MGS2Resource.APSensorCase, MGS2Resource.APSensorCase2, MGS2Resource.CigaretteTx, MGS2Resource.CigaretteTxAlp
+            MGS2Resource.APSensorCase, MGS2Resource.APSensorCase2, MGS2Resource.CigaretteTx, MGS2Resource.CigaretteTxAlp, MGS2Resource.HandyTelephoneTri,
+            MGS2Resource.HandyTelephone, MGS2Resource.HtlTest03, MGS2Resource.MoDiskTri, MGS2Resource.MoDisk, MGS2Resource.MoDiskNakaMt,
+            MGS2Resource.MoStealCovMk, MGS2Resource.AkSpTxMkAlp, MGS2Resource.IboxAll4, MGS2Resource.IboxAll1, MGS2Resource.DigicameTxAlp
+            //Digital Camera label, handle for gun box, launcher ibox
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };
 
