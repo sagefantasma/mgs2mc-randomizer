@@ -55,6 +55,7 @@ namespace MGS2_Randomizer
         private readonly byte[] BulC4InitBytes = { 0x11, 0xBB, 0xDB, 0x06 };
         private const byte GcxDecimalZero = 0xC1;
         private const byte GcxDecimalOne = 0xC2;
+        private readonly string[] ElectricalRoomSpawns = new[] { "ElectricalRoom", "Vents1", "Vents2" };
 
 
         private static List<RandomizedItem> MasterRaidenItemAwardOptions = new List<RandomizedItem> {
@@ -2709,15 +2710,28 @@ namespace MGS2_Randomizer
                         continue;
                     }
 
-                    if (randomChoice.Name == "Nikita" && options.NikitaShell2)
+                    if (randomChoice.Name == "Nikita")
                     {
-                        //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
-                        if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile)))
+                        if (options.NikitaShell2)
                         {
-                            retries--;
-                            if (retries == 0)
-                                break;
-                            continue;
+                            //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
+                            if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile)))
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name))
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
                         }
                     }
 
@@ -2839,7 +2853,7 @@ namespace MGS2_Randomizer
                     }
                     else if (randomChoice.Name == "Nikita")
                     {
-                        if (Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile))
+                        if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                         {
                             retries--;
                             if (retries == 0)
@@ -3159,7 +3173,8 @@ namespace MGS2_Randomizer
                         List<KeyValuePair<Location, Item>> acceptableLevelSpawns = setToCheck.PlantCard5Set.Entities.Where(spawn => spawn.Key.CardNeededToAccess == uniqueItemSpawn.Value
                         && spawn.Key.MandatorySpawn
                         && !VanillaItems.ItemAccessLevels.ContainsKey(spawn.Value)
-                        && !spawn.Value.Name.Contains("Card")).ToList();
+                        && !spawn.Value.Name.Contains("Card")
+                        && (randomizedUniqueSpawnToSwap.Value == MGS2Weapons.Nikita ? !ElectricalRoomSpawns.Contains(spawn.Key.Name) : true)).ToList();
                         KeyValuePair<Location, Item> spawnToSwap = acceptableLevelSpawns[Randomizer.Next(0, acceptableLevelSpawns.Count - 1)];
 
                         SwapSpawnContents(setToCheck.PlantCard5Set, randomizedUniqueSpawnToSwap, spawnToSwap);
