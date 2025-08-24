@@ -57,16 +57,10 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
+                $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n\r\n" +
+                $"Changes in v1.4.1.0:\r\n\r\n" +
                 $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
-                $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.\r\n\r\n" +
-                $"Changes in v1.4.0.0:\r\n\r\n" +
-                $" - Added sub-options to guard patrol routes: fully random and no node sharing.\r\n" +
-                $"    - Fully random means guards have the possibility of sharing the same route and position in the route.\r\n" +
-                $"    - No node sharing means guards can share routes, but never the same position in the route.\r\n" +
-                $" - Added additional Konami-made routes to the route randomization pool.\r\n" +
-                $"    - These routes are not used in the normal story, but were created at some point in development by Konami.\r\n" +
-                $"    - All of these additional routes have been manually verified to be usable.\r\n" +
-                $" - Fixed model and texture issues on Strut A - Sea Dock and KL Connecting Bridge for the Plant chapter.";
+                $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
