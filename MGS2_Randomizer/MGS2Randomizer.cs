@@ -2715,7 +2715,8 @@ namespace MGS2_Randomizer
                         if (options.NikitaShell2)
                         {
                             //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
-                            if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile)))
+                            if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile))
+                                || ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name))
                             {
                                 retries--;
                                 if (retries == 0)
@@ -2771,7 +2772,7 @@ namespace MGS2_Randomizer
                         itemsAssigned++; //increase the assigned count, but do not randomize the item.
                         continue;
                     }
-                    
+
                     Item randomChoice = GetRandomSpawnPoolItem(plantSpawnPool);
 
                     //isolate rations to only non-mandatory spawns
@@ -2843,7 +2844,8 @@ namespace MGS2_Randomizer
                     if ((randomChoice.Name == "Nikita" || randomChoice.Name == "Card 4") && options.NikitaShell2)
                     {
                         //currently, the Nikita and Card 4 can cause a soft logic lock if the spawn is not in Shell 2
-                        if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile))
+                        if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
+                            || ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                         {
                             retries--;
                             if (retries == 0)
