@@ -2750,6 +2750,11 @@ namespace MGS2_Randomizer
                     itemsAssigned++;
                 }
 
+                if (retries == 0)
+                {
+                    throw new RandomizerException("bad randomization seed");
+                }
+
                 BackfillPlantEntities(options.RandomizeCards);
 
                 //if the itemset isn't logically sound, re-randomize.
