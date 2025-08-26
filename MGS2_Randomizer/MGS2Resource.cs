@@ -769,7 +769,8 @@ namespace MGS2_Randomizer
             MGS2Resource.RifleAmmoRabelAlpOvl, MGS2Resource.RifleAmmoSide, MGS2Resource.RifleAmmoTop, MGS2Resource.AmmoCase1Top, MGS2Resource.APSensorAlp,
             MGS2Resource.APSensorCase, MGS2Resource.APSensorCase2, MGS2Resource.CigaretteTx, MGS2Resource.CigaretteTxAlp, MGS2Resource.HandyTelephoneTri,
             MGS2Resource.HandyTelephone, MGS2Resource.HtlTest03, MGS2Resource.MoDiskTri, MGS2Resource.MoDisk, MGS2Resource.MoDiskNakaMt,
-            MGS2Resource.MoStealCovMk, MGS2Resource.AkSpTxMkAlp, MGS2Resource.IboxAll4, MGS2Resource.IboxAll1, MGS2Resource.DigicameTxAlp
+            MGS2Resource.MoStealCovMk, MGS2Resource.AkSpTxMkAlp, MGS2Resource.IboxAll4, MGS2Resource.IboxAll1, MGS2Resource.DigicameTxAlp,
+            MGS2Resource.IboxAll3
             //Digital Camera label, handle for gun box, launcher ibox
             /*MGS2Resource.RifleAmmoIbox1, MGS2Resource.RifleAmmoIbox2, MGS2Resource.RilfeIbox, //these three change nothing sadge /*MGS2Resource.IboxAmoNkt //Unused resource*/
         };

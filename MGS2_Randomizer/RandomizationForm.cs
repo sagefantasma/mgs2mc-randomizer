@@ -57,8 +57,10 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n\r\n" +
-                $"Changes in v1.4.1.0:\r\n\r\n" +
+                $" - Fixed bug with Cardboard Box 3 not getting textured correctly in Sea Dock.\r\n" +
+                $" - Added guiderails to randomization form to help prevent undesired effects with guard value randomization.\r\n\r\n" +
+                $"Changes in v1.4.1.0->.2:\r\n\r\n" +
+                $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n" +
                 $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
                 $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
@@ -176,6 +178,10 @@ namespace MGS2_Randomizer
                 keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
                 randomizeGuardValuesCheckBox.Checked = config.LastOptionsSelected.RandomizeGuardValues;
                 insanityScalarTrackBar.Value = (int) (config.LastOptionsSelected.GuardRandomizationBounds * 100);
+                if(insanityScalarTrackBar.Value < 20)
+                {
+                    insanityScalarTrackBar.Value = 20; //by default, do not allow less than 20 to avoid issues from unaware users.
+                }
                 keepGuardValuesConsistentAcrossLevelsCheckbox.Checked = config.LastOptionsSelected.KeepGuardValuesConsistentAcrossLevels;
                 randomizeReinforcementGuardTypesCheckBox.Checked = config.LastOptionsSelected.RandomizeReinforcementGuardTypes;
                 randomizeGuardPatrolsCheckbox.Checked = config.LastOptionsSelected.RandomizeGuardPatrols;
@@ -455,6 +461,15 @@ namespace MGS2_Randomizer
         {
             try
             {
+                if(randomizeGuardValuesCheckBox.Checked && insanityScalarTrackBar.Value < 20)
+                {
+                    DialogResult response = MessageBox.Show("Your randomization bounds for guard values is set to less than the recommended 20%, this may cause severe gameplay issues!\r\n\r\n" +
+                        "Are you sure you want to continue with these settings?", "WARNING", MessageBoxButtons.YesNo);
+                    if (response == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
                 UpdateConfig();
                 _logger.Information("Randomizing game files...");
                 MessageBox.Show("Randomizing MGS2's game files to your specifications, this may take some time...", "Heads up!");
