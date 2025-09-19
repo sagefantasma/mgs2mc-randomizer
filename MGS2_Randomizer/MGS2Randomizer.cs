@@ -2726,7 +2726,8 @@ namespace MGS2_Randomizer
                         }
                         else
                         {
-                            if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name))
+                            if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name)
+                                || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                             {
                                 retries--;
                                 if (retries == 0)
@@ -2860,7 +2861,8 @@ namespace MGS2_Randomizer
                     }
                     else if (randomChoice.Name == "Nikita")
                     {
-                        if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+                        if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name)
+                            || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                         {
                             retries--;
                             if (retries == 0)
@@ -3189,7 +3191,8 @@ namespace MGS2_Randomizer
                 }
             }
             
-            List<KeyValuePair<Location, Item>> firstProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FirstProgressionAreas.Contains(spawns.Key.GcxFile)).ToList();
+            List<KeyValuePair<Location, Item>> firstProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FirstProgressionAreas.Contains(spawns.Key.GcxFile)
+            && new string[] { "BottomRightConveyer", "UnderTopsideConveyerBelt", "Level5DoorRoom", "PerimeterAccessRoom" }.Contains(spawns.Key.Name) == false).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationFirstProgressionItems)
             {
                 if (!firstProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
@@ -3210,7 +3213,7 @@ namespace MGS2_Randomizer
             }
 
             List<KeyValuePair<Location, Item>> secondProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.SecondProgressionAreas.Contains(spawns.Key.GcxFile)
-            && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false).ToList();
+            && new string[] { "FrontDoor1", "FrontDoor2", "BottomRightConveyer", "UnderTopsideConveyerBelt", "Level5DoorRoom", "PerimeterAccessRoom" }.Contains(spawns.Key.Name) == false).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationSecondProgressionItems)
             {
                 if (!secondProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))

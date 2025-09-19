@@ -57,12 +57,13 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed bug with Cardboard Box 3 not getting textured correctly in Sea Dock.\r\n" +
-                $" - Added guiderails to randomization form to help prevent undesired effects with guard value randomization.\r\n\r\n" +
-                $"Changes in v1.4.1.0->.2:\r\n\r\n" +
+                $" - Fixed several bugs causing progression-locks with the AK-74u, B.D.U, and Nikita.\r\n\r\n" +
+                $"Changes in v1.4.1.0->.3:\r\n\r\n" +
                 $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n" +
                 $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
-                $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.";
+                $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.\r\n" +
+                $" - Fixed bug with Cardboard Box 3 not getting textured correctly in Sea Dock.\r\n" +
+                $" - Added guiderails to randomization form to help prevent undesired effects with guard value randomization.";
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
