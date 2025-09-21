@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static MGS2_Randomizer.MGS2Randomizer;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MGS2_Randomizer
 {
@@ -3192,7 +3193,8 @@ namespace MGS2_Randomizer
             }
             
             List<KeyValuePair<Location, Item>> firstProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.FirstProgressionAreas.Contains(spawns.Key.GcxFile)
-            && new string[] { "BottomRightConveyer", "UnderTopsideConveyerBelt", "Level5DoorRoom", "PerimeterAccessRoom" }.Contains(spawns.Key.Name) == false).ToList();
+            && new string[] { "BottomRightConveyer", "UnderTopsideConveyerBelt", "Level5DoorRoom", "PerimeterAccessRoom" }.Contains(spawns.Key.Name) == false
+            && spawns.Key.CardNeededToAccess <= 1).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationFirstProgressionItems)
             {
                 if (!firstProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
@@ -3213,35 +3215,37 @@ namespace MGS2_Randomizer
             }
 
             List<KeyValuePair<Location, Item>> secondProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.SecondProgressionAreas.Contains(spawns.Key.GcxFile)
-            && new string[] { "FrontDoor1", "FrontDoor2", "BottomRightConveyer", "UnderTopsideConveyerBelt", "Level5DoorRoom", "PerimeterAccessRoom" }.Contains(spawns.Key.Name) == false).ToList();
+            && new string[] { "FrontDoor1", "FrontDoor2", "BottomRightConveyer", "UnderTopsideConveyerBelt", "Level5DoorRoom", "PerimeterAccessRoom" }.Contains(spawns.Key.Name) == false
+            && spawns.Key.CardNeededToAccess <= 2).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationSecondProgressionItems)
             {
                 if (!secondProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
                 {
                     if (item.Name == MGS2Items.BDU.Name)
                     {
-                        FixCardedSpawn(setToCheck.PlantCard5Set, firstProgressionSpawns, MGS2Items.BDU, MGS2Weapons.Rgb6Ammo, keepCardAccessLevels);
+                        FixCardedSpawn(setToCheck.PlantCard5Set, secondProgressionSpawns, MGS2Items.BDU, MGS2Weapons.Rgb6Ammo, keepCardAccessLevels);
                     }
                     if (item.Name == MGS2Weapons.Aks74u.Name)
                     {
-                        FixCardedSpawn(setToCheck.PlantCard5Set, firstProgressionSpawns, MGS2Weapons.Aks74u, MGS2Weapons.Aks74uAmmo, keepCardAccessLevels);
+                        FixCardedSpawn(setToCheck.PlantCard5Set, secondProgressionSpawns, MGS2Weapons.Aks74u, MGS2Weapons.Aks74uAmmo, keepCardAccessLevels);
                     }
                 }
             }
 
             List<KeyValuePair<Location, Item>> thirdProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.ThirdProgressionAreas.Contains(spawns.Key.GcxFile)
-            && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false).ToList();
+            && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false
+            && spawns.Key.CardNeededToAccess <= 3).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationThirdProgressionItems)
             {
                 if (!thirdProgressionSpawns.Any(spawn => spawn.Value.Name == item.Name))
                 {
                     if (item.Name == MGS2Weapons.Dmic1.Name)
                     {
-                        FixCardedSpawn(setToCheck.PlantCard5Set, firstProgressionSpawns, MGS2Weapons.Dmic1, MGS2Weapons.Chaff, keepCardAccessLevels);
+                        FixCardedSpawn(setToCheck.PlantCard5Set, thirdProgressionSpawns, MGS2Weapons.Dmic1, MGS2Weapons.Chaff, keepCardAccessLevels);
                     }
                     if (item.Name == MGS2Weapons.Psg1.Name)
                     {
-                        FixCardedSpawn(setToCheck.PlantCard5Set, firstProgressionSpawns, MGS2Weapons.Psg1, MGS2Weapons.Psg1Ammo, keepCardAccessLevels);
+                        FixCardedSpawn(setToCheck.PlantCard5Set, thirdProgressionSpawns, MGS2Weapons.Psg1, MGS2Weapons.Psg1Ammo, keepCardAccessLevels);
                     }
                 }
             }
