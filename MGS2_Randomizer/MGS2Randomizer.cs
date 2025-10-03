@@ -1766,7 +1766,7 @@ namespace MGS2_Randomizer
             return byteLocation;
         }
 
-        private void SetC4Location(byte[] gcxContents, byte[] bytesToFind, ByteLocation location, int xOffset, int yOffset, int zOffset)
+        private void SetC4Location(byte[] gcxContents, byte[] bytesToFind, ByteLocation location, int xOffset, int yOffset, int zOffset, int? rOffset = null, byte[] rPosition = null)
         {
             List<int> c4Locations = GcxEditor.FindAllSubArray(gcxContents, bytesToFind);
 
@@ -1775,6 +1775,10 @@ namespace MGS2_Randomizer
                 Array.Copy(location.X, 0, gcxContents, c4Location + xOffset, location.X.Length);
                 Array.Copy(location.Y, 0, gcxContents, c4Location + yOffset, location.Y.Length);
                 Array.Copy(location.Z, 0, gcxContents, c4Location + zOffset, location.Z.Length);
+                if(rOffset != null)
+                {
+                    Array.Copy(rPosition, 0, gcxContents, c4Location + (int)rOffset, 2);
+                }
             }
         }
 
@@ -2266,7 +2270,8 @@ namespace MGS2_Randomizer
             {
                 string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w22a"));
                 byte[] gcxContents = File.ReadAllBytes(gcxFile);
-                SetC4Location(gcxContents, armoryC4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset);
+                int rLocationOffset = 0x19;
+                SetC4Location(gcxContents, armoryC4DeclarationBytes, location, xLocationOffset, yLocationOffset, zLocationOffset, rLocationOffset, new byte[] { 0x00, 0x04 });
                 File.WriteAllBytes(gcxFile, gcxContents);
             }
         }
