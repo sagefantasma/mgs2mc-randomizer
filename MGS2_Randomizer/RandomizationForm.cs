@@ -57,8 +57,8 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed more progression bugs that can happen with really unlucky seeds.\r\n\r\n" +
-                $"Changes in v1.4.1.0->.4:\r\n\r\n" +
+                $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.\r\n\r\n" +
+                $"Changes in v1.4.1.0->.5:\r\n\r\n" +
                 $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n" +
                 $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
                 $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.\r\n" +
