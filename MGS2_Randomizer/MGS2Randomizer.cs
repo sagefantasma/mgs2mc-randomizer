@@ -3124,7 +3124,7 @@ namespace MGS2_Randomizer
         {
             KeyValuePair<Location, Item> cardSpawn = cardSpawns.Where(spawn => spawn.Value.Name == cardToFix.Name).FirstOrDefault();
             List<KeyValuePair<Location, Item>> mandatorySpawnsInAccessLevel = itemSet.Entities.Where(spawn => spawn.Key.MandatorySpawn
-                && spawn.Key.CardNeededToAccess == accessLevel).ToList();
+                && spawn.Key.CardNeededToAccess == accessLevel && !spawn.Value.Name.Contains("Card")).ToList();
             KeyValuePair<Location, Item> spawnToSwap = mandatorySpawnsInAccessLevel[Randomizer.Next(0, mandatorySpawnsInAccessLevel.Count)];
 
             SwapSpawnContents(masterItemSet.PlantCard5Set, spawnToSwap, cardSpawn);
@@ -3167,7 +3167,7 @@ namespace MGS2_Randomizer
                     && ((nikitaShell2 && Location.FourthProgressionAreas.Contains(spawn.Key.GcxFile)) || !nikitaShell2)).ToList();
                 KeyValuePair<Location, Item> lvl3SpawnToSwap = lvl3MandatorySpawns[Randomizer.Next(0, lvl3MandatorySpawns.Count - 1)];
 
-                SwapSpawnContents(setToCheck.PlantCard5Set, lvl3SpawnToSwap, cardSpawn4);
+                FixCardSpawn(setToCheck, setToCheck.PlantCard3Set, cardSpawns, MGS2Items.Card4, 3);
             }
             if (!setToCheck.PlantCard4Set.Entities.ContainsValue(MGS2Items.Card5) ||
                 setToCheck.PlantCard4Set.Entities.Where(spawn => spawn.Value.Name == MGS2Items.Card5.Name).FirstOrDefault().Key.CardNeededToAccess != 4 ||
