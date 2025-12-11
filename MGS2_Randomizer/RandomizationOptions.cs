@@ -27,6 +27,7 @@ namespace MGS2_Randomizer
         public bool RandomizeTankerControlUnits { get; set; }
         public bool RandomizeCards { get; set; }
         public bool KeepVanillaCardAccess { get; set; }
+        public bool Card4Shell2 { get; set; }
         public bool RandomizeGuardValues { get; set; }
         public float GuardRandomizationBounds { get; set; }
         public bool KeepGuardValuesConsistentAcrossLevels { get; set; }
@@ -44,6 +45,7 @@ namespace MGS2_Randomizer
                 $"RandomizeStartingItems = {RandomizeStartingItems};\n" +
                 $"RandomizeAutomaticRewards = {RandomizeAutomaticRewards};\n" +
                 $"RandomizeCards = {RandomizeCards};\n" +
+                $"Card4Shell2 = {Card4Shell2};\n" +
                 $"KeepVanillaCardAccess = {KeepVanillaCardAccess};\n" +
                 $"RandomizeC4 = {RandomizeC4};\n" +
                 $"RandomizeClaymores = {RandomizeClaymores};\n" +
