@@ -42,6 +42,9 @@ namespace MGS2_Randomizer
             this.browseButton = new System.Windows.Forms.Button();
             this.optionsGroupBox = new System.Windows.Forms.GroupBox();
             this.enemyRandoGroupBox = new System.Windows.Forms.GroupBox();
+            this.noRouteSharingRadioBtn = new System.Windows.Forms.RadioButton();
+            this.noNodeSharingRadioBtn = new System.Windows.Forms.RadioButton();
+            this.fullyRandomRadioBtn = new System.Windows.Forms.RadioButton();
             this.randomizeGuardPatrolsCheckbox = new System.Windows.Forms.CheckBox();
             this.randomizeReinforcementGuardTypesCheckBox = new System.Windows.Forms.CheckBox();
             this.insanityScalarLabel = new System.Windows.Forms.Label();
@@ -53,6 +56,7 @@ namespace MGS2_Randomizer
             this.randomizeTankerControlUnitLocations = new System.Windows.Forms.CheckBox();
             this.randomizeEFConnectingBridgeClaymores = new System.Windows.Forms.CheckBox();
             this.itemRandoGroupBox = new System.Windows.Forms.GroupBox();
+            this.restrictCard4CheckBox = new System.Windows.Forms.CheckBox();
             this.randomizeSpawnsCheckbox = new System.Windows.Forms.CheckBox();
             this.seedAlwaysBeatableCheckbox = new System.Windows.Forms.CheckBox();
             this.restrictNikitaCheckbox = new System.Windows.Forms.CheckBox();
@@ -67,9 +71,6 @@ namespace MGS2_Randomizer
             this.reportBugMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kofiButton = new System.Windows.Forms.Button();
-            this.fullyRandomRadioBtn = new System.Windows.Forms.RadioButton();
-            this.noNodeSharingRadioBtn = new System.Windows.Forms.RadioButton();
-            this.noRouteSharingRadioBtn = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.seedUpDown)).BeginInit();
             this.executionFlowLayoutPanel.SuspendLayout();
             this.gameInstallLayoutPanel.SuspendLayout();
@@ -158,7 +159,7 @@ namespace MGS2_Randomizer
             this.executionFlowLayoutPanel.Controls.Add(this.restoreBaseGameButton);
             this.executionFlowLayoutPanel.Controls.Add(this.randomizeButton);
             this.executionFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 592);
+            this.executionFlowLayoutPanel.Location = new System.Drawing.Point(0, 614);
             this.executionFlowLayoutPanel.Name = "executionFlowLayoutPanel";
             this.executionFlowLayoutPanel.Size = new System.Drawing.Size(354, 71);
             this.executionFlowLayoutPanel.TabIndex = 4;
@@ -221,7 +222,7 @@ namespace MGS2_Randomizer
             this.optionsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.optionsGroupBox.Location = new System.Drawing.Point(0, 63);
             this.optionsGroupBox.Name = "optionsGroupBox";
-            this.optionsGroupBox.Size = new System.Drawing.Size(354, 529);
+            this.optionsGroupBox.Size = new System.Drawing.Size(354, 551);
             this.optionsGroupBox.TabIndex = 8;
             this.optionsGroupBox.TabStop = false;
             this.optionsGroupBox.Text = "Options";
@@ -240,12 +241,48 @@ namespace MGS2_Randomizer
             this.enemyRandoGroupBox.Controls.Add(this.keepGuardValuesConsistentAcrossLevelsCheckbox);
             this.enemyRandoGroupBox.Controls.Add(this.insanityScalarTrackBar);
             this.enemyRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.enemyRandoGroupBox.Location = new System.Drawing.Point(3, 356);
+            this.enemyRandoGroupBox.Location = new System.Drawing.Point(3, 379);
             this.enemyRandoGroupBox.Name = "enemyRandoGroupBox";
             this.enemyRandoGroupBox.Size = new System.Drawing.Size(348, 169);
             this.enemyRandoGroupBox.TabIndex = 16;
             this.enemyRandoGroupBox.TabStop = false;
             this.enemyRandoGroupBox.Text = "Enemy Randomization (Applies to All Difficulties)";
+            // 
+            // noRouteSharingRadioBtn
+            // 
+            this.noRouteSharingRadioBtn.AutoSize = true;
+            this.noRouteSharingRadioBtn.Enabled = false;
+            this.noRouteSharingRadioBtn.Location = new System.Drawing.Point(229, 110);
+            this.noRouteSharingRadioBtn.Name = "noRouteSharingRadioBtn";
+            this.noRouteSharingRadioBtn.Size = new System.Drawing.Size(110, 17);
+            this.noRouteSharingRadioBtn.TabIndex = 11;
+            this.noRouteSharingRadioBtn.Text = "No Route Sharing";
+            this.noRouteSharingRadioBtn.UseVisualStyleBackColor = true;
+            this.noRouteSharingRadioBtn.Visible = false;
+            // 
+            // noNodeSharingRadioBtn
+            // 
+            this.noNodeSharingRadioBtn.AutoSize = true;
+            this.noNodeSharingRadioBtn.Enabled = false;
+            this.noNodeSharingRadioBtn.Location = new System.Drawing.Point(116, 110);
+            this.noNodeSharingRadioBtn.Name = "noNodeSharingRadioBtn";
+            this.noNodeSharingRadioBtn.Size = new System.Drawing.Size(107, 17);
+            this.noNodeSharingRadioBtn.TabIndex = 10;
+            this.noNodeSharingRadioBtn.Text = "No Node Sharing";
+            this.noNodeSharingRadioBtn.UseVisualStyleBackColor = true;
+            // 
+            // fullyRandomRadioBtn
+            // 
+            this.fullyRandomRadioBtn.AutoSize = true;
+            this.fullyRandomRadioBtn.Checked = true;
+            this.fullyRandomRadioBtn.Enabled = false;
+            this.fullyRandomRadioBtn.Location = new System.Drawing.Point(23, 110);
+            this.fullyRandomRadioBtn.Name = "fullyRandomRadioBtn";
+            this.fullyRandomRadioBtn.Size = new System.Drawing.Size(89, 17);
+            this.fullyRandomRadioBtn.TabIndex = 9;
+            this.fullyRandomRadioBtn.TabStop = true;
+            this.fullyRandomRadioBtn.Text = "Fully Random";
+            this.fullyRandomRadioBtn.UseVisualStyleBackColor = true;
             // 
             // randomizeGuardPatrolsCheckbox
             // 
@@ -321,7 +358,7 @@ namespace MGS2_Randomizer
             this.worldRandoGroupBox.Controls.Add(this.randomizeTankerControlUnitLocations);
             this.worldRandoGroupBox.Controls.Add(this.randomizeEFConnectingBridgeClaymores);
             this.worldRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.worldRandoGroupBox.Location = new System.Drawing.Point(3, 255);
+            this.worldRandoGroupBox.Location = new System.Drawing.Point(3, 278);
             this.worldRandoGroupBox.Name = "worldRandoGroupBox";
             this.worldRandoGroupBox.Size = new System.Drawing.Size(348, 101);
             this.worldRandoGroupBox.TabIndex = 15;
@@ -364,6 +401,7 @@ namespace MGS2_Randomizer
             // 
             this.itemRandoGroupBox.AutoSize = true;
             this.itemRandoGroupBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.itemRandoGroupBox.Controls.Add(this.restrictCard4CheckBox);
             this.itemRandoGroupBox.Controls.Add(this.randomizeSpawnsCheckbox);
             this.itemRandoGroupBox.Controls.Add(this.seedAlwaysBeatableCheckbox);
             this.itemRandoGroupBox.Controls.Add(this.restrictNikitaCheckbox);
@@ -376,10 +414,24 @@ namespace MGS2_Randomizer
             this.itemRandoGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.itemRandoGroupBox.Location = new System.Drawing.Point(3, 16);
             this.itemRandoGroupBox.Name = "itemRandoGroupBox";
-            this.itemRandoGroupBox.Size = new System.Drawing.Size(348, 239);
+            this.itemRandoGroupBox.Size = new System.Drawing.Size(348, 262);
             this.itemRandoGroupBox.TabIndex = 14;
             this.itemRandoGroupBox.TabStop = false;
             this.itemRandoGroupBox.Text = "Item Randomization";
+            // 
+            // restrictCard4CheckBox
+            // 
+            this.restrictCard4CheckBox.AutoSize = true;
+            this.restrictCard4CheckBox.Checked = true;
+            this.restrictCard4CheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.restrictCard4CheckBox.Enabled = false;
+            this.restrictCard4CheckBox.Location = new System.Drawing.Point(56, 203);
+            this.restrictCard4CheckBox.Name = "restrictCard4CheckBox";
+            this.restrictCard4CheckBox.Size = new System.Drawing.Size(143, 17);
+            this.restrictCard4CheckBox.TabIndex = 15;
+            this.restrictCard4CheckBox.Text = "Restrict Card 4 to Shell 2";
+            this.restrictCard4CheckBox.UseVisualStyleBackColor = true;
+            this.restrictCard4CheckBox.CheckedChanged += new System.EventHandler(this.restrictCard4CheckBox_CheckedChanged);
             // 
             // randomizeSpawnsCheckbox
             // 
@@ -424,7 +476,7 @@ namespace MGS2_Randomizer
             // 
             this.keepVanillaCardLevelsCheckbox.AutoSize = true;
             this.keepVanillaCardLevelsCheckbox.Enabled = false;
-            this.keepVanillaCardLevelsCheckbox.Location = new System.Drawing.Point(54, 203);
+            this.keepVanillaCardLevelsCheckbox.Location = new System.Drawing.Point(56, 226);
             this.keepVanillaCardLevelsCheckbox.Name = "keepVanillaCardLevelsCheckbox";
             this.keepVanillaCardLevelsCheckbox.Size = new System.Drawing.Size(221, 17);
             this.keepVanillaCardLevelsCheckbox.TabIndex = 12;
@@ -544,47 +596,11 @@ namespace MGS2_Randomizer
             this.kofiButton.UseVisualStyleBackColor = true;
             this.kofiButton.Click += new System.EventHandler(this.KofiButton_Click);
             // 
-            // fullyRandomRadioBtn
-            // 
-            this.fullyRandomRadioBtn.AutoSize = true;
-            this.fullyRandomRadioBtn.Checked = true;
-            this.fullyRandomRadioBtn.Enabled = false;
-            this.fullyRandomRadioBtn.Location = new System.Drawing.Point(23, 110);
-            this.fullyRandomRadioBtn.Name = "fullyRandomRadioBtn";
-            this.fullyRandomRadioBtn.Size = new System.Drawing.Size(89, 17);
-            this.fullyRandomRadioBtn.TabIndex = 9;
-            this.fullyRandomRadioBtn.TabStop = true;
-            this.fullyRandomRadioBtn.Text = "Fully Random";
-            this.fullyRandomRadioBtn.UseVisualStyleBackColor = true;
-            // 
-            // noNodeSharingRadioBtn
-            // 
-            this.noNodeSharingRadioBtn.AutoSize = true;
-            this.noNodeSharingRadioBtn.Enabled = false;
-            this.noNodeSharingRadioBtn.Location = new System.Drawing.Point(116, 110);
-            this.noNodeSharingRadioBtn.Name = "noNodeSharingRadioBtn";
-            this.noNodeSharingRadioBtn.Size = new System.Drawing.Size(107, 17);
-            this.noNodeSharingRadioBtn.TabIndex = 10;
-            this.noNodeSharingRadioBtn.Text = "No Node Sharing";
-            this.noNodeSharingRadioBtn.UseVisualStyleBackColor = true;
-            // 
-            // noRouteSharingRadioBtn
-            // 
-            this.noRouteSharingRadioBtn.AutoSize = true;
-            this.noRouteSharingRadioBtn.Enabled = false;
-            this.noRouteSharingRadioBtn.Location = new System.Drawing.Point(229, 110);
-            this.noRouteSharingRadioBtn.Name = "noRouteSharingRadioBtn";
-            this.noRouteSharingRadioBtn.Size = new System.Drawing.Size(110, 17);
-            this.noRouteSharingRadioBtn.TabIndex = 11;
-            this.noRouteSharingRadioBtn.Text = "No Route Sharing";
-            this.noRouteSharingRadioBtn.UseVisualStyleBackColor = true;
-            this.noRouteSharingRadioBtn.Visible = false;
-            // 
             // RandomizationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(354, 663);
+            this.ClientSize = new System.Drawing.Size(354, 685);
             this.Controls.Add(this.kofiButton);
             this.Controls.Add(this.optionsGroupBox);
             this.Controls.Add(this.gameInstallLayoutPanel);
@@ -661,6 +677,7 @@ namespace MGS2_Randomizer
         private System.Windows.Forms.RadioButton noRouteSharingRadioBtn;
         private System.Windows.Forms.RadioButton noNodeSharingRadioBtn;
         private System.Windows.Forms.RadioButton fullyRandomRadioBtn;
+        private System.Windows.Forms.CheckBox restrictCard4CheckBox;
     }
 }
 

@@ -57,14 +57,18 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.\r\n\r\n" +
-                $"Changes in v1.4.1.0->.5:\r\n\r\n" +
+                $" - Fixed several rare randomization issues with Card randomization. \r\n" +
+                $" - Fixed duplicate spawns of some automatically awarded weapons. \r\n" +
+                $" - Added an option to restrict Card 4 to Shell 2 to help prevent soft-locks.\r\n\r\n" +
+                $"Changes in v1.4.1.0->.6:\r\n\r\n" +
                 $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n" +
                 $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
                 $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.\r\n" +
                 $" - Fixed bug with Cardboard Box 3 not getting textured correctly in Sea Dock.\r\n" +
                 $" - Added guiderails to randomization form to help prevent undesired effects with guard value randomization.\r\n" +
-                $" - Fixed several bugs causing progression-locks with the AK-74u, B.D.U, and Nikita.";
+                $" - Fixed several bugs causing progression-locks with the AK-74u, B.D.U, and Nikita.\r\n" +
+                $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.";
+
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
 
@@ -112,6 +116,9 @@ namespace MGS2_Randomizer
 
             this.helpProvider1.SetShowHelp(this.addCardsCheckbox, true);
             this.helpProvider1.SetHelpString(this.addCardsCheckbox, "If automatic rewards are enabled, you can enable this option to add cards to the randomization pool.");
+
+            this.helpProvider1.SetShowHelp(this.restrictCard4CheckBox, true);
+            this.helpProvider1.SetHelpString(this.restrictCard4CheckBox, "This option will make sure Card 4 always spawns somewhere in Shell 2 before the Purification Chamber, so you don't get soft-locked if you missed it and 'Seed Always Beatable' is enabled. (Card 5 is always on Shell 2 already)");
 
             this.helpProvider1.SetShowHelp(this.keepVanillaCardLevelsCheckbox, true);
             this.helpProvider1.SetHelpString(this.keepVanillaCardLevelsCheckbox, "If cards are in the randomization pool, you can enable this option to keep items at their 'native' spawn level. (AKS-74u will be behind a Lv2 door, PSG-1 will be behind a Lv3 door, etc...)");
@@ -177,6 +184,7 @@ namespace MGS2_Randomizer
                 randomizeEFConnectingBridgeClaymores.Checked = config.LastOptionsSelected.RandomizeClaymores;
                 randomizeTankerControlUnitLocations.Checked = config.LastOptionsSelected.RandomizeTankerControlUnits;
                 addCardsCheckbox.Checked = config.LastOptionsSelected.RandomizeCards;
+                restrictCard4CheckBox.Checked = config.LastOptionsSelected.Card4Shell2;
                 keepVanillaCardLevelsCheckbox.Checked = config.LastOptionsSelected.KeepVanillaCardAccess;
                 randomizeGuardValuesCheckBox.Checked = config.LastOptionsSelected.RandomizeGuardValues;
                 insanityScalarTrackBar.Value = (int) (config.LastOptionsSelected.GuardRandomizationBounds * 100);
@@ -207,6 +215,8 @@ namespace MGS2_Randomizer
                 }
                 if(!addCardsCheckbox.Checked)
                 {
+                    restrictCard4CheckBox.Checked = false;
+                    restrictCard4CheckBox.Enabled = false;
                     keepVanillaCardLevelsCheckbox.Checked = false;
                     keepVanillaCardLevelsCheckbox.Enabled = false;
                 }
@@ -247,6 +257,7 @@ namespace MGS2_Randomizer
                         RandomizeC4 = randomizeBombLocations.Checked,
                         RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
                         RandomizeCards = addCardsCheckbox.Checked,
+                        Card4Shell2 = restrictCard4CheckBox.Checked,
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
                         RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
                         RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
@@ -420,6 +431,7 @@ namespace MGS2_Randomizer
         private void addCardsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             keepVanillaCardLevelsCheckbox.Enabled = addCardsCheckbox.Checked && addCardsCheckbox.Enabled;
+            restrictCard4CheckBox.Enabled = addCardsCheckbox.Checked && addCardsCheckbox.Enabled;
             UpdateConfig();
         }
 
@@ -494,6 +506,7 @@ namespace MGS2_Randomizer
                         RandomizeC4 = randomizeBombLocations.Checked,
                         RandomizeClaymores = randomizeEFConnectingBridgeClaymores.Checked,
                         RandomizeCards = addCardsCheckbox.Checked,
+                        Card4Shell2 = restrictCard4CheckBox.Checked,
                         KeepVanillaCardAccess = keepVanillaCardLevelsCheckbox.Checked,
                         RandomizeTankerControlUnits = randomizeTankerControlUnitLocations.Checked,
                         RandomizeGuardValues = randomizeGuardValuesCheckBox.Checked,
@@ -621,12 +634,14 @@ namespace MGS2_Randomizer
         {
             if (!addCardsCheckbox.Enabled)
             {
+                restrictCard4CheckBox.Enabled = false;
                 keepVanillaCardLevelsCheckbox.Enabled = false;
             }
             else
             {
                 if (addCardsCheckbox.Checked)
                 {
+                    restrictCard4CheckBox.Enabled = true;
                     keepVanillaCardLevelsCheckbox.Enabled = true;
                 }
             }
@@ -648,6 +663,11 @@ namespace MGS2_Randomizer
             fullyRandomRadioBtn.Enabled = randomizeGuardPatrolsCheckbox.Checked;
             noNodeSharingRadioBtn.Enabled = randomizeGuardPatrolsCheckbox.Checked;
             noRouteSharingRadioBtn.Enabled = randomizeGuardPatrolsCheckbox.Checked;
+        }
+
+        private void restrictCard4CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateConfig();
         }
     }
 }

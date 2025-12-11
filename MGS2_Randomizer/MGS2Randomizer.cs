@@ -60,36 +60,36 @@ namespace MGS2_Randomizer
 
 
         private static List<RandomizedItem> MasterRaidenItemAwardOptions = new List<RandomizedItem> {
-            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Ration" }, 
-            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cold Medicine" },
-            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Bandages" },
-            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Pentazemin" },
-            new RandomizedItem{Index = 6 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "B.D.U" },
-            new RandomizedItem{Index = 7 + GcxDecimalZero,Count = 1 + GcxDecimalZero, Name = "Body Armor" },
-            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Stealth" },
-            new RandomizedItem{Index = 9 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Mine Detector" },
-            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Sensor A" }, 
-            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Sensor B" },
-            new RandomizedItem{Index = 12 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "N.V.G." }, 
-            new RandomizedItem{Index = 13 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Thermal Goggles" },
-            new RandomizedItem{Index = 14 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Scope" }, 
-            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Digital Camera" },
-            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 1" }, 
-            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cigarettes" },
+            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = MGS2Items.Ration.Name }, 
+            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.ColdMeds.Name },
+            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Items.Bandage.Name },
+            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Items.Pentazemin.Name },
+            new RandomizedItem{Index = 6 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.BDU.Name },
+            new RandomizedItem{Index = 7 + GcxDecimalZero,Count = 1 + GcxDecimalZero, Name = MGS2Items.BodyArmor.Name },
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Stealth.Name },
+            new RandomizedItem{Index = 9 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.MineDetector.Name },
+            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.SensorA.Name }, 
+            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.SensorB.Name },
+            new RandomizedItem{Index = 12 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.NVG.Name }, 
+            new RandomizedItem{Index = 13 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Thermals.Name },
+            new RandomizedItem{Index = 14 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Scope1.Name }, 
+            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.DigitalCamera.Name },
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = MGS2Items.Box1.Name }, 
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Cigs.Name },
             /*new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Card 1" },*/ 
-            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Shaver" },
-            new RandomizedItem{Index = 20 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Phone" }, 
-            new RandomizedItem{Index = 22 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 2" },
-            new RandomizedItem{Index = 23 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 3" },
-            new RandomizedItem{Index = 25 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "A.P. Sensor" },
-            new RandomizedItem{Index = 26 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 4" }, 
-            new RandomizedItem{Index = 27 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 5" },
-            new RandomizedItem{Index = 29 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "SOCOM Suppressor" }, 
-            new RandomizedItem{Index = 30 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "AK Suppressor" },
-            new RandomizedItem{Index = 34 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "M.O. Disc" }, 
-            new RandomizedItem{Index = 36 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Infinity Wig" },
-            new RandomizedItem{Index = 37 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Blue Wig" }, 
-            new RandomizedItem{Index = 38 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Orange Wig" },
+            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Shaver.Name },
+            new RandomizedItem{Index = 20 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Phone.Name }, 
+            new RandomizedItem{Index = 22 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = MGS2Items.Box2.Name },
+            new RandomizedItem{Index = 23 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = MGS2Items.Box3.Name },
+            new RandomizedItem{Index = 25 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.APSensor.Name },
+            new RandomizedItem{Index = 26 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = MGS2Items.Box4.Name }, 
+            new RandomizedItem{Index = 27 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = MGS2Items.Box5.Name },
+            new RandomizedItem{Index = 29 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.SocomSupp.Name }, 
+            new RandomizedItem{Index = 30 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.AkSupp.Name },
+            new RandomizedItem{Index = 34 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.MoDisc.Name }, 
+            new RandomizedItem{Index = 36 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.InfWig.Name },
+            new RandomizedItem{Index = 37 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.BlueWig.Name }, 
+            new RandomizedItem{Index = 38 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.OrangeWig.Name },
             /*new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Card 2" }, 
              * new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 3 + GcxDecimalZero, Name = "Card 3" },
             new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Card 4" }, 
@@ -98,53 +98,53 @@ namespace MGS2_Randomizer
         private List<RandomizedItem> RaidenItemAwardOptions;
 
         private static List<RandomizedItem> MasterRaidenWeaponAwardOptions = new List<RandomizedItem> {
-            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 12 + GcxDecimalZero, Name = "SOCOM" }, 
-            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "RGB6" },
-            new RandomizedItem{Index = 7 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "Stinger" }, 
-            new RandomizedItem{Index = 14 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Coolant" },
-            new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 60 + GcxDecimalZero, Name = "M4" }, 
-            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 20 + GcxDecimalZero, Name = "PSG1T" },
-            new RandomizedItem{Index = 21 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Book" }, 
-            new RandomizedItem{Index = 6 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "Nikita" },
-            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 15 + GcxDecimalZero, Name = "M9" }, 
-            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "PSG1" },
-            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Claymore" }, 
-            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "C4" },
-            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Chaff Grenade" }, 
-            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Stun Grenade" },
-            new RandomizedItem{Index = 12 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Directional Microphone" }, 
-            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 60 + GcxDecimalZero, Name = "AKS-74u" },
-            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Magazine" }, 
-            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Grenade" },
+            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 12 + GcxDecimalZero, Name = MGS2Weapons.Socom.Name }, 
+            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = MGS2Weapons.Rgb6.Name },
+            new RandomizedItem{Index = 7 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = MGS2Weapons.Stinger.Name }, 
+            new RandomizedItem{Index = 14 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Weapons.Coolant.Name },
+            new RandomizedItem{Index = 18 + GcxDecimalZero, Count = 60 + GcxDecimalZero, Name = MGS2Weapons.M4.Name }, 
+            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 20 + GcxDecimalZero, Name = MGS2Weapons.Psg1t.Name },
+            new RandomizedItem{Index = 21 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Weapons.Book.Name }, 
+            new RandomizedItem{Index = 6 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = MGS2Weapons.Nikita.Name },
+            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 15 + GcxDecimalZero, Name = MGS2Weapons.M9.Name }, 
+            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = MGS2Weapons.Psg1.Name },
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Weapons.Claymore.Name }, 
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Weapons.C4.Name },
+            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = MGS2Weapons.Chaff.Name }, 
+            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = MGS2Weapons.Stun.Name },
+            new RandomizedItem{Index = 12 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Weapons.Dmic1.Name }, 
+            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 60 + GcxDecimalZero, Name = MGS2Weapons.Aks74u.Name },
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Weapons.Magazine.Name }, 
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = MGS2Weapons.Grenade.Name },
         };
         private List<RandomizedItem> RaidenWeaponAwardOptions;
 
         private static List<RandomizedItem> MasterSnakeItemAwardOptions = new List<RandomizedItem> { 
-            new RandomizedItem { Index = 1 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = "Ration" },
-            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cold Medicine" },
-            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Bandage" },
-            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = "Pentazemin" }, 
-            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Stealth" },
-            new RandomizedItem{Index = 9 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Mine Detector" }, 
-            new RandomizedItem{Index = 13 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Thermals" },
-            new RandomizedItem{Index = 21 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Camera" }, 
-            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Digital Camera" },
-            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = "Box 1" }, 
-            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Cigarettes" },
-            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Shaver" }, 
-            new RandomizedItem{Index = 25 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "A.P. Sensor" },
-            new RandomizedItem{Index = 35 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "USP Suppressor" }, 
-            new RandomizedItem{Index = 32 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = "Bandana" } 
+            new RandomizedItem { Index = 1 + GcxDecimalZero, Count = 2 + GcxDecimalZero, Name = MGS2Items.Ration.Name },
+            new RandomizedItem{Index = 3 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.ColdMeds.Name },
+            new RandomizedItem{Index = 4 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Items.Bandage.Name },
+            new RandomizedItem{Index = 5 + GcxDecimalZero, Count = 5 + GcxDecimalZero, Name = MGS2Items.Pentazemin.Name }, 
+            new RandomizedItem{Index = 8 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Stealth.Name },
+            new RandomizedItem{Index = 9 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.MineDetector.Name }, 
+            new RandomizedItem{Index = 13 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Thermals.Name },
+            new RandomizedItem{Index = 21 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Camera1.Name }, 
+            new RandomizedItem{Index = 15 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.DigitalCamera.Name },
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 21 + GcxDecimalZero, Name = MGS2Items.Box1.Name }, 
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Cigs.Name },
+            new RandomizedItem{Index = 19 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Shaver.Name }, 
+            new RandomizedItem{Index = 25 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.APSensor.Name },
+            new RandomizedItem{Index = 35 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.UspSupp.Name }, 
+            new RandomizedItem{Index = 32 + GcxDecimalZero, Count = 1 + GcxDecimalZero, Name = MGS2Items.Bandana.Name } 
         };
         private List<RandomizedItem> SnakeItemAwardOptions;
 
         private static List<RandomizedItem> MasterSnakeWeaponAwardOptions = new List<RandomizedItem> {
-            new RandomizedItem{Index = 2 + GcxDecimalZero, Count = 12 + GcxDecimalZero, Name = "USP" }, 
-            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 15 + GcxDecimalZero, Name = "M9" },
-            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Stun Grenade" }, 
-            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Chaff Grenade" },
-            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = "Grenade" }, 
-            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = "Magazine" } 
+            new RandomizedItem{Index = 2 + GcxDecimalZero, Count = 12 + GcxDecimalZero, Name = MGS2Weapons.Usp.Name }, 
+            new RandomizedItem{Index = 1 + GcxDecimalZero, Count = 15 + GcxDecimalZero, Name = MGS2Weapons.M9.Name },
+            new RandomizedItem{Index = 11 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = MGS2Weapons.Stun.Name }, 
+            new RandomizedItem{Index = 10 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = MGS2Weapons.Chaff.Name },
+            new RandomizedItem{Index = 17 + GcxDecimalZero, Count = 4 + GcxDecimalZero, Name = MGS2Weapons.Grenade.Name }, 
+            new RandomizedItem{Index = 16 + GcxDecimalZero, Count = 10 + GcxDecimalZero, Name = MGS2Weapons.Magazine.Name } 
         };
         private List<RandomizedItem> SnakeWeaponAwardOptions;
 
@@ -405,37 +405,57 @@ namespace MGS2_Randomizer
         }
         #endregion
 
-        private void AddTankerStartingItemsToPool()
+        private void AddTankerStartingItemsToPool(List<RandomizedItem> startingItems, RandomizedItem startingWeapon)
         {
             //Add M9, Camera, Cigs and AP Sensor to randomization pool
-            KeyValuePair<Location, Item> newSpawn1 = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.Name == "RightsideLifeboats" && spawn.Key.GcxFile == "w00a");
-            _vanillaItems.TankerPart3.Entities[newSpawn1.Key] = MGS2Weapons.M9;
+            if (startingWeapon.Name != MGS2Weapons.M9.Name)
+            {
+                KeyValuePair<Location, Item> newSpawn1 = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.Name == "RightsideLifeboats" && spawn.Key.GcxFile == "w00a");
+                _vanillaItems.TankerPart3.Entities[newSpawn1.Key] = MGS2Weapons.M9;
 
-            KeyValuePair<Location, Item> newSpawn2 = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.Name == "UnderLeftsideStairs" && spawn.Key.GcxFile == "w00a");
-            _vanillaItems.TankerPart3.Entities[newSpawn2.Key] = MGS2Items.Camera1;
+                if (!_vanillaItems.TankerPart1.ItemsNeededToProgress.Contains(MGS2Weapons.M9))
+                    _vanillaItems.TankerPart1.ItemsNeededToProgress.Add(MGS2Weapons.M9);
+            }
 
-            KeyValuePair<Location, Item> newSpawn3 = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.Name == "UnderRightsideStairs" && spawn.Key.GcxFile == "w01b");
-            _vanillaItems.TankerPart3.Entities[newSpawn3.Key] = MGS2Items.Cigs;
+            if (startingItems.All(x => x.Name != MGS2Items.Camera1.Name))
+            {
+                KeyValuePair<Location, Item> newSpawn2 = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.Name == "UnderLeftsideStairs" && spawn.Key.GcxFile == "w00a");
+                _vanillaItems.TankerPart3.Entities[newSpawn2.Key] = MGS2Items.Camera1;
 
-            KeyValuePair<Location, Item> newSpawn4 = _vanillaItems.TankerPart1.Entities.First(spawn => spawn.Key.Name == "Bar" && spawn.Key.GcxFile == "w01f");
-            _vanillaItems.TankerPart3.Entities[newSpawn4.Key] = MGS2Items.APSensor;
+                if (!_vanillaItems.TankerPart3.ItemsNeededToProgress.Contains(MGS2Items.Camera1))
+                    _vanillaItems.TankerPart3.ItemsNeededToProgress.Add(MGS2Items.Camera1);
+            }
 
-            if (!_vanillaItems.TankerPart1.ItemsNeededToProgress.Contains(MGS2Weapons.M9))
-                _vanillaItems.TankerPart1.ItemsNeededToProgress.Add(MGS2Weapons.M9);
-            if (!_vanillaItems.TankerPart3.ItemsNeededToProgress.Contains(MGS2Items.Camera1))
-                _vanillaItems.TankerPart3.ItemsNeededToProgress.Add(MGS2Items.Camera1);
+            if (startingItems.All(x => x.Name != MGS2Items.Cigs.Name))
+            {
+                KeyValuePair<Location, Item> newSpawn3 = _vanillaItems.TankerPart3.Entities.First(spawn => spawn.Key.Name == "UnderRightsideStairs" && spawn.Key.GcxFile == "w01b");
+                _vanillaItems.TankerPart3.Entities[newSpawn3.Key] = MGS2Items.Cigs;
+            }
+
+            if (startingItems.All(x => x.Name != MGS2Items.APSensor.Name))
+            {
+                KeyValuePair<Location, Item> newSpawn4 = _vanillaItems.TankerPart1.Entities.First(spawn => spawn.Key.Name == "Bar" && spawn.Key.GcxFile == "w01f");
+                _vanillaItems.TankerPart3.Entities[newSpawn4.Key] = MGS2Items.APSensor;
+            }
         }
 
-        private void AddPlantStartingItemsToPool()
+        private void AddPlantStartingItemsToPool(List<RandomizedItem> startingItems)
         {
             //Add AP Sensor and Scope to randomization pool
-            KeyValuePair<Location, Item> newSpawn1 = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.Name == "BottomFloorMiddleCrates" && spawn.Key.GcxFile == "w22a");
-            _vanillaItems.PlantSet10.Entities[newSpawn1.Key] = MGS2Items.APSensor;
-            _vanillaItems.PlantCard5Set.Entities[newSpawn1.Key] = MGS2Items.APSensor;
+            if (startingItems.All(x => x.Name != MGS2Items.APSensor.Name))
+            {
+                KeyValuePair<Location, Item> newSpawn1 = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.Name == "BottomFloorMiddleCrates" && spawn.Key.GcxFile == "w22a");
+                _vanillaItems.PlantSet10.Entities[newSpawn1.Key] = MGS2Items.APSensor;
+                _vanillaItems.PlantCard5Set.Entities[newSpawn1.Key] = MGS2Items.APSensor;
+            }
 
-            KeyValuePair<Location, Item> newSpawn2 = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.Name == "BottomFloorParkourBoxes" && spawn.Key.GcxFile == "w22a");
-            _vanillaItems.PlantSet10.Entities[newSpawn2.Key] = MGS2Items.Scope1;
-            _vanillaItems.PlantCard5Set.Entities[newSpawn2.Key] = MGS2Items.Scope1;
+
+            if (startingItems.All(x => x.Name != MGS2Items.Scope1.Name))
+            {
+                KeyValuePair<Location, Item> newSpawn2 = _vanillaItems.PlantSet10.Entities.First(spawn => spawn.Key.Name == "BottomFloorParkourBoxes" && spawn.Key.GcxFile == "w22a");
+                _vanillaItems.PlantSet10.Entities[newSpawn2.Key] = MGS2Items.Scope1;
+                _vanillaItems.PlantCard5Set.Entities[newSpawn2.Key] = MGS2Items.Scope1;
+            }
         }
 
         private List<RandomizedItem> BuildRandomStartingItems(int itemCount, bool isPlant)
@@ -458,7 +478,7 @@ namespace MGS2_Randomizer
             return randomStartingItems;
         }
 
-        private void RandomizeTankerStartingWeapon(byte[] gcxContents)
+        private RandomizedItem RandomizeTankerStartingWeapon(byte[] gcxContents)
         {
             byte[] snakeStartingAmmoBytes = new byte[] { 0x11, 0x00, 0x0A, 0x5C };
             byte[] emptyInitializeWeaponsArray = new byte[] { 0xC2, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0 };
@@ -475,6 +495,8 @@ namespace MGS2_Randomizer
             {
                 Array.Copy(newInitializeWeaponsArray, 0, gcxContents, location + 6, newInitializeWeaponsArray.Length);
             }
+
+            return randomTankerStartingWeapon;
             //^this works, but oh my lord is this over-engineered. I can just... insert C0s until I get where I need to be, then insert the ammo bytes, then fill out with C0s. christ.
         }
 
@@ -597,7 +619,7 @@ namespace MGS2_Randomizer
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
 
             #region Tanker
-            RandomizeTankerStartingWeapon(gcxContents);
+            RandomizedItem startingWeapon = RandomizeTankerStartingWeapon(gcxContents);
 
             //Snake starts with Camera, cigs, and (possibly) AP Sensor.
             List<int> snakeItemAward = GetSnakeItemAwardLocations(gcxContents);
@@ -612,7 +634,7 @@ namespace MGS2_Randomizer
 
             UpdateTitleGcx(gcxContents, randomTankerStartingItems, snakeItemAward);
             
-            AddTankerStartingItemsToPool();
+            AddTankerStartingItemsToPool(randomTankerStartingItems, startingWeapon);
 
             FixW00aDemoBug();
             #endregion
@@ -625,7 +647,7 @@ namespace MGS2_Randomizer
 
             UpdateTitleGcx(gcxContents, randomPlantStartingItems, raidenItemAward, true);
 
-            AddPlantStartingItemsToPool();
+            AddPlantStartingItemsToPool(randomPlantStartingItems);
             #endregion
 
             File.WriteAllBytes(gcxFile, gcxContents);
@@ -2788,7 +2810,7 @@ namespace MGS2_Randomizer
                     Item randomChoice = GetRandomSpawnPoolItem(plantSpawnPool);
 
                     //isolate rations to only non-mandatory spawns
-                    if (randomChoice.Name == "Ration" &&
+                    if (randomChoice.Name == MGS2Items.Ration.Name &&
                         _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
                     {
                         retries--;
@@ -2853,9 +2875,24 @@ namespace MGS2_Randomizer
                         continue;
                     }
 
-                    if ((randomChoice.Name == "Nikita" || randomChoice.Name == "Card 4") && options.NikitaShell2)
+                    if (randomChoice.Name == MGS2Items.Card4.Name && options.Card4Shell2)
                     {
-                        //currently, the Nikita and Card 4 can cause a soft logic lock if the spawn is not in Shell 2
+                        //card 4 can cause a soft logic lock if the spawn is not in Shell 2 before Vamp fight
+                        if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
+                            || _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile == "w25c")
+                        {
+                            //cutting w25c out of the running for Card 4 because its easy to miss, and you can't go back to any of them after you jump down
+                            //at least if the Nikita gets stuck up there, you can get Card 4 anyways, removing the need for Card 4
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+                    }
+
+                    if (randomChoice.Name == MGS2Weapons.Nikita.Name && options.NikitaShell2)
+                    {
+                        //the Nikita can cause a soft logic lock if the spawn is not in Shell 2
                         if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
                             || ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                         {
@@ -2865,8 +2902,9 @@ namespace MGS2_Randomizer
                             continue;
                         }
                     }
-                    else if (randomChoice.Name == "Nikita")
+                    else if (randomChoice.Name == MGS2Weapons.Nikita.Name)
                     {
+                        //make sure it ALWAYS spawns before fifth progression areas and not in the electrical room no matter what
                         if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name)
                             || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                         {
@@ -2877,7 +2915,7 @@ namespace MGS2_Randomizer
                         }
                     }
 
-                    if (new[] { "M9", "RGB-6", "M4", "PSG1-T" }.Contains(randomChoice.Name)
+                    if (new[] { MGS2Weapons.M9.Name, MGS2Weapons.Rgb6.Name, MGS2Weapons.M4.Name, MGS2Weapons.Psg1t.Name }.Contains(randomChoice.Name)
                         && options.AllWeaponsSpawnable
                         && _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
                     {
@@ -2911,10 +2949,13 @@ namespace MGS2_Randomizer
         {
             if (options.RandomizeStartingItems)
             {
+                //TODO: prevent all duplicate spawns of starting items
+                //TODO: add starting items to spoiler file?
                 RandomizeStartingItems();
             }
             if (options.RandomizeAutomaticRewards)
             {
+                //TODO: remove duplicate spawns of automatic rewards
                 SpoilerContents += RandomizeAutomaticRewards(options.RandomizeCards);
             }
             else
