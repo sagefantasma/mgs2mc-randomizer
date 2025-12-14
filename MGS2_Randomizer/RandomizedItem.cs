@@ -11,5 +11,17 @@ namespace MGS2_Randomizer
         public byte Index;
         public byte Count;
         public string Name;
+
+        public RandomizedItem()
+        {
+
+        }
+
+        public RandomizedItem(RandomizedItem item)
+        {
+            Index = item.Index;
+            Count = item.Count;
+            Name = item.Name;
+        }
     }
 }

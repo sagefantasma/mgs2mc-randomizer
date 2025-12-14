@@ -57,6 +57,8 @@ namespace MGS2_Randomizer
         private const byte GcxDecimalZero = 0xC1;
         private const byte GcxDecimalOne = 0xC2;
         private readonly string[] ElectricalRoomSpawns = new[] { "ElectricalRoom", "Vents1", "Vents2" };
+        private static List<RandomizedItem> AutomaticallyAwardedTankerItems = new List<RandomizedItem>();
+        private static List<RandomizedItem> AutomaticallyAwardedPlantItems = new List<RandomizedItem>();
 
 
         private static List<RandomizedItem> MasterRaidenItemAwardOptions = new List<RandomizedItem> {
@@ -496,6 +498,14 @@ namespace MGS2_Randomizer
                 Array.Copy(newInitializeWeaponsArray, 0, gcxContents, location + 6, newInitializeWeaponsArray.Length);
             }
 
+            if(randomTankerStartingWeapon.Name == MGS2Weapons.Usp.Name)
+            {
+                //if you start with USP, remove it from items needed to progress
+                _vanillaItems.TankerPart1.ItemsNeededToProgress.Remove(_vanillaItems.TankerPart1.ItemsNeededToProgress.Find(x => x.Name == MGS2Weapons.Usp.Name));
+                _vanillaItems.TankerPart2.ItemsNeededToProgress.Remove(_vanillaItems.TankerPart2.ItemsNeededToProgress.Find(x => x.Name == MGS2Weapons.Usp.Name));
+                _vanillaItems.TankerPart3.ItemsNeededToProgress.Remove(_vanillaItems.TankerPart3.ItemsNeededToProgress.Find(x => x.Name == MGS2Weapons.Usp.Name));
+            }
+
             return randomTankerStartingWeapon;
             //^this works, but oh my lord is this over-engineered. I can just... insert C0s until I get where I need to be, then insert the ammo bytes, then fill out with C0s. christ.
         }
@@ -612,24 +622,32 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void RandomizeStartingItems()
+        private string RandomizeStartingItems()
         {
             RandomizationForm._logger.Debug("Randomizing starting items...");
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_n_title"));
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
+            string spoiler = "";
 
             #region Tanker
             RandomizedItem startingWeapon = RandomizeTankerStartingWeapon(gcxContents);
+            AutomaticallyAwardedTankerItems.Add(startingWeapon);
 
             //Snake starts with Camera, cigs, and (possibly) AP Sensor.
             List<int> snakeItemAward = GetSnakeItemAwardLocations(gcxContents);
 
             List<RandomizedItem> randomTankerStartingItems = BuildRandomStartingItems(3, false);
+            AutomaticallyAwardedTankerItems.AddRange(randomTankerStartingItems);
 
             //if not starting with Camera, modify w00a to not automatically award the Camera
             if (!randomTankerStartingItems.Any(x => x.Name == "Camera"))
             {
                 RemoveCameraAwardedInW00a();
+            }
+            else
+            {
+                //if Snake starts with the camera, remove it from items needed to progress
+                _vanillaItems.TankerPart3.ItemsNeededToProgress.Remove(_vanillaItems.TankerPart3.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.Camera1.Name));
             }
 
             UpdateTitleGcx(gcxContents, randomTankerStartingItems, snakeItemAward);
@@ -637,6 +655,8 @@ namespace MGS2_Randomizer
             AddTankerStartingItemsToPool(randomTankerStartingItems, startingWeapon);
 
             FixW00aDemoBug();
+
+            spoiler = $"Snake will start with {startingWeapon.Name}, {randomTankerStartingItems[0].Name}, {randomTankerStartingItems[1].Name}, and {randomTankerStartingItems[2].Name}.\r\n";
             #endregion
 
             #region Plant
@@ -644,13 +664,43 @@ namespace MGS2_Randomizer
             List<int> raidenItemAward = GetRaidenItemAwardLocations(gcxContents);
 
             List<RandomizedItem> randomPlantStartingItems = BuildRandomStartingItems(2, true);
+            AutomaticallyAwardedPlantItems.AddRange(randomPlantStartingItems);
 
             UpdateTitleGcx(gcxContents, randomPlantStartingItems, raidenItemAward, true);
 
             AddPlantStartingItemsToPool(randomPlantStartingItems);
+
+            //If Raiden starts with BDU or Sensor B, remove them from the list of items needed for progression
+            if(randomPlantStartingItems.Any(x=>x.Name == MGS2Items.BDU.Name))
+            {
+                _vanillaItems.CardRandomizationSecondProgressionItems.Remove(_vanillaItems.CardRandomizationSecondProgressionItems.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet4.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet5.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet6.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet7.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet8.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet9.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+                _vanillaItems.PlantSet10.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet10.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.BDU.Name));
+            }
+            if (randomPlantStartingItems.Any(x => x.Name == MGS2Items.SensorB.Name))
+            {
+                _vanillaItems.CardRandomizationFirstProgressionItems.Remove(_vanillaItems.CardRandomizationFirstProgressionItems.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet3.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet3.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet4.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet4.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet5.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet5.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet6.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet6.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet7.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet7.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet8.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet8.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet9.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet9.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+                _vanillaItems.PlantSet10.ItemsNeededToProgress.Remove(_vanillaItems.PlantSet10.ItemsNeededToProgress.Find(x => x.Name == MGS2Items.SensorB.Name));
+            }
+
+            spoiler += $"Raiden will start with {randomPlantStartingItems[0].Name} and {randomPlantStartingItems[1].Name}\r\n";
             #endregion
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return spoiler;
         }
 
         private RandomizedItem GetRandomItem(bool isWeapon = false, bool isPlant = true)
@@ -905,7 +955,7 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void RandomizeOlgaReward(ref string spoiler)
+        private RandomizedItem RandomizeOlgaReward(ref string spoiler)
         {
             //Olga gives USP
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w00c"));
@@ -918,9 +968,11 @@ namespace MGS2_Randomizer
             gcxContents[snakeWeaponAward[0] + ItemCountOffset] = randomizedReward.Count;
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedReward;
         }
 
-        private void RandomizePliskinRewards(ref string spoiler, bool randomizeCards)
+        private List<RandomizedItem> RandomizePliskinRewards(ref string spoiler, bool randomizeCards)
         {
             //Pliskin gives SOCOM & Cigs
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w14a"));
@@ -928,7 +980,9 @@ namespace MGS2_Randomizer
 
             List<int> raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
             RandomizedItem randomizedReward = GetRandomItem(false);
+            List<RandomizedItem> randomizedRewards = new List<RandomizedItem>();
             CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet1);
+            randomizedRewards.Add(new RandomizedItem(randomizedReward));
             spoiler += $"Pliskin will give you {randomizedReward.Name} on Strut B.\n";
             gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
@@ -938,6 +992,7 @@ namespace MGS2_Randomizer
             List<int> raidenWeaponAward = GcxEditor.FindAllSubArray(gcxContents, PlantWeaponArray);
             randomizedReward = GetRandomItem(true);
             CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet1);
+            randomizedRewards.Add(new RandomizedItem(randomizedReward));
             spoiler += $"Pliskin will give you {randomizedReward.Name} on Strut B.\n";
             gcxContents[raidenWeaponAward[2] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenWeaponAward[2] + ItemCountOffset] = randomizedReward.Count;
@@ -952,16 +1007,20 @@ namespace MGS2_Randomizer
             gcxContents[raidenWeaponAward[0] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenWeaponAward[0] + ItemCountOffset] = randomizedReward.Count;
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedRewards;
         }
 
-        private void RandomizeStillmanRewards(ref string spoiler, bool randomizeCards)
+        private List<RandomizedItem> RandomizeStillmanRewards(ref string spoiler, bool randomizeCards)
         {
             //Stillman gives Card 1, Sensor A & Coolant Spray
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w16a"));
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
             List<int> raidenWeaponAward = GcxEditor.FindAllSubArray(gcxContents, PlantWeaponArray);
             RandomizedItem randomizedReward = GetRandomItem(true);
+            List<RandomizedItem> randomizedRewards = new List<RandomizedItem>();
             CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet2);
+            randomizedRewards.Add(new RandomizedItem(randomizedReward));
             spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n";
             gcxContents[raidenWeaponAward[0] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenWeaponAward[0] + ItemCountOffset] = randomizedReward.Count;
@@ -970,6 +1029,7 @@ namespace MGS2_Randomizer
 
             randomizedReward = GetRandomItem(false);
             CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard0Set : _vanillaItems.PlantSet2);
+            randomizedRewards.Add(new RandomizedItem(randomizedReward));
             spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n";
             gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
@@ -978,6 +1038,7 @@ namespace MGS2_Randomizer
             {
                 randomizedReward = GetRandomItem(false);
                 CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantCard0Set);
+                randomizedRewards.Add(new RandomizedItem(randomizedReward));
                 spoiler += $"Stillman will give you {randomizedReward.Name} on Strut C.\n";
                 gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward.Index;
                 gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward.Count;
@@ -993,20 +1054,24 @@ namespace MGS2_Randomizer
             }
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedRewards;
         }
 
-        private void RandomizeNinjaRewards(ref string spoiler, bool randomizeCards)
+        private List<RandomizedItem> RandomizeNinjaRewards(ref string spoiler, bool randomizeCards)
         {
             //Ninja gives Card 2, BDU & Phone
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w20d"));
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
             List<int> raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
             RandomizedItem randomizedReward = new RandomizedItem();
+            List<RandomizedItem> randomizedRewards = new List<RandomizedItem>();
 
             if (randomizeCards)
             {
                 randomizedReward = GetRandomItem(false);
                 CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantCard1Set);
+                randomizedRewards.Add(randomizedReward);
                 spoiler += $"Cyborg Ninja will give you {randomizedReward.Name} on Strut E.\n";
                 gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
                 gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
@@ -1014,12 +1079,14 @@ namespace MGS2_Randomizer
 
             RandomizedItem randomizedReward2 = GetRandomItem(false);
             CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard1Set : _vanillaItems.PlantSet4);
+            randomizedRewards.Add(randomizedReward2);
             spoiler += $"Cyborg Ninja will give you {randomizedReward2.Name} on Strut E.\n";
             gcxContents[raidenItemAward[2] + ItemIndexOffset] = randomizedReward2.Index;
             gcxContents[raidenItemAward[2] + ItemCountOffset] = randomizedReward2.Count;
 
             RandomizedItem randomizedReward3 = GetRandomItem(false);
             CheckAndRemoveFromRequirements(randomizedReward, randomizeCards ? _vanillaItems.PlantCard1Set : _vanillaItems.PlantSet4);
+            randomizedRewards.Add(randomizedReward3);
             spoiler += $"Cyborg Ninja will give you {randomizedReward3.Name} on Strut E.\n";
             gcxContents[raidenItemAward[3] + ItemIndexOffset] = randomizedReward3.Index;
             gcxContents[raidenItemAward[3] + ItemCountOffset] = randomizedReward3.Count;
@@ -1072,9 +1139,11 @@ namespace MGS2_Randomizer
             gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward3.Count;
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedRewards;
         }
 
-        private void RandomizeAmesReward(ref string spoiler)
+        private RandomizedItem RandomizeAmesReward(ref string spoiler)
         {
             //Ames gives Card 3
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w24b"));
@@ -1088,20 +1157,24 @@ namespace MGS2_Randomizer
             gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedReward;
         }
 
-        private void RandomizePresidentRewards(ref string spoiler, bool randomizeCards)
+        private List<RandomizedItem> RandomizePresidentRewards(ref string spoiler, bool randomizeCards)
         {
             //President gives Card 4 & MO Disk
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w31a"));
             byte[] gcxContents = File.ReadAllBytes(gcxFile);
             List<int> raidenItemAward = GcxEditor.FindAllSubArray(gcxContents, PlantItemArray);
             RandomizedItem randomizedReward = new RandomizedItem();
+            List<RandomizedItem> randomizedRewards = new List<RandomizedItem>();
 
             if (randomizeCards)
             {
                 randomizedReward = GetRandomItem(false);
-                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet8);
+                CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantCard3Set); //technically this doesnt accomplish anything since Card3 set has nothing but Card3, but eh.
+                randomizedRewards.Add(new RandomizedItem(randomizedReward));
                 spoiler += $"President Johnson will give you {randomizedReward.Name} on Shell 2.\n";
                 gcxContents[raidenItemAward[0] + ItemIndexOffset] = randomizedReward.Index;
                 gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
@@ -1109,14 +1182,17 @@ namespace MGS2_Randomizer
 
             randomizedReward = GetRandomItem(false);
             CheckAndRemoveFromRequirements(randomizedReward, _vanillaItems.PlantSet8);
+            randomizedRewards.Add(randomizedReward);
             spoiler += $"President Johnson will give you {randomizedReward.Name} on Shell 2.\n";
             gcxContents[raidenItemAward[1] + ItemIndexOffset] = randomizedReward.Index;
             gcxContents[raidenItemAward[1] + ItemCountOffset] = randomizedReward.Count;
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedRewards;
         }
 
-        private void RandomizeEmmaReward(ref string spoiler)
+        private RandomizedItem RandomizeEmmaReward(ref string spoiler)
         {
             //Emma gives Card 5 
             string gcxFile = GcxFileDirectory.Find(file => file.Contains($"scenerio_stage_w25d"));
@@ -1130,6 +1206,8 @@ namespace MGS2_Randomizer
             gcxContents[raidenItemAward[0] + ItemCountOffset] = randomizedReward.Count;
 
             File.WriteAllBytes(gcxFile, gcxContents);
+
+            return randomizedReward;
         }
 
         private string RandomizeAutomaticRewards(bool randomizeCards)
@@ -1139,24 +1217,24 @@ namespace MGS2_Randomizer
             AddAutomaticRewardsToPools();
             string spoiler = "";
 
-            RandomizeOlgaReward(ref spoiler);
+            AutomaticallyAwardedTankerItems.Add(RandomizeOlgaReward(ref spoiler));
 
-            RandomizePliskinRewards(ref spoiler, randomizeCards);
+            AutomaticallyAwardedPlantItems.AddRange(RandomizePliskinRewards(ref spoiler, randomizeCards));
 
-            RandomizeStillmanRewards(ref spoiler, randomizeCards);
+            AutomaticallyAwardedPlantItems.AddRange(RandomizeStillmanRewards(ref spoiler, randomizeCards));
 
-            RandomizeNinjaRewards(ref spoiler, randomizeCards);
+            AutomaticallyAwardedPlantItems.AddRange(RandomizeNinjaRewards(ref spoiler, randomizeCards));
 
             if (randomizeCards)
             {
-                RandomizeAmesReward(ref spoiler);
+                AutomaticallyAwardedPlantItems.Add(RandomizeAmesReward(ref spoiler));
             }
 
-            RandomizePresidentRewards(ref spoiler, randomizeCards);
+            AutomaticallyAwardedPlantItems.AddRange(RandomizePresidentRewards(ref spoiler, randomizeCards));
 
             if (randomizeCards)
             {
-                RandomizeEmmaReward(ref spoiler);
+                AutomaticallyAwardedPlantItems.Add(RandomizeEmmaReward(ref spoiler));
             }
 
             //Snake HF Blade
@@ -2325,6 +2403,8 @@ namespace MGS2_Randomizer
             }
 
             SpoilerContents = "";
+            AutomaticallyAwardedTankerItems = new List<RandomizedItem>();
+            AutomaticallyAwardedPlantItems = new List<RandomizedItem>();
         }
 
         private void SaveOldFiles(DirectoryInfo gcxDirectory)
@@ -2457,27 +2537,40 @@ namespace MGS2_Randomizer
 
                 Item randomChoice = GetRandomSpawnPoolItem(tankerSpawnsLeft);
 
-                if (options.NoHardLogicLocks &&
-                    LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
-                    !_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                if (!AutomaticallyAwardedTankerItems.Any(x => x.Name == randomChoice.Name))
                 {
-                    retries--;
-                    if (retries == 0)
-                        break; //maybe throw and rethrow instead of break?
-                    continue;
-                }
+                    if (options.NoHardLogicLocks &&
+                        LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
+                        !_vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                    {
+                        retries--;
+                        if (retries == 0)
+                            break; //maybe throw and rethrow instead of break?
+                        continue;
+                    }
 
-                if (new[] { "M9" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                    if (new[] { "M9" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.TankerPart3.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                    {
+                        retries--;
+                        if (retries == 0)
+                            break;
+                        continue;
+                    }
+
+                    tankerSpawnsLeft.Remove(randomChoice);
+                }
+                else
                 {
-                    retries--;
-                    if (retries == 0)
-                        break;
-                    continue;
+                    //remove the item from the automatically awarded pool tracker to prevent replacing all spawns of a non-unique item
+                    AutomaticallyAwardedTankerItems.Remove(AutomaticallyAwardedTankerItems.Find(x => x.Name == randomChoice.Name));
+                    //remove the item from the spawn pool
+                    tankerSpawnsLeft.Remove(randomChoice);
+                    //effectively replace the item with an M9 ammo spawn for simplicity
+                    randomChoice = MGS2Weapons.M9Ammo;
                 }
 
                 AssignTankerSpawn(itemsAssigned, randomChoice);
 
-                tankerSpawnsLeft.Remove(randomChoice);
                 itemsAssigned++;
             }
 
@@ -2708,74 +2801,86 @@ namespace MGS2_Randomizer
 
                     Item randomChoice = GetRandomSpawnPoolItem(plantSpawnPool);
 
-                    //isolate rations to only non-mandatory spawns
-                    if (randomChoice.Name == "Ration" &&
+                    if (!AutomaticallyAwardedPlantItems.Any(x => x.Name == randomChoice.Name))
+                    {
+                        //isolate rations to only non-mandatory spawns
+                        if (randomChoice.Name == "Ration" &&
                         _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.NoHardLogicLocks &&
-                        LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.RandomizeAutomaticRewards
-                        && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (randomChoice.Name == "Nikita")
-                    {
-                        if (options.NikitaShell2)
                         {
-                            //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
-                            if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile))
-                                || ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name))
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (options.NoHardLogicLocks &&
+                            LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
+                            !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (options.RandomizeAutomaticRewards
+                            && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
+                            !_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (randomChoice.Name == "Nikita")
+                        {
+                            if (options.NikitaShell2)
                             {
-                                retries--;
-                                if (retries == 0)
-                                    break;
-                                continue;
+                                //currently, only the Nikita can cause a soft logic lock if the spawn is not in Shell 2
+                                if (!(new[] { "w31a", "w31b" }.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.GcxFile))
+                                    || ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name))
+                                {
+                                    retries--;
+                                    if (retries == 0)
+                                        break;
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name)
+                                    || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+                                {
+                                    retries--;
+                                    if (retries == 0)
+                                        break;
+                                    continue;
+                                }
                             }
                         }
-                        else
-                        {
-                            if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name)
-                                || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
-                            {
-                                retries--;
-                                if (retries == 0)
-                                    break;
-                                continue;
-                            }
-                        }
-                    }
 
-                    if (new[] { "M9", "RGB-6", "M4", "PSG1-T" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                        if (new[] { "M9", "RGB-6", "M4", "PSG1-T" }.Contains(randomChoice.Name) && options.AllWeaponsSpawnable && _vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        plantSpawnPool.Remove(randomChoice);
+                    }
+                    else
                     {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
+                        //remove the item from the automatically awarded pool tracker to prevent replacing all spawns of a non-unique item
+                        AutomaticallyAwardedPlantItems.Remove(AutomaticallyAwardedPlantItems.Find(x => x.Name == randomChoice.Name));
+                        //remove the item from the spawn pool
+                        plantSpawnPool.Remove(randomChoice);
+                        //effectively replace the item with an M9 ammo spawn for simplicity
+                        randomChoice = MGS2Weapons.M9Ammo;
                     }
 
                     AssignCardlessRandomizationPlantSpawn(itemsAssigned, randomChoice);
-
-                    plantSpawnPool.Remove(randomChoice);
                     itemsAssigned++;
                 }
 
@@ -2809,125 +2914,136 @@ namespace MGS2_Randomizer
 
                     Item randomChoice = GetRandomSpawnPoolItem(plantSpawnPool);
 
-                    //isolate rations to only non-mandatory spawns
-                    if (randomChoice.Name == MGS2Items.Ration.Name &&
+                    if (!AutomaticallyAwardedPlantItems.Any(x => x.Name == randomChoice.Name))
+                    {
+                        //isolate rations to only non-mandatory spawns
+                        if (randomChoice.Name == MGS2Items.Ration.Name &&
                         _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.NoHardLogicLocks &&
-                        LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.RandomizeAutomaticRewards
-                        && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
-                        !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.NoHardLogicLocks &&
-                        _vanillaItems.CardRandomizationFirstProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
-                        Location.FirstProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
-                        !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
-                        )
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.NoHardLogicLocks &&
-                        _vanillaItems.CardRandomizationSecondProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
-                        Location.SecondProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
-                        !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
-                        )
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (options.NoHardLogicLocks &&
-                        _vanillaItems.CardRandomizationThirdProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
-                        Location.ThirdProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
-                        !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
-                        )
-                    {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
-                    }
-
-                    if (randomChoice.Name == MGS2Items.Card4.Name && options.Card4Shell2)
-                    {
-                        //card 4 can cause a soft logic lock if the spawn is not in Shell 2 before Vamp fight
-                        if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
-                            || _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile == "w25c")
-                        {
-                            //cutting w25c out of the running for Card 4 because its easy to miss, and you can't go back to any of them after you jump down
-                            //at least if the Nikita gets stuck up there, you can get Card 4 anyways, removing the need for Card 4
-                            retries--;
-                            if (retries == 0)
-                                break;
-                            continue;
-                        }
-                    }
-
-                    if (randomChoice.Name == MGS2Weapons.Nikita.Name && options.NikitaShell2)
-                    {
-                        //the Nikita can cause a soft logic lock if the spawn is not in Shell 2
-                        if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
-                            || ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
                         {
                             retries--;
                             if (retries == 0)
                                 break;
                             continue;
                         }
-                    }
-                    else if (randomChoice.Name == MGS2Weapons.Nikita.Name)
-                    {
-                        //make sure it ALWAYS spawns before fifth progression areas and not in the electrical room no matter what
-                        if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name)
-                            || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+
+                        if (options.NoHardLogicLocks &&
+                            LogicRequirements.ProgressionItems.Contains(randomChoice.Name) &&
+                            !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
                         {
                             retries--;
                             if (retries == 0)
                                 break;
                             continue;
                         }
-                    }
 
-                    if (new[] { MGS2Weapons.M9.Name, MGS2Weapons.Rgb6.Name, MGS2Weapons.M4.Name, MGS2Weapons.Psg1t.Name }.Contains(randomChoice.Name)
-                        && options.AllWeaponsSpawnable
-                        && _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                        if (options.RandomizeAutomaticRewards
+                            && LogicRequirements.AutoAwardedProgressionItems.Contains(randomChoice.Name) &&
+                            !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn)
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (options.NoHardLogicLocks &&
+                            _vanillaItems.CardRandomizationFirstProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
+                            Location.FirstProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
+                            !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
+                            )
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (options.NoHardLogicLocks &&
+                            _vanillaItems.CardRandomizationSecondProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
+                            Location.SecondProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
+                            !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
+                            )
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (options.NoHardLogicLocks &&
+                            _vanillaItems.CardRandomizationThirdProgressionItems.Any(progressionItem => progressionItem.Name == randomChoice.Name) &&
+                            Location.ThirdProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile) &&
+                            !_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn
+                            )
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+
+                        if (randomChoice.Name == MGS2Items.Card4.Name && options.Card4Shell2)
+                        {
+                            //card 4 can cause a soft logic lock if the spawn is not in Shell 2 before Vamp fight
+                            if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
+                                || _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile == "w25c")
+                            {
+                                //cutting w25c out of the running for Card 4 because its easy to miss, and you can't go back to any of them after you jump down
+                                //at least if the Nikita gets stuck up there, you can get Card 4 anyways, removing the need for Card 4
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+                        }
+
+                        if (randomChoice.Name == MGS2Weapons.Nikita.Name && options.NikitaShell2)
+                        {
+                            //the Nikita can cause a soft logic lock if the spawn is not in Shell 2
+                            if (!Location.FourthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile)
+                                || ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+                        }
+                        else if (randomChoice.Name == MGS2Weapons.Nikita.Name)
+                        {
+                            //make sure it ALWAYS spawns before fifth progression areas and not in the electrical room no matter what
+                            if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name)
+                                || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+                            {
+                                retries--;
+                                if (retries == 0)
+                                    break;
+                                continue;
+                            }
+                        }
+
+                        if (new[] { MGS2Weapons.M9.Name, MGS2Weapons.Rgb6.Name, MGS2Weapons.M4.Name, MGS2Weapons.Psg1t.Name }.Contains(randomChoice.Name)
+                            && options.AllWeaponsSpawnable
+                            && _vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.MandatorySpawn == false)
+                        {
+                            retries--;
+                            if (retries == 0)
+                                break;
+                            continue;
+                        }
+                        plantSpawnPool.Remove(randomChoice);
+                    }
+                    else
                     {
-                        retries--;
-                        if (retries == 0)
-                            break;
-                        continue;
+                        //remove the item from the automatically awarded pool tracker to prevent replacing all spawns of a non-unique item
+                        AutomaticallyAwardedPlantItems.Remove(AutomaticallyAwardedPlantItems.Find(x => x.Name == randomChoice.Name));
+                        //remove the item from the spawn pool
+                        plantSpawnPool.Remove(randomChoice);
+                        //effectively replace the item with an M9 ammo spawn for simplicity
+                        randomChoice = MGS2Weapons.M9Ammo;
                     }
 
                     AssignCardedRandomizationPlantSpawn(itemsAssigned, randomChoice, options.KeepVanillaCardAccess);
-
-                    plantSpawnPool.Remove(randomChoice);
                     itemsAssigned++;
                 }
 
@@ -2947,15 +3063,16 @@ namespace MGS2_Randomizer
 
         public void RandomizeSpawns(RandomizationOptions options)
         {
+            //Cards *could* be added as valid options for the automatic rewards/starting items, but it would completely screw with 
+            //the spoiler file and make things way more complicated. If I ever rewrite this rando again, it can definitely be handled
+            //with better planning, but it would require way too much retooling to do so right now - and I'm not particularly interested
+            //in dealing with that at this point.
             if (options.RandomizeStartingItems)
             {
-                //TODO: prevent all duplicate spawns of starting items
-                //TODO: add starting items to spoiler file?
-                RandomizeStartingItems();
+                SpoilerContents += RandomizeStartingItems();
             }
             if (options.RandomizeAutomaticRewards)
             {
-                //TODO: remove duplicate spawns of automatic rewards
                 SpoilerContents += RandomizeAutomaticRewards(options.RandomizeCards);
             }
             else
