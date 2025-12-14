@@ -56,11 +56,12 @@ namespace MGS2_Randomizer
 
         private static void ShowChangelog()
         {
-            string changelog = $"Changes in v{AppVersion}:\r\n\r\n" +
+            string changelog = $"Most recent changes in v{AppVersion}:\r\n\r\n" +
                 $" - Fixed several rare randomization issues with Card randomization. \r\n" +
                 $" - Fixed duplicate spawns of some automatically awarded weapons. \r\n" +
-                $" - Added an option to restrict Card 4 to Shell 2 to help prevent soft-locks.\r\n\r\n" +
-                $"Changes in v1.4.1.0->.6:\r\n\r\n" +
+                $" - Added an option to restrict Card 4 to Shell 2 to help prevent soft-locks.\r\n"+
+                $" - Fixed an issue where automatically awarded weapons were never progressive. \r\n\r\n" +
+                $"Recent-ish changes:\r\n\r\n" +
                 $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n" +
                 $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
                 $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.\r\n" +

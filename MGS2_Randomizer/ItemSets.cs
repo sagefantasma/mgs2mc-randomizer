@@ -720,8 +720,8 @@ namespace MGS2_Randomizer
             PlantSet6.ItemsNeededToProgress.AddRange(new Item[] { MGS2Weapons.Psg1 }); //level 3 card
             #region w22a
             //M4 room
-            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x3 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room5", mandatorySpawn: true, cardNeededToAccess: 2), MGS2Weapons.M4Ammo);
-            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x4 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room6", mandatorySpawn: true, cardNeededToAccess: 2), MGS2Weapons.M4Ammo);
+            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x3 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room5", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.M4Ammo);
+            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x4 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room6", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.M4Ammo);
             //RGB6 room
             PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x98, 0x83, 0xA4, 0x1 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "RgbRoom1", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.Psg1tAmmo);
             PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x4D, 0xBC, 0xAB, 0x1 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "RgbRoom2", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.Rgb6Ammo);
