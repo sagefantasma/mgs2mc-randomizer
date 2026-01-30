@@ -51,6 +51,7 @@ The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: 
 - **Randomize Starting Items** - You will no longer be guaranteed M9, Camera, AP Sensor and Cigs on Tanker; nor AP Sensor and Binoculars on Plant.
 - **Randomize Automatic Rewards** - Automatic rewards will be randomized into the pool. This includes: USP on Tanker; SOCOM, Coolant, Sensor A, BDU, Phone, and MO Disc on Plant.
 - **Add Cards to Randomization Pool** - If automatic rewards are enabled, you can enable this option to add cards to the randomization pool.
+- **Restrict Card 4 to Shell 2** - To keep you as safe as possible from a soft-lock, enable this option to make sure Cards 1-3 are always on Shell 1, and Cards 4 & 5 are always on Shell 2.
 - **Keep Unique Items to Vanilla Card Levels** - If cards are in the randomization pool, you can enable this option to keep items at their 'native' spawn level. (AKS-74u will be behind a Lv2 door, PSG-1 will be behind a Lv3 door, etc...)
 - **Randomize Bomb Locations** - Randomize where all sensor A bombs during the bomb defusal segment spawn.
 - **Randomize EF Connecting Bridge Claymores** - Randomize where the claymores spawn on the EF Connecting Bridge.
@@ -58,11 +59,16 @@ The first randomizer for the **Master Collection version of METAL GEAR SOLID 2: 
 - **Randomize Guard Values** - Randomize guard vision ranges, hearing range, stun resistance, sleep duration, stun duration, etc.
   - **Randomization Bounds** - Slide this to the left to have smaller randomized results, or to the right to have a larger range. Default position will have the closest values to "standard" for vision and hearing range.
 - **Keep Guard Values Consistent Across Levels** - If guard values are randomized, keep them consistent across all levels instead of differing with each level.
+- **Randomize Guard Patrol Routes** - Randomize what patrol each guard follows, as well as what point in the patrol the guard starts at.
+  - **Fully Random** - When randomizing guard patrols, do not prevent guards from sharing routes or nodes.
+  - **No Node Sharing** - When randomizing guard patrols, prevent guards from sharing nodes on the same route.
+- **Randomize Reinforcement Guard Types** - Randomize what types of guards are spawned when reinforcements are called for. Can be normal, shield, shield with light, shotgun, or hi-tech guards on both chapters.
 - **Custom Seed** - Use a known seed to replicate a randomized run! Be sure to set your options up to match the one the seed originally had on creation to get accurate results.
 
 
 ### Known issues
-1. Sometimes textures don't load correctly on items for items on the KL Connecting Bridge and the Strut A Deep Sea Dock. For the Deep Sea Dock, this may make some items fail to spawn. Don't worry though, none of those spawns will be progressive items :^)
+1. None! If you encounter any issues at all at this time, please report it. As far as I am aware, the randomizer is presently bug-free.
 
 ### Is there anything else planned?
 Presently, I don't plan to add anything else. I'll try to fix any and all bugs that are reported, but that is all I have planned. If you like the project and would like to support it to see more stuff added to the randomizer(I do have ideas!), [please support me on Ko-Fi](https://ko-fi.com/sagefantasma)! Any and all donations are greatly appreciated <3
+
