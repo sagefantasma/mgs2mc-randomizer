@@ -57,18 +57,13 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Most recent changes in v{AppVersion}:\r\n\r\n" +
+                $" - Fixed an issue where non-card randomization was not correcting bad progressive spawns correctly. \r\n\r\n" +
+                $"Recent-ish changes:\r\n\r\n" +
+                $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.\r\n" +
                 $" - Fixed several rare randomization issues with Card randomization. \r\n" +
                 $" - Fixed duplicate spawns of some automatically awarded weapons. \r\n" +
-                $" - Added an option to restrict Card 4 to Shell 2 to help prevent soft-locks.\r\n"+
-                $" - Fixed an issue where automatically awarded weapons were never progressive. \r\n\r\n" +
-                $"Recent-ish changes:\r\n\r\n" +
-                $" - Fixed bugs with the Nikita spawning in soft-lock locations even with the Nikita soft-lock option enabled.\r\n" +
-                $" - Fixed an issue where starting Plant items weren't being added to randomization pool when both Randomize Starting Items and Randomize Cards were active\r\n" +
-                $" - Added new item models for B.D.U., phone, and M.O. Disk to help differentiate them.\r\n" +
-                $" - Fixed bug with Cardboard Box 3 not getting textured correctly in Sea Dock.\r\n" +
-                $" - Added guiderails to randomization form to help prevent undesired effects with guard value randomization.\r\n" +
-                $" - Fixed several bugs causing progression-locks with the AK-74u, B.D.U, and Nikita.\r\n" +
-                $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.";
+                $" - Added an option to restrict Card 4 to Shell 2 to help prevent soft-locks.\r\n" +
+                $" - Fixed an issue where automatically awarded weapons were never progressive.";
 
             MessageBox.Show(changelog, "MGS2 Randomizer Changelog", MessageBoxButtons.OK);
         }
