@@ -3184,7 +3184,7 @@ namespace MGS2_Randomizer
             List<KeyValuePair<Location, Item>> partSpawnsForItemToSwapWith = partSpawns.Where(spawn => (spawn.Value.Name == itemToSwapWith.Name)
             && spawn.Key.MandatorySpawn
             && (spawn.Key.CardNeededToAccess <= VanillaItems.ItemAccessLevels[itemToFix])).ToList();
-            KeyValuePair<Location, Item> spawnToSwap = partSpawns[Randomizer.Next(0, partSpawnsForItemToSwapWith.Count)]; //could this be just count? i think so?
+            KeyValuePair<Location, Item> spawnToSwap = partSpawnsForItemToSwapWith[Randomizer.Next(0, partSpawnsForItemToSwapWith.Count)]; //could this be just count? i think so?
 
             SwapSpawnContents(itemSet, spawnToSwap, progressiveSpawn);
         }
