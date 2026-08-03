@@ -23,7 +23,7 @@ namespace MGS2_Randomizer
         private string userDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         private string _logLocation { get; set; }
         public static ILogger _logger { get; private set; }
-        private static string AppVersion { get; set; }
+        public static string AppVersion { get; set; }
         private string InstallLocation
         {
             get { return _installLocation; }
@@ -57,8 +57,9 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Most recent changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed an issue where non-card randomization was not correcting bad progressive spawns correctly. \r\n\r\n" +
+                $" - Fixed several bugs causing progression issues when randomizing card keys. \r\n\r\n" +
                 $"Recent-ish changes:\r\n\r\n" +
+                $" - Fixed an issue where non-card randomization was not correcting bad progressive spawns correctly. \r\n" +
                 $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.\r\n" +
                 $" - Fixed several rare randomization issues with Card randomization. \r\n" +
                 $" - Fixed duplicate spawns of some automatically awarded weapons. \r\n" +
