@@ -720,8 +720,8 @@ namespace MGS2_Randomizer
             PlantSet6.ItemsNeededToProgress.AddRange(new Item[] { MGS2Weapons.Psg1 }); //level 3 card
             #region w22a
             //M4 room
-            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x3 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room5", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.M4Ammo);
-            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x4 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room6", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.M4Ammo);
+            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x3 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room5", mandatorySpawn: false, cardNeededToAccess: 3), MGS2Weapons.M4Ammo);
+            PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x79, 0x6A, 0x24, 0x4 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "M4Room6", mandatorySpawn: false, cardNeededToAccess: 3), MGS2Weapons.M4Ammo);
             //RGB6 room
             PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x98, 0x83, 0xA4, 0x1 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "RgbRoom1", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.Psg1tAmmo);
             PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0x4D, 0xBC, 0xAB, 0x1 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "RgbRoom2", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.Rgb6Ammo);
@@ -740,8 +740,8 @@ namespace MGS2_Randomizer
             PlantSet6.Entities.Add(new Location(gcxFile: "w22a", spawnId: new byte[] { 0xBB, 0x71, 0x8B, 0x1 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "GrenadeRoom5", mandatorySpawn: true, cardNeededToAccess: 3), MGS2Weapons.SocomAmmo);
             #endregion
             #region w24a
-            PlantSet6.Entities.Add(new Location(gcxFile: "w24a", spawnId: new byte[] { 79, 43, 183 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "FrontDoor1", mandatorySpawn: true, cardNeededToAccess: 2), MGS2Weapons.M9Ammo);
-            PlantSet6.Entities.Add(new Location(gcxFile: "w24a", spawnId: new byte[] { 6, 204, 62 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "FrontDoor2", mandatorySpawn: true, cardNeededToAccess: 2), MGS2Weapons.SocomAmmo);
+            PlantSet6.Entities.Add(new Location(gcxFile: "w24a", spawnId: new byte[] { 79, 43, 183 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "FrontDoor1", mandatorySpawn: false, cardNeededToAccess: 2), MGS2Weapons.M9Ammo);
+            PlantSet6.Entities.Add(new Location(gcxFile: "w24a", spawnId: new byte[] { 6, 204, 62 }, posX: 0x0, posZ: 0x0, posY: 0x0, rot: 0, name: "FrontDoor2", mandatorySpawn: false, cardNeededToAccess: 2), MGS2Weapons.SocomAmmo);
             #endregion
 
             PlantSet7.Name = "Before Johnson";

@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics.Random;
-using MathNet.Spatial.Euclidean;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -2723,58 +2722,28 @@ namespace MGS2_Randomizer
             }
         }
 
-        private void AssignCardedRandomizationPlantSpawn(int itemsAssigned, Item randomChoice, bool keepVanillaCardAccess)
+        private void AssignCardedRandomizationPlantSpawn(int itemsAssigned, Item randomChoice)
         {
-            if (!keepVanillaCardAccess)
+            switch (_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.CardNeededToAccess)
             {
-                switch (_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.CardNeededToAccess)
-                {
-                    case 0:
-                        _randomizedItems.PlantCard0Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                        break;
-                    case 1:
-                        _randomizedItems.PlantCard1Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                        break;
-                    case 2:
-                        _randomizedItems.PlantCard2Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                        break;
-                    case 3:
-                        _randomizedItems.PlantCard3Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                        break;
-                    case 4:
-                        _randomizedItems.PlantCard4Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                        break;
-                    case 5:
-                        _randomizedItems.PlantCard5Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                        break;
-                }
-            }
-            else
-            {
-                if (itemsAssigned < _vanillaItems.PlantCard0Set.Entities.Count)
-                {
+                case 0:
                     _randomizedItems.PlantCard0Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                }
-                else if (itemsAssigned < _vanillaItems.PlantCard1Set.Entities.Count)
-                {
+                    break;
+                case 1:
                     _randomizedItems.PlantCard1Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                }
-                else if (itemsAssigned < _vanillaItems.PlantCard2Set.Entities.Count)
-                {
+                    break;
+                case 2:
                     _randomizedItems.PlantCard2Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                }
-                else if (itemsAssigned < _vanillaItems.PlantCard3Set.Entities.Count)
-                {
+                    break;
+                case 3:
                     _randomizedItems.PlantCard3Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                }
-                else if (itemsAssigned < _vanillaItems.PlantCard4Set.Entities.Count)
-                {
+                    break;
+                case 4:
                     _randomizedItems.PlantCard4Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                }
-                else
-                {
+                    break;
+                case 5:
                     _randomizedItems.PlantCard5Set.Entities.Add(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key, randomChoice);
-                }
+                    break;
             }
         }
 
@@ -3043,7 +3012,7 @@ namespace MGS2_Randomizer
                         randomChoice = MGS2Weapons.M9Ammo;
                     }
 
-                    AssignCardedRandomizationPlantSpawn(itemsAssigned, randomChoice, options.KeepVanillaCardAccess);
+                    AssignCardedRandomizationPlantSpawn(itemsAssigned, randomChoice);
                     itemsAssigned++;
                 }
 
@@ -3282,7 +3251,8 @@ namespace MGS2_Randomizer
         {
             KeyValuePair<Location, Item> cardSpawn = cardSpawns.Where(spawn => spawn.Value.Name == cardToFix.Name).FirstOrDefault();
             List<KeyValuePair<Location, Item>> mandatorySpawnsInAccessLevel = itemSet.Entities.Where(spawn => spawn.Key.MandatorySpawn
-                && spawn.Key.CardNeededToAccess == accessLevel && !spawn.Value.Name.Contains("Card")).ToList();
+                && spawn.Key.CardNeededToAccess == accessLevel && !spawn.Value.Name.Contains("Card") 
+                && new string[] { "FrontDoor1", "FrontDoor2", "M4Room5", "M4Room6" }.Contains(spawn.Key.Name) == false).ToList();
             KeyValuePair<Location, Item> spawnToSwap = mandatorySpawnsInAccessLevel[Randomizer.Next(0, mandatorySpawnsInAccessLevel.Count)];
 
             SwapSpawnContents(masterItemSet.PlantCard5Set, spawnToSwap, cardSpawn);
@@ -3396,7 +3366,7 @@ namespace MGS2_Randomizer
             }
 
             List<KeyValuePair<Location, Item>> thirdProgressionSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => Location.ThirdProgressionAreas.Contains(spawns.Key.GcxFile)
-            && new string[] { "FrontDoor1", "FrontDoor2" }.Contains(spawns.Key.Name) == false
+            && new string[] { "FrontDoor1", "FrontDoor2", "M4Room5", "M4Room6" }.Contains(spawns.Key.Name) == false
             && spawns.Key.CardNeededToAccess <= 3).ToList();
             foreach (Item item in _vanillaItems.CardRandomizationThirdProgressionItems)
             {
@@ -3614,6 +3584,7 @@ namespace MGS2_Randomizer
                 SaveFileToDisk(kvp, customDirectory, createdDirectory);
             }
 
+            cheatSheet += $"\nRandomized on Version: {RandomizationForm.AppVersion}.\nSeed#{Seed}";
             if (makeSpoilerFile)
                 File.WriteAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/spoiler_seed-{Seed}.txt", cheatSheet);
 
