@@ -2819,7 +2819,7 @@ namespace MGS2_Randomizer
                             else
                             {
                                 if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantSet10.Entities.ElementAt(itemsAssigned).Key.Name)
-                                    || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+                                    || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile))
                                 {
                                     retries--;
                                     if (retries == 0)
@@ -2869,6 +2869,9 @@ namespace MGS2_Randomizer
             else
             {
                 AddCardsToPools();
+                //TODO: for cards at least, I could *significantly* speed things up by removing the retry code
+                //and just rely on the VerifyCardSetLogicValidity to fix all bad spawns... But idk, would be
+                //theoretically "dangerous" if there's logic holes in my "fix" code, and it isn't that slow...
 
                 plantSpawnPool = InitializePlantSpawnPool(options, _vanillaItems.PlantCard5Set.Entities);
 
@@ -2982,7 +2985,7 @@ namespace MGS2_Randomizer
                         {
                             //make sure it ALWAYS spawns before fifth progression areas and not in the electrical room no matter what
                             if (ElectricalRoomSpawns.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name)
-                                || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.Name))
+                                || Location.FifthProgressionAreas.Contains(_vanillaItems.PlantCard5Set.Entities.ElementAt(itemsAssigned).Key.GcxFile))
                             {
                                 retries--;
                                 if (retries == 0)
@@ -3238,13 +3241,13 @@ namespace MGS2_Randomizer
 
         private void FixCardedSpawn(ItemSet itemSet, List<KeyValuePair<Location, Item>> partSpawns, Item itemToFix, Item itemToSwapWith, bool keepCardAccessLevels)
         {
-            KeyValuePair<Location, Item> socomSpawn = itemSet.Entities.FirstOrDefault(spawn => spawn.Value.Name == itemToFix.Name);
-            List<KeyValuePair<Location, Item>> part1SocomAmmoSpawns = partSpawns.Where(spawn => spawn.Value.Name == itemToSwapWith.Name
+            KeyValuePair<Location, Item> itemToFixSpawn = itemSet.Entities.FirstOrDefault(spawn => spawn.Value.Name == itemToFix.Name);
+            List<KeyValuePair<Location, Item>> itemToSwapWithSpawns = partSpawns.Where(spawn => spawn.Value.Name == itemToSwapWith.Name
             && spawn.Key.MandatorySpawn
             && (keepCardAccessLevels ? spawn.Key.CardNeededToAccess == VanillaItems.ItemAccessLevels[itemToFix] : true)).ToList();
-            KeyValuePair<Location, Item> ammoSpawnToSwap = part1SocomAmmoSpawns[Randomizer.Next(0, part1SocomAmmoSpawns.Count)]; 
+            KeyValuePair<Location, Item> itemSpawnToSwap = itemToSwapWithSpawns[Randomizer.Next(0, itemToSwapWithSpawns.Count)]; 
 
-            SwapSpawnContents(itemSet, ammoSpawnToSwap, socomSpawn);
+            SwapSpawnContents(itemSet, itemSpawnToSwap, itemToFixSpawn);
         }
 
         private void FixCardSpawn(MGS2ItemSet masterItemSet, ItemSet itemSet, List<KeyValuePair<Location, Item>> cardSpawns, Item cardToFix, int accessLevel)
@@ -3380,6 +3383,16 @@ namespace MGS2_Randomizer
                     {
                         FixCardedSpawn(setToCheck.PlantCard5Set, thirdProgressionSpawns, MGS2Weapons.Psg1, MGS2Weapons.Psg1Ammo, keepCardAccessLevels);
                     }
+                }
+            }
+
+            if (!nikitaShell2)
+            {
+                List<KeyValuePair<Location,Item>> noNikitaSafetyCheckSpawns = setToCheck.PlantCard5Set.Entities.Where(spawns => (Location.FirstProgressionAreas.Contains(spawns.Key.GcxFile) || Location.SecondProgressionAreas.Contains(spawns.Key.GcxFile) || Location.ThirdProgressionAreas.Contains(spawns.Key.GcxFile) || Location.FourthProgressionAreas.Contains(spawns.Key.GcxFile))
+                && spawns.Key.CardNeededToAccess <= 4).ToList();
+                if(!noNikitaSafetyCheckSpawns.Any(spawn => spawn.Value.Name == MGS2Weapons.Nikita.Name))
+                {
+                    FixCardedSpawn(setToCheck.PlantCard5Set, noNikitaSafetyCheckSpawns, MGS2Weapons.Nikita, MGS2Weapons.NikitaAmmo, keepCardAccessLevels);
                 }
             }
 

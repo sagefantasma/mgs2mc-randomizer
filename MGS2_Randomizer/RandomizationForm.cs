@@ -57,8 +57,9 @@ namespace MGS2_Randomizer
         private static void ShowChangelog()
         {
             string changelog = $"Most recent changes in v{AppVersion}:\r\n\r\n" +
-                $" - Fixed several bugs causing progression issues when randomizing card keys. \r\n\r\n" +
+                $" - Fixed two bugs where the Nikita could spawn too late into the game. \r\n\r\n" +
                 $"Recent-ish changes:\r\n\r\n" +
+                $" - Fixed several bugs causing progression issues when randomizing card keys. \r\n" +
                 $" - Fixed an issue where non-card randomization was not correcting bad progressive spawns correctly. \r\n" +
                 $" - Fixed an issue where randomized bombs on Strut F sometimes spawned incorrectly on higher difficulties.\r\n" +
                 $" - Fixed several rare randomization issues with Card randomization. \r\n" +
